@@ -1,0 +1,23 @@
+.personal-details h2{
+  margin: 12px 0 0 0;
+}
+
+.user-form{
+  display: flex;
+  width: 480px;
+  margin: auto;
+  flex-direction: column;
+}
+
+.user-form-inputs{
+  margin-top: 12px;
+}
+label{
+  width: 100px;;
+}
+input{
+  width: 100%;
+}
+.user-form-button input{
+  width: 120px;
+}
