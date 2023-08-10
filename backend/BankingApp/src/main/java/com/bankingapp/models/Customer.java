@@ -1,7 +1,7 @@
 package com.bankingapp.models;
 
 import java.util.Date;
-//import java.util.List;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -21,7 +21,7 @@ public class Customer {
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="customer_id")
-	//private List<Transactions> transaction;
+	private List<Transactions> transaction;
 	
 	public int getCustomer_id() {
 		return customer_id;
