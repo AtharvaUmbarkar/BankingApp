@@ -21,7 +21,7 @@ public class Account {
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="customer_id")
-	private List<Transactions> transaction;
+	private List<Transaction> transaction;
 	
 	public int getAccount_id() {
 		return account_id;
