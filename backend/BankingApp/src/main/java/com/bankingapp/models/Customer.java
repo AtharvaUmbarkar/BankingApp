@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -19,7 +20,6 @@ public class Customer {
 	private String customer_dob;
 	private int customer_phone;
 	private int customer_aadhar;
-	
 	//@OneToMany(cascade=CascadeType.ALL)
 	//@JoinColumn(name="customer_id")
 	//private List<Transactions> transaction;
