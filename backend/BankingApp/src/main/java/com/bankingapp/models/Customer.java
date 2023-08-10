@@ -20,9 +20,9 @@ public class Customer {
 	private int customer_phone;
 	private int customer_aadhar;
 	
-	//@OneToMany(cascade=CascadeType.ALL)
-	//@JoinColumn(name="customer_id")
-	//private List<Transactions> transaction;
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(name="customer_id")
+//	private List<Transactions> transaction;
 	
 	public int getCustomer_id() {
 		return customer_id;
