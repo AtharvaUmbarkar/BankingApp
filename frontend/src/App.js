@@ -15,7 +15,7 @@ function App() {
   const handleSubmit = async (event) => {
     console.log(inputs)
     event.preventDefault();
-    if(Object.keys(inputs).length == 9){
+    if(Object.keys(inputs).length == 4){
       let allFieldsEntered = true;
       Object.keys(inputs).map(field => {
         if(!inputs[field]){
@@ -27,10 +27,13 @@ function App() {
       }
       else{
         alert(JSON.stringify(inputs));
-        //   const res = await axios.post("http://localhost:8080/createCustomer", inputs)
-        //   if(res){
-          //     alert(JSON.stringify(res));
-          //   }
+        console.log(inputs)
+        inputs["customer_phone"] = parseInt(inputs[["customer_phone"]])
+        inputs["customer_aadhar"] = parseInt(inputs[["customer_aadhar"]])
+          const res = await axios.post("http://localhost:8090/saveCustomer", JSON.stringify(inputs), {headers: {"Content-Type": "application/json"}})
+          if(res){
+              alert(JSON.stringify(res));
+            }
         setInputs({})
      }
     } else{
@@ -45,16 +48,16 @@ function App() {
      
         <div className='user-form-inputs'>
     
-      <label>Title:
+      <label>Customer Name:
         <input 
           type="text" 
-          name="title" 
-          value={inputs.title || ""} 
+          name="customer_name" 
+          value={inputs.customer_name || ""} 
           onChange={handleChange}
         />
         </label>
     </div>
-        <div className='user-form-inputs'>
+        {/* <div className='user-form-inputs'>
     
       <label>First name:
         <input 
@@ -97,19 +100,19 @@ function App() {
         onChange={handleChange}
       />
       </label>    
-    </div>
+    </div> */}
     <div className='user-form-inputs'>
 
      <label>Mobile Number:
       <input 
         type="number" 
-        name="mobileNumber" 
-        value={inputs.mobileNumber || ""} 
+        name="customer_phone" 
+        value={inputs.customer_phone || ""} 
         onChange={handleChange}
       />
       </label>    
     </div>
-    <div className='user-form-inputs'>
+    {/* <div className='user-form-inputs'>
 
      <label>Email ID:
       <input 
@@ -120,14 +123,14 @@ function App() {
       />
       </label>    
     </div>
-
+ */}
       <div className='user-form-inputs'>
     
       <label>Aadhar card number:
         <input 
           type="text" 
-          name="aadhar" 
-          value={inputs.aadhar || ""} 
+          name="customer_aadhar" 
+          value={inputs.customer_aadhar || ""} 
           onChange={handleChange}
         />
         </label>
@@ -137,8 +140,8 @@ function App() {
       <label>Date of birth:
         <input 
           type="date" 
-          name="dateOfBirth" 
-          value={inputs.dateOfBirth || ""} 
+          name="customer_dob" 
+          value={inputs.customer_dob || ""} 
           onChange={handleChange}
         />
         </label>

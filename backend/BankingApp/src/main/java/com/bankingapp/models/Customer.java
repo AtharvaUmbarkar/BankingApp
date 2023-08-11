@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -16,12 +17,12 @@ public class Customer {
 	@GeneratedValue
 	private int customer_id;
 	private String customer_name;
-	private Date customer_dob;
+	private String customer_dob;
 	private int customer_phone;
-	
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="customer_id")
-	private List<Transaction> transaction;
+	private int customer_aadhar;
+	//@OneToMany(cascade=CascadeType.ALL)
+	//@JoinColumn(name="customer_id")
+	//private List<Transactions> transaction;
 	
 	public int getCustomer_id() {
 		return customer_id;
@@ -35,10 +36,10 @@ public class Customer {
 	public void setCustomer_name(String customer_name) {
 		this.customer_name = customer_name;
 	}
-	public Date getCustomer_dob() {
+	public String getCustomer_dob() {
 		return customer_dob;
 	}
-	public void setCustomer_dob(Date customer_dob) {
+	public void setCustomer_dob(String customer_dob) {
 		this.customer_dob = customer_dob;
 	}
 	public int getCustomer_phone() {
@@ -53,6 +54,6 @@ public class Customer {
 	public void setCustomer_aadhar(int customer_aadhar) {
 		this.customer_aadhar = customer_aadhar;
 	}
-	private int customer_aadhar;
+	
 	
 }
