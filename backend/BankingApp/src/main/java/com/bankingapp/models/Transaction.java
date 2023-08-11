@@ -2,8 +2,11 @@ package com.bankingapp.models;
 
 import java.util.Date;
 
+import org.hibernate.validator.constraints.Range;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Transaction {
@@ -12,6 +15,8 @@ public class Transaction {
 	private int accountNumber;
 	private Date txnDate;
 	private String txnType; // (DR/CR)
+	@Range(min = 1, message = "Amount should be greater than 0")
+	@Pattern(regexp = "^[0-9]+$", message = "Please enter a numerical Value")
 	private int txnAmount;
 	private String txnDescription;
 	private String userRemarks;

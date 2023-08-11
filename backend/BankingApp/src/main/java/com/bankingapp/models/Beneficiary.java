@@ -20,8 +20,8 @@ public class Beneficiary {
 	private int beneficiaryAccountNumber;
 	
 	@Column(nullable=false)
-	@NotBlank(message="Beneficiary name cannot be null")
-	@Length(min=3, max=30, message="name must be between 3-30 characters")
+	@NotBlank(message="Beneficiary name cannot be blank")
+	@Length(min=3, max=30, message="Name size must be between 3-30 characters")
 	private String beneficiaryName;
 	
 	@Length(max=30, message="nickname cannot have more than 30 characters")
