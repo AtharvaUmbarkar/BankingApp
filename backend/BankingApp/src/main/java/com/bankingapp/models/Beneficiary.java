@@ -15,52 +15,41 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 public class Beneficiary {
 	@Id
-	@GeneratedValue
-	private int beneficiaryID;
-	
 	@Column(nullable=false)
 	@Range(min=1)
-	private int customerID;
-	
-	@Column(nullable=false)
-	@Range(min=1)
-	private int accountNumber;
+	private int beneficiaryAccountNumber;
 	
 	@Column(nullable=false)
 	@NotBlank(message="Beneficiary name cannot be null")
 	@Length(min=3, max=30, message="name must be between 3-30 characters")
-	private String name;
+	private String beneficiaryName;
 	
 	@Length(max=30, message="nickname cannot have more than 30 characters")
-	private String nickName;
-	public int getBeneficiaryID() {
-		return beneficiaryID;
+	private String beneficiaryNickname;
+
+	public int getBeneficiaryAccountNumber() {
+		return beneficiaryAccountNumber;
 	}
-	public void setBeneficiaryID(int beneficiaryID) {
-		this.beneficiaryID = beneficiaryID;
+
+	public void setBeneficiaryAccountNumber(int beneficiaryAccountNumber) {
+		this.beneficiaryAccountNumber = beneficiaryAccountNumber;
 	}
-	public int getCustomerID() {
-		return customerID;
+
+	public String getBeneficiaryName() {
+		return beneficiaryName;
 	}
-	public void setCustomerID(int customerID) {
-		this.customerID = customerID;
+
+	public void setBeneficiaryName(String beneficiaryName) {
+		this.beneficiaryName = beneficiaryName;
 	}
-	public int getAccountNumber() {
-		return accountNumber;
+
+	public String getBeneficiaryNickname() {
+		return beneficiaryNickname;
 	}
-	public void setAccountNumber(int accountNumber) {
-		this.accountNumber = accountNumber;
+
+	public void setBeneficiaryNickname(String beneficiaryNickname) {
+		this.beneficiaryNickname = beneficiaryNickname;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getNickName() {
-		return nickName;
-	}
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
+
+	
 }

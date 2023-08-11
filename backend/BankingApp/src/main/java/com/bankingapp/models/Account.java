@@ -1,5 +1,6 @@
 package com.bankingapp.models;
 
+import java.util.Date;
 //import java.util.Date;
 import java.util.List;
 
@@ -13,41 +14,42 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Account {
 	@Id
-	@GeneratedValue
-	private int account_id;
-	private String account_holder;
-	private int balance;
-	private int account_holder_id;
+	private int accountNumber;
+	private String accountType;
+	private int accountBalance;
+	private Date accountCreationDate;
+	private boolean netBankingOpted;
 	
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="customer_id")
-	private List<Transaction> transaction;
-	
-	public int getAccount_id() {
-		return account_id;
+	public int getAccountNumber() {
+		return accountNumber;
 	}
-	public void setAccount_id(int account_id) {
-		this.account_id = account_id;
+	public void setAccountNumber(int accountNumber) {
+		this.accountNumber = accountNumber;
 	}
-	public String getAccount_holder() {
-		return account_holder;
+	public String getAccountType() {
+		return accountType;
 	}
-	public void setAccount_holder(String account_holder) {
-		this.account_holder = account_holder;
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
 	}
-	public int getBalance() {
-		return balance;
+	public int getAccountBalance() {
+		return accountBalance;
 	}
-	public void setBalance(int balance) {
-		this.balance = balance;
+	public void setAccountBalance(int accountBalance) {
+		this.accountBalance = accountBalance;
 	}
-	public int getAccount_holder_id() {
-		return account_holder_id;
+	public Date getAccountCreationDate() {
+		return accountCreationDate;
 	}
-	public void setAccount_holder_id(int account_holder_id) {
-		this.account_holder_id = account_holder_id;
+	public void setAccountCreationDate(Date accountCreationDate) {
+		this.accountCreationDate = accountCreationDate;
 	}
-	
+	public boolean isNetBankingOpted() {
+		return netBankingOpted;
+	}
+	public void setNetBankingOpted(boolean netBankingOpted) {
+		this.netBankingOpted = netBankingOpted;
+	}
 	
 	
 }
