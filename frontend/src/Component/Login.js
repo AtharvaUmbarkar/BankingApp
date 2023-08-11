@@ -8,7 +8,8 @@ function Login() {
     const [user_id, setUserID] = useState();
     const [user_password, setUserPassword] = useState();
     const navigate = useNavigate();
-    const baseURL = "http://localhost:8090/Login"
+    const baseURL = "http://localhost:8090/Login";
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         axios.post(
@@ -60,7 +61,7 @@ function Login() {
                 </label>
                 <label className="text-lg my-2">User Password:
                     <input
-                        type="text"
+                        type="password"
                         name="user_id"
                         value={user_password}
                         onChange={handle_passChange || ""}
