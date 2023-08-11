@@ -1,8 +1,10 @@
 import { useState } from "react"
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 function Registration() {
   const [inputs, setInputs] = useState({});
+  const navigate = useNavigate()
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -13,7 +15,7 @@ function Registration() {
   const handleSubmit = async (event) => {
     console.log(inputs)
     event.preventDefault();
-    if (Object.keys(inputs).length == 4) {
+    if (Object.keys(inputs).length == 6) {
       let allFieldsEntered = true;
       Object.keys(inputs).map(field => {
         if (!inputs[field]) {
@@ -28,9 +30,11 @@ function Registration() {
         console.log(inputs)
         inputs["customer_phone"] = parseInt(inputs[["customer_phone"]])
         inputs["customer_aadhar"] = parseInt(inputs[["customer_aadhar"]])
+        inputs["username"] = parseInt(inputs[["username"]])
         const res = await axios.post("http://localhost:8090/saveCustomer", JSON.stringify(inputs), { headers: { "Content-Type": "application/json" } })
         if (res) {
-          alert(JSON.stringify(res));
+          navigate("/login")
+          // alert(JSON.stringify(res));
         }
         setInputs({})
       }
@@ -143,6 +147,30 @@ function Registration() {
               type="date"
               name="customer_dob"
               value={inputs.customer_dob || ""}
+              onChange={handleChange}
+              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+            />
+          </label>
+        </div>
+        <div className='user-form-inputs'>
+
+          <label className="text-lg my-2">Username:
+            <input
+              type="text"
+              name="username"
+              value={inputs.username || ""}
+              onChange={handleChange}
+              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+            />
+          </label>
+        </div>
+        <div className='user-form-inputs'>
+
+          <label className="text-lg my-2">Password:
+            <input
+              type="password"
+              name="password"
+              value={inputs.password || ""}
               onChange={handleChange}
               className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
             />

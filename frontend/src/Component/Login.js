@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 
 function Login() {
@@ -7,6 +8,8 @@ function Login() {
     const [user_id, setUserID] = useState();
     const [user_password, setUserPassword] = useState();
     const baseURL = "http://localhost:8090/Login"
+    const navigate = useNavigate()
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         axios.post(
@@ -16,9 +19,9 @@ function Login() {
                 password: user_password
             }
         ).then((response) => {
-            alert("User ID : " + response.data);
-            if (response.data == "Login Success") {
-
+            if (response.data) {
+                sessionStorage.setItem("userId", user_id)
+                navigate("/")
             }
             else {
                 alert("Invalid credentials")
@@ -57,7 +60,7 @@ function Login() {
                 </label>
                 <label className="text-lg my-2">User Password:
                     <input
-                        type="text"
+                        type="password"
                         name="user_id"
                         value={user_password}
                         onChange={handle_passChange || ""}
