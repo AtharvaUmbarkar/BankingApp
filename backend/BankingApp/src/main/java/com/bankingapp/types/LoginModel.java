@@ -1,4 +1,4 @@
-package com.bankingapp.models;
+package com.bankingapp.types;
 
 public class LoginModel {
 	

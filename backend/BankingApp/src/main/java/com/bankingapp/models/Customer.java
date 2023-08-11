@@ -37,7 +37,7 @@ public class Customer {
 	}
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="customer_id")
-//	private List<Transactions> transaction;
+	private List<Transaction> transaction;
 	
 	public int getCustomer_id() {
 		return customer_id;

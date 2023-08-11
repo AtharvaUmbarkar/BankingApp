@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.models.Customer;
-import com.bankingapp.models.LoginModel;
 import com.bankingapp.service.CustService;
+import com.bankingapp.types.LoginModel;
 
 @RestController
 @CrossOrigin

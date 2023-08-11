@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.models.Customer;
-import com.bankingapp.models.LoginModel;
 import com.bankingapp.repository.CustomerRepo;
+import com.bankingapp.types.LoginModel;
 
 @Service
 public class CustService {
