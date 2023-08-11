@@ -1,11 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 
 function Login() {
 
     const [user_id, setUserID] = useState();
     const [user_password, setUserPassword] = useState();
+    const navigate = useNavigate();
     const baseURL = "http://localhost:8090/Login"
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -18,7 +20,8 @@ function Login() {
         ).then((response) => {
             alert("User ID : " + response.data);
             if (response.data == "Login Success") {
-
+                sessionStorage.setItem('userId', user_id);
+                navigate('/');
             }
             else {
                 alert("Invalid credentials")
