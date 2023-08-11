@@ -43,6 +43,4 @@ public class Transaction {
 	public void setTransaction_amount(int transaction_amount) {
 		this.transaction_amount = transaction_amount;
 	}
-	
-
 }
