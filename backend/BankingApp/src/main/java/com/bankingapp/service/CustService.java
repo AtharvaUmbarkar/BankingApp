@@ -36,7 +36,7 @@ public class CustService {
 		}
 		else
 		{
-			if (loginuser.getPassword().equals(cust.getPassword()))
+			if (loginuser.getPassword().equals(cust.getLoginPassword()))
 			{
 				result = "Login Success";
 			}
