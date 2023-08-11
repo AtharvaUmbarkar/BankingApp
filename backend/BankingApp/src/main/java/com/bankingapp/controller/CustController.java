@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.models.Customer;
+import com.bankingapp.models.LoginModel;
 import com.bankingapp.service.CustService;
 
 @RestController
@@ -23,5 +24,10 @@ public class CustController {
 		return c;
 	}
 	
+	@PostMapping("/Login")
+	public String validateCustomer(@RequestBody LoginModel u)
+	{
+		return custService.validateCustomer(u);
+	}
 
 }

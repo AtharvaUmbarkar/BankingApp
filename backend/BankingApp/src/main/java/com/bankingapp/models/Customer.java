@@ -14,22 +14,30 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Customer {
 	@Id
+	private int username;
 	@GeneratedValue
 	private int customer_id;
 	private String customer_name;
 	private String customer_dob;
 	private int customer_phone;
 	private int customer_aadhar;
-<<<<<<< HEAD
+	private String password;
 	
+	public int getUsername() {
+		return username;
+	}
+	public void setUsername(int username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="customer_id")
 //	private List<Transactions> transaction;
-=======
-	//@OneToMany(cascade=CascadeType.ALL)
-	//@JoinColumn(name="customer_id")
-	//private List<Transactions> transaction;
->>>>>>> 022c4c6d619c6a3d66f944a99de48ae2f5b543e2
 	
 	public int getCustomer_id() {
 		return customer_id;
