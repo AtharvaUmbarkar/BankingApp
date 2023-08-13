@@ -7,6 +7,7 @@ import Registration from './Component/Registration';
 import Login from './Component/Login';
 import Home from './Component/Home/Home';
 import Navbar from './Component/Home/Navbar';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   /*const [inputs, setInputs] = useState({});
@@ -47,16 +48,14 @@ function App() {
  }
 */
   return (
-    <div className='flex flex-col items-center'>
-      <BrowserRouter>
-        <Navbar />
+    <BrowserRouter>
+        <Toaster />
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/registration" element={<Registration />} />
           <Route exact path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
-    </div>
   )
 }
 
