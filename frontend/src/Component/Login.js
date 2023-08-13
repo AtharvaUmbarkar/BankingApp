@@ -34,24 +34,7 @@ function Login() {
                     toast.error("Login failed!")
                 }
             }
-<<<<<<< HEAD
         }
-=======
-        ).then((response) => {
-            alert("User ID : " + response.data);
-            if (response.data == "Login Success") {
-                sessionStorage.setItem('userId', user_id);
-                navigate('/');
-            }
-            else {
-                alert("Invalid credentials")
-            }
-            setUserID("");
-            setUserPassword("")
-        }).catch(error => {
-            alert("Error ---> " + error);
-        })
->>>>>>> 2ac5119e079e317890749b1ab90b7476b6e63cbb
     }
 
 
