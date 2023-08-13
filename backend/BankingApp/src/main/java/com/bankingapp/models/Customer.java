@@ -3,6 +3,8 @@ package com.bankingapp.models;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.validator.constraints.Length;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ public class Customer {
 	private int customer_id;
 	private String customer_name;
 	private String customer_dob;
+	@Length(max=10)
 	private int customer_phone;
 	private int customer_aadhar;
 	private String password;
