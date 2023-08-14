@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
@@ -26,6 +27,18 @@ public class Beneficiary {
 	
 	@Length(max=30, message="nickname cannot have more than 30 characters")
 	private String beneficiaryNickname;
+	
+	@ManyToOne
+	@JoinColumn(name="customerId")
+	private Customer customer;
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
 	public int getBeneficiaryAccountNumber() {
 		return beneficiaryAccountNumber;

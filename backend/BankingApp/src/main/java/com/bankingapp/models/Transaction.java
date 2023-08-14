@@ -6,13 +6,14 @@ import org.hibernate.validator.constraints.Range;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Transaction {
 	@Id
 	private int txnId;
-	private int accountNumber;
 	private Date txnDate;
 	private String txnType; // (DR/CR)
 	@Range(min = 1, message = "Amount should be greater than 0")
@@ -20,17 +21,23 @@ public class Transaction {
 	private int txnAmount;
 	private String txnDescription;
 	private String userRemarks;
+	
+	@ManyToOne
+	@JoinColumn(name="accountNumber")
+	private Account account;
+
+	
+	public Account getAccount() {
+		return account;
+	}
+	public void setAccount(Account account) {
+		this.account = account;
+	}
 	public int getTxnId() {
 		return txnId;
 	}
 	public void setTxnId(int txnId) {
 		this.txnId = txnId;
-	}
-	public int getAccountNumber() {
-		return accountNumber;
-	}
-	public void setAccountNumber(int accountNumber) {
-		this.accountNumber = accountNumber;
 	}
 	public Date getTxnDate() {
 		return txnDate;

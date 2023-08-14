@@ -19,11 +19,11 @@ public class CustService {
 		return obj;
 	}
 	
-	public String validateCustomer(LoginModel loginuser)
+	public String validateCustomer(LoginModel loginUser)
 	{
 		String result = "";
 		Customer cust = null;
-		Optional<Customer> objt = custRepo.findById(loginuser.getUsername());
+		Optional<Customer> objt = custRepo.findById(loginUser.getUsername());
 		if (objt.isPresent())
 		{
 			cust = objt.get();
@@ -36,7 +36,7 @@ public class CustService {
 		}
 		else
 		{
-			if (loginuser.getPassword().equals(cust.getLoginPassword()))
+			if (loginUser.getPassword().equals(cust.getLoginPassword()))
 			{
 				result = "Login Success";
 			}

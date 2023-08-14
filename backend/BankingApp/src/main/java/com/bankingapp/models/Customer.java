@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,17 +50,17 @@ public class Customer {
 	private String emailId;
 	
 	@Column(name="dob", nullable=false)
-//	@DateTimeFormat(pattern="dd-MM-yyyy")
-	private LocalDate customerDob;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private LocalDate dateOfBirth;
 	
 	@Column(name="mobile", nullable=false)
 	@Pattern(regexp ="^\\d{10}$")
 //	@Length(min=10, max=10, message="mobile number must be of 10 digits")
-	private String customerPhone;
+	private String mobileNumber;
 	
 	@Column(name="aadhaar", nullable=false, unique=true)
 	@Pattern(regexp="^[0-9]{12}$")
-	private String customerAadhaar;
+	private String aadhaarNumber;
 	
 	@Column(name="temp_line1", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
@@ -118,12 +119,33 @@ public class Customer {
 	@Column(name="user_name", unique=true)
 	@Pattern(regexp="^[A-Za-z0-9]{8,}$", message="must contain only digits and alphabets and should be of length 8")
 	private String userName;
+	
 	@Column(name="login_password")
 	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String loginPassword;
 	@Column(name="transaction_password")
 	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String transactionPassword;
+	
+	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private List<Account> account;
+	
+	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private List<Beneficiary> beneficiary;
+	
+	public List<Account> getAccount() {
+		return account;
+	}
+	public void setAccount(List<Account> account) {
+		this.account = account;
+	}
+	
+	public List<Beneficiary> getBeneficiary() {
+		return beneficiary;
+	}
+	public void setBeneficiary(List<Beneficiary> beneficiary) {
+		this.beneficiary = beneficiary;
+	}
 	public int getCustomerId() {
 		return customerId;
 	}
@@ -166,23 +188,23 @@ public class Customer {
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-	public LocalDate getCustomerDob() {
-		return customerDob;
+	public LocalDate getDateOfBirth() {
+		return dateOfBirth;
 	}
-	public void setCustomerDob(LocalDate customerDob) {
-		this.customerDob = customerDob;
+	public void setDateOfBirth(LocalDate customerDob) {
+		this.dateOfBirth = customerDob;
 	}
-	public String getCustomerPhone() {
-		return customerPhone;
+	public String getMobileNumber() {
+		return mobileNumber;
 	}
-	public void setCustomerPhone(String customerPhone) {
-		this.customerPhone = customerPhone;
+	public void setMobileNumber(String customerPhone) {
+		this.mobileNumber = customerPhone;
 	}
-	public String getCustomerAadhaar() {
-		return customerAadhaar;
+	public String getAadhaarNumber() {
+		return aadhaarNumber;
 	}
-	public void setCustomerAadhaar(String customerAadhaar) {
-		this.customerAadhaar = customerAadhaar;
+	public void setAadhaarNumber(String customerAadhaar) {
+		this.aadhaarNumber = customerAadhaar;
 	}
 	public String getTempAddressLine1() {
 		return tempAddressLine1;
