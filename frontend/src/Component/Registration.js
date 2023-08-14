@@ -44,23 +44,24 @@ function Registration() {
   }
 
   return (
-    <div className="flex flex-col w-2/5 mt-8 self-center">
-      <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-blue-500 pb-2">Personal details:</h2>
-      <form onSubmit={handleSubmit} className=''>
+    <div className="w-full flex flex-col">
+      <div className="flex flex-col w-2/5 mt-8 self-center">
+        <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-blue-500 pb-2">Personal details:</h2>
+        <form onSubmit={handleSubmit} className=''>
 
-        <div className=''>
+          <div className=''>
 
-          <label className="text-lg my-2">Customer Name:
-            <input
-              type="text"
-              name="customer_name"
-              value={inputs.customer_name || ""}
-              onChange={handleChange}
-              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
-            />
-          </label>
-        </div>
-        {/* <div className='user-form-inputs'>
+            <label className="text-lg my-2">Customer Name:
+              <input
+                type="text"
+                name="customer_name"
+                value={inputs.customer_name || ""}
+                onChange={handleChange}
+                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+              />
+            </label>
+          </div>
+          {/* <div className='user-form-inputs'>
     
       <label>First name:
         <input 
@@ -104,19 +105,19 @@ function Registration() {
       />
       </label>    
     </div> */}
-        <div className='user-form-inputs'>
+          <div className='user-form-inputs'>
 
-          <label className="text-lg my-2">Mobile Number:
-            <input
-              type="number"
-              name="customer_phone"
-              value={inputs.customer_phone || ""}
-              onChange={handleChange}
-              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
-            />
-          </label>
-        </div>
-        {/* <div className='user-form-inputs'>
+            <label className="text-lg my-2">Mobile Number:
+              <input
+                type="number"
+                name="customer_phone"
+                value={inputs.customer_phone || ""}
+                onChange={handleChange}
+                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+              />
+            </label>
+          </div>
+          {/* <div className='user-form-inputs'>
 
      <label>Email ID:
       <input 
@@ -128,56 +129,57 @@ function Registration() {
       </label>    
     </div>
  */}
-        <div className='user-form-inputs'>
+          <div className='user-form-inputs'>
 
-          <label className="text-lg my-2">Aadhar card number:
-            <input
-              type="text"
-              name="customer_aadhar"
-              value={inputs.customer_aadhar || ""}
-              onChange={handleChange}
-              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
-            />
-          </label>
-        </div>
-        <div className='user-form-inputs'>
+            <label className="text-lg my-2">Aadhar card number:
+              <input
+                type="text"
+                name="customer_aadhar"
+                value={inputs.customer_aadhar || ""}
+                onChange={handleChange}
+                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+              />
+            </label>
+          </div>
+          <div className='user-form-inputs'>
 
-          <label className="text-lg my-2">Date of birth:
-            <input
-              type="date"
-              name="customer_dob"
-              value={inputs.customer_dob || ""}
-              onChange={handleChange}
-              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
-            />
-          </label>
-        </div>
-        <div className='user-form-inputs'>
+            <label className="text-lg my-2">Date of birth:
+              <input
+                type="date"
+                name="customer_dob"
+                value={inputs.customer_dob || ""}
+                onChange={handleChange}
+                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+              />
+            </label>
+          </div>
+          <div className='user-form-inputs'>
 
-          <label className="text-lg my-2">Username:
-            <input
-              type="text"
-              name="username"
-              value={inputs.username || ""}
-              onChange={handleChange}
-              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
-            />
-          </label>
-        </div>
-        <div className='user-form-inputs'>
+            <label className="text-lg my-2">Username:
+              <input
+                type="text"
+                name="username"
+                value={inputs.username || ""}
+                onChange={handleChange}
+                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+              />
+            </label>
+          </div>
+          <div className='user-form-inputs'>
 
-          <label className="text-lg my-2">Password:
-            <input
-              type="password"
-              name="password"
-              value={inputs.password || ""}
-              onChange={handleChange}
-              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
-            />
-          </label>
-        </div>
-        <input type="submit" value="Create account" className="self-center p-2 uppercase bg-blue-800 text-white my-4"/>
-      </form>
+            <label className="text-lg my-2">Password:
+              <input
+                type="password"
+                name="password"
+                value={inputs.password || ""}
+                onChange={handleChange}
+                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+              />
+            </label>
+          </div>
+          <input type="submit" value="Create account" className="self-center p-2 uppercase bg-blue-800 text-white my-4" />
+        </form>
+      </div>
     </div>
   )
 }
