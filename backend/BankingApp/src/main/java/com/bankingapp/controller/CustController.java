@@ -11,7 +11,7 @@ import com.bankingapp.service.CustService;
 import com.bankingapp.types.LoginModel;
 
 @RestController
-@CrossOrigin
+@CrossOrigin("http://localhost:3000")
 public class CustController {
 	@Autowired
 	CustService custService;
