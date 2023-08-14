@@ -28,7 +28,7 @@ function Login() {
                     setTimeout(() => {
                         sessionStorage.setItem("user", JSON.stringify({username}))
                         toast.dismiss(toastId)
-                        navigate("/")
+                        navigate("/user/profile")
                     }, 1000)
                 } else{
                     toast.error("Login failed!")
