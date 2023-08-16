@@ -29,3 +29,9 @@ Customer:
     "loginPassword" : "kajnskA@23",
     "transactionPassword" : "ahjjaSha@2423"
 }
+
+http://localhost:8090/createAccount?userName=jayant13
+{
+    "accountType" : "Savings",
+    "netBankingOpted" : "true"
+}

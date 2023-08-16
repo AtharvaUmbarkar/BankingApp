@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.models.Transaction;
 import com.bankingapp.service.TransactionService;
+import com.bankingapp.types.TransactionModel;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -17,7 +18,7 @@ public class TransactionController
 	TransactionService tService;
 	@PostMapping("/save/transaction")
 	
-	public Transaction saveTransaction(@RequestBody Transaction trans)
+	public String saveTransaction(@RequestBody TransactionModel trans)
 	{
 		return tService.saveTransaction(trans);
 	}

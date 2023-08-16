@@ -12,17 +12,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Beneficiary {
 	@Id
-	@Column(nullable=false)
-	@Range(min=1)
-	private int beneficiaryAccountNumber;
+	@GeneratedValue
+	private int beneficiaryID;
 	
 	@Column(nullable=false)
 	@NotBlank(message="Beneficiary name cannot be blank")
 	@Length(min=3, max=30, message="Name size must be between 3-30 characters")
+//	@Pattern(regexp="^[A-za-z]+$")
 	private String beneficiaryName;
 	
 	@Length(max=30, message="nickname cannot have more than 30 characters")
@@ -31,6 +32,10 @@ public class Beneficiary {
 	@ManyToOne
 	@JoinColumn(name="customerId")
 	private Customer customer;
+	
+	@ManyToOne
+	@JoinColumn(name="accountNumber")
+	private Account account;
 
 	public Customer getCustomer() {
 		return customer;
@@ -40,12 +45,21 @@ public class Beneficiary {
 		this.customer = customer;
 	}
 
-	public int getBeneficiaryAccountNumber() {
-		return beneficiaryAccountNumber;
+
+	public int getBeneficiaryID() {
+		return beneficiaryID;
 	}
 
-	public void setBeneficiaryAccountNumber(int beneficiaryAccountNumber) {
-		this.beneficiaryAccountNumber = beneficiaryAccountNumber;
+	public void setBeneficiaryID(int beneficiaryID) {
+		this.beneficiaryID = beneficiaryID;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	public String getBeneficiaryName() {
