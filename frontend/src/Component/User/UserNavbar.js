@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
@@ -6,9 +6,8 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const navigation = [
     { name: 'Profile', to: '/user/profile' },
-    { name: 'Apply for Savings Account', to: '/user/savings-account-registration' },
-    { name: 'Register for Online Banking', to: '/user/online-banking-registration' },
-   
+    { name: 'Accounts', to: '/user/account' },
+    { name: 'Beneficiaries', to: '/user/beneficiaries' },
 ]
 
 const UserNavbar = () => {
@@ -20,11 +19,18 @@ const UserNavbar = () => {
         navigate('/');
     }
 
+    useEffect(() => {
+      if(!sessionStorage.getItem('user')) {
+        navigate('/');
+      }
+    }, [])
+    
+
     return (
         <header className=" inset-x-0 top-0 z-50 w-full">
             <nav className="flex items-center justify-between p-6 lg:px-8 w-full" aria-label="Global">
                 <div className="flex lg:flex-1">
-                    <a href="#" className="-m-1.5 p-1.5">
+                    <Link to='/' className="-m-1.5 p-1.5">
                         <span className="sr-only">Banking App</span>
                         <p className='font-serif font-bold text-3xl text-indigo-700'>BA</p>
                         {/* <img
@@ -32,7 +38,7 @@ const UserNavbar = () => {
                 src="https://ogden_images.s3.amazonaws.com/www.nashuatelegraph.com/images/2018/12/29000134/1024px-Wells_Fargo_Bank.svg_-840x840.png"
                 alt=""
               /> */}
-                    </a>
+                    </Link>
                 </div>
                 <div className="flex lg:hidden">
                     <button
@@ -62,7 +68,7 @@ const UserNavbar = () => {
                 <div className="fixed inset-0 z-50" />
                 <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div className="flex items-center justify-between">
-                        <a href="#" className="-m-1.5 p-1.5">
+                        <Link to='/' className="-m-1.5 p-1.5">
                             <span className="sr-only">Banking App</span>
                             <p className='font-serif'>BA</p>
                             {/* <img
@@ -70,7 +76,7 @@ const UserNavbar = () => {
                   src="https://ogden_images.s3.amazonaws.com/www.nashuatelegraph.com/images/2018/12/29000134/1024px-Wells_Fargo_Bank.svg_-840x840.png"
                   alt=""
                 /> */}
-                        </a>
+                        </Link>
                         <button
                             type="button"
                             className="-m-2.5 rounded-md p-2.5 text-gray-700"
