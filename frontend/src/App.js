@@ -13,6 +13,7 @@ import Logout from './Component/Logout';
 import UserProfile from './Component/User/UserProfile';
 import SavingsAccountRegistration from './Component/User/SavingsAccountRegistration';
 import OnlineBankingRegistration from './Component/User/OnlineBankingRegistration';
+import Transaction from './Component/User/Transaction';
 
 function App() {
   /*const [inputs, setInputs] = useState({});
@@ -65,7 +66,9 @@ function App() {
             <Route path='profile' index element={<UserProfile/>}/>
             <Route path='savings-account-registration' element={<SavingsAccountRegistration/>}/>
             <Route path='online-banking-registration' element={<OnlineBankingRegistration/>}/>
+            <Route exact path="transaction" element={<Transaction />} />
           </Route>
+          
         </Routes>
       </BrowserRouter>
   )

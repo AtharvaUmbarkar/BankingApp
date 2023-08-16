@@ -8,6 +8,7 @@ const navigation = [
     { name: 'Profile', to: '/user/profile' },
     { name: 'Apply for Savings Account', to: '/user/savings-account-registration' },
     { name: 'Register for Online Banking', to: '/user/online-banking-registration' },
+   
 ]
 
 const UserNavbar = () => {
