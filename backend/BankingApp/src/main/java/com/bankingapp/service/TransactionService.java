@@ -16,11 +16,11 @@ public class TransactionService {
 	TransactionRepo transRepo;
 	@Autowired
 	AccountRepo accountRepo;
-	public String saveTransaction(TransactionModel transaction)
+	public String saveWithdrawTransaction(Transaction transaction, long accountNumber)
 	{
 		String result="";
-		if(transaction.getTxnType().equals("Withdraw")) {
-			Optional<Account> obj = accountRepo.findById(transaction.getSenderAccount());
+		
+			Optional<Account> obj = accountRepo.findById(accountNumber);
 			if(!obj.isPresent()) {
 				result="Sender account does not exist";
 			}
@@ -32,19 +32,15 @@ public class TransactionService {
 					result="Insufficient balance";
 				}
 				else {
-					Transaction new_transaction = new Transaction();
-					new_transaction.setSenderAccount(acnt);
-					new_transaction.setTxnType(transaction.getTxnType());
-					new_transaction.setTxnAmount(transaction.getTxnAmount());
-					new_transaction.setUserRemarks(transaction.getUserRemarks());
-					new_transaction.setSenderBalance(new_balance);
-					new_transaction.setTxnStatus("Successful");
-					transRepo.save(new_transaction);
+					transaction.setSenderAccount(acnt);
+					transaction.setSenderBalance(new_balance);
+					transaction.setTxnStatus("Successful");
+					transRepo.save(transaction);
 					acnt.setAccountBalance(new_balance);
-					result = "Transaction is successful with transaction id: " + new_transaction.getTxnId();
+					result = "Transaction is successful with transaction id: " + transaction.getTxnId();
 				}
 			}
-		}
+		
 		
 		return result;
 	}
