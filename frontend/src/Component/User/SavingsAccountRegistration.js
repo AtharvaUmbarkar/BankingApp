@@ -14,31 +14,31 @@ const SavingsAccountRegistration = () => {
   })
 
   const [residentialAddress, setResidentialAddress] = useState({
-    addressLine1: "",
-    addressLine12: "",
-    landmark: "",
-    state: "",
-    city: "",
-    pincode: "",
+    tempAddressLine1: "",
+    tempAddressLine2: "",
+    tempLandmark: "",
+    tempState: "",
+    tempCity: "",
+    tempPincode: "",
   })
 
   const [permanentAddress, setPermanentAddress] = useState({
-    addressLine1: "",
-    addressLine2: "",
-    landmark: "",
-    state: "",
-    city: "",
-    pincode: "",
+    permAddressLine1: "",
+    permAddressLine2: "",
+    permLandmark: "",
+    permState: "",
+    permCity: "",
+    permPincode: "",
   })
 
   const [occupationDetails, setOccupationDetails] = useState({
-    occupationType: "",
+    occupation: "",
     sourceOfIncome: "",
     grossAnnualIncome: "",
   })
 
   const [sameAddress, setSameAddress] = useState(false);
-  const [debitCard, setDebitCard] = useState(false);
+  const [debitCardEnabled, setDebitCard] = useState(false);
   const [onlineBanking, setOnlineBanking] = useState(false);
   const [agree, setAgree] = useState(false);
 
@@ -57,15 +57,23 @@ const SavingsAccountRegistration = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const accountDetails = {
-      personalDetails,
-      residentialAddress,
-      permanentAddress: sameAddress ? residentialAddress : permanentAddress,
-      occupationDetails,
-      debitCard,
-      onlineBanking,
-      agree,
+    const permAddress = {
+      permAddressLine1: sameAddress ? residentialAddress.tempAddressLine1 : permanentAddress.permAddressLine1,
+      permAddressLine2: sameAddress ? residentialAddress.tempAddressLine2 : permanentAddress.permAddressLine2,
+      permLandmark: sameAddress ? residentialAddress.tempLandmark : permanentAddress.permLandmark,
+      permState: sameAddress ? residentialAddress.tempState : permanentAddress.permState,
+      permCity: sameAddress ? residentialAddress.tempCity : permanentAddress.permCity,
+      permPincode: sameAddress ? residentialAddress.tempPincode : permanentAddress.permPincode,
     }
+    const accountDetails = {
+      ...personalDetails,
+      ...residentialAddress,
+      ...permAddress,
+      ...occupationDetails,
+      debitCardEnabled,
+      netBankingEnabled: onlineBanking,
+    }
+    console.log(accountDetails);
   }
 
   return (
@@ -171,8 +179,8 @@ const SavingsAccountRegistration = () => {
         <label className=" my-2">Address Line 1:
           <input
             type="text"
-            name="addressLine1"
-            value={residentialAddress.addressLine1}
+            name="tempAddressLine1"
+            value={residentialAddress.tempAddressLine1}
             onChange={handleResidentialAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -181,8 +189,8 @@ const SavingsAccountRegistration = () => {
         <label className=" my-2">Address Line 2:
           <input
             type="text"
-            name="addressLine2"
-            value={residentialAddress.addressLine2}
+            name="tempAddressLine2"
+            value={residentialAddress.tempAddressLine2}
             onChange={handleResidentialAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -191,8 +199,8 @@ const SavingsAccountRegistration = () => {
         <label className=" my-2">Landmark:
           <input
             type="text"
-            name="landmark"
-            value={residentialAddress.landmark}
+            name="tempLandmark"
+            value={residentialAddress.tempLandmark}
             onChange={handleResidentialAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -201,8 +209,8 @@ const SavingsAccountRegistration = () => {
         <label className=" my-2">State:
           <input
             type="text"
-            name="state"
-            value={residentialAddress.state}
+            name="tempState"
+            value={residentialAddress.tempState}
             onChange={handleResidentialAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -211,8 +219,8 @@ const SavingsAccountRegistration = () => {
         <label className=" my-2">City:
           <input
             type="text"
-            name="city"
-            value={residentialAddress.city}
+            name="tempCity"
+            value={residentialAddress.tempCity}
             onChange={handleResidentialAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -221,8 +229,8 @@ const SavingsAccountRegistration = () => {
         <label className=" my-2">Pincode:
           <input
             type="text"
-            name="pincode"
-            value={residentialAddress.pincode}
+            name="tempPincode"
+            value={residentialAddress.tempPincode}
             onChange={handleResidentialAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -247,8 +255,8 @@ const SavingsAccountRegistration = () => {
           <input
             disabled={sameAddress}
             type="text"
-            name="addressLine1"
-            value={permanentAddress.addressLine1}
+            name="permAddressLine1"
+            value={permanentAddress.permAddressLine1}
             onChange={handlePermanentAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -258,8 +266,8 @@ const SavingsAccountRegistration = () => {
           <input
             disabled={sameAddress}
             type="text"
-            name="addressLine2"
-            value={permanentAddress.addressLine2}
+            name="permAddressLine2"
+            value={permanentAddress.permAddressLine2}
             onChange={handlePermanentAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -269,8 +277,8 @@ const SavingsAccountRegistration = () => {
           <input
             disabled={sameAddress}
             type="text"
-            name="landmark"
-            value={permanentAddress.landmark}
+            name="permLandmark"
+            value={permanentAddress.permLandmark}
             onChange={handlePermanentAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -280,8 +288,8 @@ const SavingsAccountRegistration = () => {
           <input
             disabled={sameAddress}
             type="text"
-            name="state"
-            value={permanentAddress.state}
+            name="permState"
+            value={permanentAddress.permState}
             onChange={handlePermanentAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -291,8 +299,8 @@ const SavingsAccountRegistration = () => {
           <input
             disabled={sameAddress}
             type="text"
-            name="city"
-            value={permanentAddress.city}
+            name="permCity"
+            value={permanentAddress.permCity}
             onChange={handlePermanentAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -302,8 +310,8 @@ const SavingsAccountRegistration = () => {
           <input
             disabled={sameAddress}
             type="text"
-            name="pincode"
-            value={permanentAddress.pincode}
+            name="permPincode"
+            value={permanentAddress.permPincode}
             onChange={handlePermanentAddressChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -317,8 +325,8 @@ const SavingsAccountRegistration = () => {
         <label className=" my-2">Occupation Type:
           <input
             type="text"
-            name="occupationType"
-            value={occupationDetails.occupationType}
+            name="occupation"
+            value={occupationDetails.occupation}
             onChange={handleOccupationDetailsChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -351,9 +359,9 @@ const SavingsAccountRegistration = () => {
         <label className=" my-2">Want Debit Card:
           <input
             type="checkbox"
-            name="debitCard"
-            value={debitCard}
-            onChange={() => setDebitCard(!debitCard)}
+            name="debitCardEnabled"
+            value={debitCardEnabled}
+            onChange={() => setDebitCard(!debitCardEnabled)}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
         </label>
@@ -381,7 +389,7 @@ const SavingsAccountRegistration = () => {
       </div>
 
       <div className='px-4 my-2 w-full lg:w-1/3'>
-        <button type='submit' className='p-2 my-4 w-full bg-blue-500 text-xl text-white rounded-sm'>SUBMIT</button>
+        <button type='submit' disabled={!agree} className='p-2 my-4 w-full bg-blue-500 text-xl text-white rounded-sm'>SUBMIT</button>
       </div>
 
     </form>
