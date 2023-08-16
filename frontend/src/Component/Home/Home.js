@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Main from './Main'
 import { toast } from 'react-hot-toast'
@@ -20,7 +20,7 @@ const Home = () => {
     return (
         <div className='bg-white'>
             <Navbar/>
-            <Main />
+            <Outlet/>
         </div>
 
     )
