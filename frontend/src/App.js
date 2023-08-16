@@ -13,6 +13,7 @@ import Logout from './Component/Logout';
 import UserProfile from './Component/User/UserProfile';
 import SavingsAccountRegistration from './Component/User/SavingsAccountRegistration';
 import OnlineBankingRegistration from './Component/User/OnlineBankingRegistration';
+import Main from './Component/Home/Main';
 
 function App() {
   /*const [inputs, setInputs] = useState({});
@@ -54,20 +55,23 @@ function App() {
 */
   return (
     <BrowserRouter>
-        <Toaster />
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/registration" element={<Registration />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/logout" element={<Logout />} />
-          <Route path="/user" element={<UserDashboard />}>
-            <Route index element={<Navigate to='profile'/>}/>
-            <Route path='profile' index element={<UserProfile/>}/>
-            <Route path='savings-account-registration' element={<SavingsAccountRegistration/>}/>
-            <Route path='online-banking-registration' element={<OnlineBankingRegistration/>}/>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <Toaster />
+      <Routes>
+        <Route path="/" element={<Home />}>
+          <Route index exact path="/" element={<Main />} />
+          <Route exact path="login" element={<Login />} />
+          <Route path='savings-account-registration' element={<SavingsAccountRegistration />} />
+          <Route path='online-banking-registration' element={<OnlineBankingRegistration />} />
+
+        </Route>
+        {/* <Route exact path="/registration" element={<Registration />} /> */}
+        <Route exact path="/logout" element={<Logout />} />
+        <Route path="/user" element={<UserDashboard />}>
+          <Route index element={<Navigate to='profile' />} />
+          <Route path='profile' index element={<UserProfile />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
