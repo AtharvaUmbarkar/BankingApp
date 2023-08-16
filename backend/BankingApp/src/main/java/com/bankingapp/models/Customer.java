@@ -21,8 +21,8 @@ public class Customer {
 	private int customer_id;
 	private String customer_name;
 	private String customer_dob;
-	@Length(max=10)
-	private int customer_phone;
+	//@Length(max=11)
+	private long customer_phone;
 	private int customer_aadhar;
 	private String password;
 	
@@ -60,13 +60,13 @@ public class Customer {
 	public void setCustomer_dob(String customer_dob) {
 		this.customer_dob = customer_dob;
 	}
-	public int getCustomer_phone() {
+	public long getCustomer_phone() {
 		return customer_phone;
 	}
-	public void setCustomer_phone(int customer_phone) {
+	public void setCustomer_phone(long customer_phone) {
 		this.customer_phone = customer_phone;
 	}
-	public int getCustomer_aadhar() {
+	public long getCustomer_aadhar() {
 		return customer_aadhar;
 	}
 	public void setCustomer_aadhar(int customer_aadhar) {
