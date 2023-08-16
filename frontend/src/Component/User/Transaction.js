@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-const OnlineBankingRegistration = () => {
+const Transaction = () => {
 
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate()
@@ -90,4 +90,4 @@ const OnlineBankingRegistration = () => {
   )
 }
 
-export default OnlineBankingRegistration
+export default Transaction
