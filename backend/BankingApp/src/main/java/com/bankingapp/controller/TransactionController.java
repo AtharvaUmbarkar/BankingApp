@@ -1,5 +1,7 @@
 package com.bankingapp.controller;
 
+import java.util.ArrayList;
+
 import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,15 +20,14 @@ public class TransactionController
 	@Autowired
 	TransactionService tService;
 	@PostMapping("/save/withdrawTransaction")
-	public String saveWithdrawTransaction(@RequestBody TransactionModel transaction)
+	public String saveWithdrawTransaction(@RequestBody TransactionModel transactionModel)
 	{
-		return tService.saveWithdrawTransaction(transaction.getTransaction(), transaction.getAccountNumbers().get(0).longValue());
+		return tService.saveWithdrawTransaction(transactionModel);
 	}
 	
-//	@PostMapping("/save/FundTransaction")
-//	public String saveFundTransaction(@RequestBody TransactionModel transaction)
-//	{
-//		List<Long> accountNumbers = transaction.getAccountNumbers();
-//		return tService.saveFundTransaction(transaction.getTransaction(), accountNumbers.get(0).longValue());
-//	}
+	@PostMapping("/save/fundTransaction")
+	public String saveFundTransaction(@RequestBody TransactionModel transactionModel)
+	{
+		return tService.saveFundTransaction(transactionModel);
+	}
 }

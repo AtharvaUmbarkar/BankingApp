@@ -1,4 +1,4 @@
-Customer: 
+"Customer": 
 {
     "title" : "Mr",
     "firstName" : "jBSJKsd",
@@ -34,4 +34,23 @@ http://localhost:8090/createAccount?userName=jayant13
 {
     "accountType" : "Savings",
     "netBankingOpted" : "true"
+}
+
+"withdraw":{
+    "transaction" :{
+    "txnType" : "Withdraw",
+    "txnAmount" : "500",
+    "userRemarks" : "testing"
+    },
+    "senderAccountNumber" : "1000000000"
+}
+
+"fundTransfer" : {
+    "transaction" :{
+    "txnType" : "Withdraw",
+    "txnAmount" : "500",
+    "userRemarks" : "testing"
+    },
+    "receiverAccountNumber": "1000000002",
+    "senderAccountNumber" : "1000000000"
 }
