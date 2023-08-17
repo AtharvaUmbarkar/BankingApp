@@ -13,7 +13,7 @@ const IMPS = () => {
     senderAccount: "",
     receiverAccount: "",
     txnAmount: 0,
-    txnDate: new Date(),
+    // txnDate: new Date(),
     userRemarks: "",
   })
 
@@ -70,7 +70,7 @@ const IMPS = () => {
         />
       </label>
 
-      <label className=" my-2">Transaction Date:
+      {/* <label className=" my-2">Transaction Date:
         <input
           type="date"
           name="txnDate"
@@ -78,7 +78,7 @@ const IMPS = () => {
           onChange={handleChange}
           className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
         />
-      </label>
+      </label> */}
 
       <label className=" my-2">Remarks:
         <input

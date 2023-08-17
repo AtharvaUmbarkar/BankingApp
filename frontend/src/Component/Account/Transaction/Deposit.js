@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Deposit = () => {
     const [transactionDetails, setTransactionDetails] = useState({
-        recieverAccount: "",
+        receiverAccount: "",
         txnAmount: 0,
         userRemarks: "",
     })
@@ -26,11 +26,11 @@ const Deposit = () => {
         <form onSubmit={handleSubmit} className='my-4 w-full'>
             <h2 className='text-xl mb-3 border-b border-blue-500 font-semibold'>Transaction Details</h2>
 
-            <label className=" my-2">Reciever Account Number:
+            <label className=" my-2">Receiver Account Number:
                 <input
                     type="text"
-                    name="recieverAccount"
-                    value={transactionDetails.recieverAccount}
+                    name="receiverAccount"
+                    value={transactionDetails.receiverAccount}
                     onChange={handleChange}
                     className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
                 />
