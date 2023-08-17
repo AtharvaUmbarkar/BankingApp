@@ -13,7 +13,7 @@ const RTGS = () => {
     senderAccount: "",
     receiverAccount: "",
     txnAmount: 0,
-    txnDate: new Date(),
+    // txnDate: new Date(),
     userRemarks: "",
   })
 
@@ -65,16 +65,6 @@ const RTGS = () => {
           type="number"
           name="txnAmount"
           value={transactionDetails.txnAmount}
-          onChange={handleChange}
-          className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
-        />
-      </label>
-
-      <label className=" my-2">Transaction Date:
-        <input
-          type="date"
-          name="txnDate"
-          value={transactionDetails.txnDate}
           onChange={handleChange}
           className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
         />
