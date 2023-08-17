@@ -38,12 +38,12 @@ public class Account {
 	@Pattern(regexp="^[A-Za-z]+$", message="Account Type can only contain Characters") 
 	@Value("${some.key:Savings}")
 	private String accountType;
-	@Value("${some.key:0}")
+	@Value("${some.key:1000}")
 	private double accountBalance;
 //	@Value("${some.key:2023-08-14T01:30:00.000-05:00}")
 	@CreatedDate
 	private Date accountCreationDate =  new Date();
-	private boolean netBankingOpted;
+	private boolean netBankingOpted; //need to be removed
 	private boolean debitCardAvailed;
 	
 	public boolean isDebitCardAvailed() {

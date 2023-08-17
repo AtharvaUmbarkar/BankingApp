@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.models.Account;
 import com.bankingapp.service.AccountService;
+import com.bankingapp.types.CustomerAndAccountModel;
 
 import jakarta.validation.Valid;
 
@@ -23,6 +24,8 @@ public class AccountController {
 		return accountService.createAccount(account, userName);
 	}
 	
-//	@PostMapping("/saveAndCreateAccount")
-//	public string saveAndCreateAccount(@RequestBody)
+	@PostMapping("/createFirstAccount")
+	public String firstAccount(@RequestBody CustomerAndAccountModel obj) {
+		return accountService.firstAccount(obj);
+	}
 }

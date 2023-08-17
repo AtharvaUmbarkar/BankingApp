@@ -33,7 +33,8 @@
 http://localhost:8090/createAccount?userName=jayant13
 {
     "accountType" : "Savings",
-    "netBankingOpted" : "true"
+    "netBankingOpted" : "true",
+    "debitCardAvailed" : "true"
 }
 
 "withdraw":{

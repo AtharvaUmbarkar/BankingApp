@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.CascadeType;
@@ -111,6 +112,7 @@ public class Customer {
 	private int grossAnnualIncome;
 	
 	@Column(name="net_banking", nullable=false)
+	@Value("${some.key:false}")
 	private boolean netBankingEnabled;
 	
 	@Column(name="last_login")
