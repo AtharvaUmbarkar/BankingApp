@@ -3,64 +3,91 @@ package com.bankingapp.models;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Beneficiary {
 	@Id
 	@GeneratedValue
-	private int beneficiaryID;
+	private int id;
 	
 	@Column(nullable=false)
-	@Range(min=1)
-	private int customerID;
-	
-	@Column(nullable=false)
-	@Range(min=1)
-	private int accountNumber;
-	
-	@Column(nullable=false)
-	@NotBlank(message="Beneficiary name cannot be null")
-	@Length(min=3, max=30, message="name must be between 3-30 characters")
+	@NotBlank(message="Beneficiary name cannot be blank")
+	@Length(min=3, max=30, message="Name size must be between 3-30 characters")
+//	@Pattern(regexp="^[A-za-z]+$")
 	private String name;
 	
 	@Length(max=30, message="nickname cannot have more than 30 characters")
-	private String nickName;
-	public int getBeneficiaryID() {
-		return beneficiaryID;
-	}
-	public void setBeneficiaryID(int beneficiaryID) {
-		this.beneficiaryID = beneficiaryID;
-	}
-	public int getCustomerID() {
-		return customerID;
-	}
-	public void setCustomerID(int customerID) {
-		this.customerID = customerID;
-	}
-	public int getAccountNumber() {
+	private String nickname;
+
+//	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name="customerId")
+	private Customer customer;
+
+//	@JsonBackReference
+//	@ManyToOne
+//	@JoinColumn(name="accountNumber")
+	private long accountNumber;
+
+	public long getAccountNumber() {
 		return accountNumber;
 	}
-	public void setAccountNumber(int accountNumber) {
+
+	public void setAccountNumber(long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+//	public Account getAccount() {
+//		return account;
+//	}
+//
+//	public void setAccount(Account account) {
+//		this.account = account;
+//	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getNickName() {
-		return nickName;
+
+	public String getNickname() {
+		return nickname;
 	}
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
+
+	
 }

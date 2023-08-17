@@ -10,6 +10,6 @@ import com.bankingapp.models.Beneficiary;
 
 @Repository
 public interface BeneficiaryRepo extends JpaRepository<Beneficiary,Integer> {
-	@Query("SELECT b FROM Beneficiary b  WHERE b.customerID = ?1")
+	@Query("SELECT b FROM Beneficiary b  WHERE b.customer.customerId = ?1")
 	List<Beneficiary> getAllBeneficiaries(int userId);
 }

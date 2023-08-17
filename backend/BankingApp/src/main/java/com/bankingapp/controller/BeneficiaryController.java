@@ -20,6 +20,7 @@ public class BeneficiaryController {
 	BeneficiaryService benService;
 	@PostMapping("/save/beneficiary")
 	public Beneficiary saveBeneficiary(@RequestBody Beneficiary ben) {
+		System.out.println("HERE: " + ben.getName());
 		return benService.saveBeneficiary(ben);
 	}
 	

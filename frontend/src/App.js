@@ -23,6 +23,8 @@ import NEFT from './Component/Account/Transaction/NEFT'
 import RTGS from './Component/Account/Transaction/RTGS'
 import AddBeneficiary from './Component/Beneficiary/AddBeneficiary';
 import Beneficiaries from './Component/Beneficiary/Beneficiaries';
+import Withdraw from './Component/Account/Transaction/Withdraw';
+import Deposit from './Component/Account/Transaction/Deposit';
 
 function App() {
   /*const [inputs, setInputs] = useState({});
@@ -91,6 +93,8 @@ function App() {
             <Route path='imps' element={<IMPS />} />
             <Route path='neft' element={<NEFT />} />
             <Route path='rtgs' element={<RTGS />} />
+            <Route path='withdraw' element={<Withdraw />} />
+            <Route path='deposit' element={<Deposit />} />
           </Route>
         </Route>
 
