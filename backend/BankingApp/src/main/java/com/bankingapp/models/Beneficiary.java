@@ -3,6 +3,8 @@ package com.bankingapp.models;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,11 +30,13 @@ public class Beneficiary {
 	
 	@Length(max=30, message="nickname cannot have more than 30 characters")
 	private String beneficiaryNickname;
-	
+
+//	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="customerId")
 	private Customer customer;
-	
+
+//	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="accountNumber")
 	private Account account;

@@ -6,6 +6,9 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +18,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
+@JsonIgnoreProperties("Inspection")
 public class Transaction {
 	@Id
 	@GeneratedValue
@@ -23,26 +27,28 @@ public class Transaction {
 	@Pattern(regexp="^Withdraw|Deposit|NEFT|RTGS|IMPS$")
 	private String txnType; // withdraw, deposit, NEFT, etc
 	@CreatedDate
-	private Date txnDate;
+	private Date txnDate = new Date();
 	@Column(nullable=false)
 	@Range(min = 1, message = "Amount should be greater than 0")
-	private int txnAmount;
+	private double txnAmount;
 	@Column(nullable=false)
 	@Value("${some.key:0}")
-	private int senderBalance;
+	private double senderBalance;
 	@Column(nullable=false)
 	@Value("${some.key:0}")
-	private int receiverBalance;
+	private double receiverBalance;
 	@Column(nullable=false)
 	@Value("${some.key:Pending}")
 	@Pattern(regexp="^Pending|Successful|failed$")
 	private String txnStatus;
 	private String userRemarks;
-	
+
+//	@JsonBackReference(value="acnt-trans1")
 	@ManyToOne
 	@JoinColumn(name="sender_accountNumber", referencedColumnName="accountNumber")
 	private Account senderAccount;
-	
+
+//	@JsonBackReference(value="acnt-trans2")
 	@ManyToOne
 	@JoinColumn(name="receiver_accountNumber", referencedColumnName="accountNumber")
 	private Account receiverAccount;
@@ -65,22 +71,22 @@ public class Transaction {
 	public void setTxnType(String txnType) {
 		this.txnType = txnType;
 	}
-	public int getTxnAmount() {
+	public double getTxnAmount() {
 		return txnAmount;
 	}
-	public void setTxnAmount(int txnAmount) {
+	public void setTxnAmount(double txnAmount) {
 		this.txnAmount = txnAmount;
 	}
-	public int getSenderBalance() {
+	public double getSenderBalance() {
 		return senderBalance;
 	}
-	public void setSenderBalance(int senderBalance) {
+	public void setSenderBalance(double senderBalance) {
 		this.senderBalance = senderBalance;
 	}
-	public int getReceiverBalance() {
+	public double getReceiverBalance() {
 		return receiverBalance;
 	}
-	public void setReceiverBalance(int receiverBalance) {
+	public void setReceiverBalance(double receiverBalance) {
 		this.receiverBalance = receiverBalance;
 	}
 	public String getTxnStatus() {

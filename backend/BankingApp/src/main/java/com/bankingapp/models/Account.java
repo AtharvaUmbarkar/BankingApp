@@ -7,6 +7,10 @@ import java.util.List;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.annotation.CreatedDate;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -35,9 +39,10 @@ public class Account {
 	@Value("${some.key:Savings}")
 	private String accountType;
 	@Value("${some.key:0}")
-	private int accountBalance;
-	@Value("${some.key:2023-08-14T01:30:00.000-05:00}")
-	private Date accountCreationDate;
+	private double accountBalance;
+//	@Value("${some.key:2023-08-14T01:30:00.000-05:00}")
+	@CreatedDate
+	private Date accountCreationDate =  new Date();
 	private boolean netBankingOpted;
 	private boolean debitCardAvailed;
 	
@@ -47,13 +52,17 @@ public class Account {
 	public void setDebitCardAvailed(boolean debitCardAvailed) {
 		this.debitCardAvailed = debitCardAvailed;
 	}
+	
+//	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="customerId")
 	private Customer customer;
 	
+//	@JsonManagedReference(value="acnt-txns1")
 	@OneToMany(mappedBy="senderAccount", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Transaction> debitTransactions;
 	
+//	@JsonManagedReference(value="acnt-txns2")
 	@OneToMany(mappedBy="receiverAccount", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Transaction> creditTransactions;
 	
@@ -98,10 +107,10 @@ public class Account {
 	public void setAccountType(String accountType) {
 		this.accountType = accountType;
 	}
-	public int getAccountBalance() {
+	public double getAccountBalance() {
 		return accountBalance;
 	}
-	public void setAccountBalance(int accountBalance) {
+	public void setAccountBalance(double accountBalance) {
 		this.accountBalance = accountBalance;
 	}
 	public Date getAccountCreationDate() {

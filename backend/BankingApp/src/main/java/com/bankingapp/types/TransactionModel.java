@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bankingapp.models.Transaction;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
+@JsonIgnoreProperties("Inspection")
 public class TransactionModel {
 	
 	private Transaction transaction;

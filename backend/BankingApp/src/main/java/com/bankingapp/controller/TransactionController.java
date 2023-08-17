@@ -19,15 +19,15 @@ public class TransactionController
 {
 	@Autowired
 	TransactionService tService;
-	@PostMapping("/save/withdrawTransaction")
-	public String saveWithdrawTransaction(@RequestBody TransactionModel transactionModel)
+	@PostMapping("/save/withdraw")
+	public String withdraw(@RequestBody TransactionModel transactionModel)
 	{
-		return tService.saveWithdrawTransaction(transactionModel);
+		return tService.withdraw(transactionModel);
 	}
 	
-	@PostMapping("/save/fundTransaction")
-	public String saveFundTransaction(@RequestBody TransactionModel transactionModel)
+	@PostMapping("/save/fundTransfer")
+	public String fundTransfer(@RequestBody TransactionModel transactionModel)
 	{
-		return tService.saveFundTransaction(transactionModel);
+		return tService.fundTransfer(transactionModel);
 	}
 }
