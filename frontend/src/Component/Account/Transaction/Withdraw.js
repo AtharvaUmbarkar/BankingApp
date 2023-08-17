@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from "axios"
 
 const Withdraw = () => {
     const [transactionDetails, setTransactionDetails] = useState({
-        senderAccount: "",
+        senderAccount: 0,
         txnAmount: 0,
         userRemarks: "",
     })
@@ -17,9 +18,23 @@ const Withdraw = () => {
         // console.log(transactionDetails);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(transactionDetails);
+        const res = await axios.post("http://localhost:8090/save/withdraw", JSON.stringify(
+            {
+                "transaction": {
+                    "txnType": "Withdraw",
+                    "txnAmount": transactionDetails.txnAmount,
+                    "userRemarks": transactionDetails.userRemarks
+                },
+                "senderAccountNumber": transactionDetails.senderAccount
+            }
+        ), {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
     }
 
     return (
@@ -28,7 +43,7 @@ const Withdraw = () => {
 
             <label className=" my-2">Sender Account Number:
                 <input
-                    type="text"
+                    type="number"
                     name="senderAccount"
                     value={transactionDetails.senderAccount}
                     onChange={handleChange}
