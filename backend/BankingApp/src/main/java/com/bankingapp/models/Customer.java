@@ -1,14 +1,10 @@
 package com.bankingapp.models;
 
-import java.util.Date;
 import java.util.List;
-
-import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -25,6 +21,10 @@ public class Customer {
 	private long customer_phone;
 	private int customer_aadhar;
 	private String password;
+	
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(name="customerID")
+	private List<Beneficiary> beneficiaries;
 	
 	public int getUsername() {
 		return username;
