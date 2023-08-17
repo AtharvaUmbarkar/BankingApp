@@ -11,7 +11,6 @@ import UserDashboard from './Component/User/UserDashboard'
 import { Toaster } from 'react-hot-toast';
 import Logout from './Component/Logout';
 import UserProfile from './Component/User/UserProfile';
-import Account from './Component/Account/Account';
 import SavingsAccountRegistration from './Component/User/SavingsAccountRegistration';
 import OnlineBankingRegistration from './Component/User/OnlineBankingRegistration';
 import Main from './Component/Home/Main';
@@ -70,7 +69,6 @@ function App() {
         <Route path="/user" element={<UserDashboard />}>
           <Route index element={<Navigate to='profile' />} />
           <Route path='profile' index element={<UserProfile />} />
-          <Route path='account' index element={<Account />} />
         </Route>
       </Routes>
     </BrowserRouter>

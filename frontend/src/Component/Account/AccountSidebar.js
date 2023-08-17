@@ -65,6 +65,18 @@ const AccountSidebar = () => {
                                                 </span>
                                                 <span>Account Statement</span>
                                             </a>
+                                            <a href="withdraw" className="font-medium text-sm items-center rounded-lg text-blue-900 px-4 py-2.5 flex
+                    transition-all duration-200 hover:bg-gray-200 group cursor-pointer">
+                                                <span className="justify-center items-center flex">
+                                                    <span className="justify-center items-center flex">
+                                                        <span className="justify-center items-center flex">
+                                                            <span className="items-center justify-center flex">
+                                                            </span>
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                                <span>Withdraw</span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
