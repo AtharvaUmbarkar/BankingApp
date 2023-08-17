@@ -22,6 +22,8 @@ import IMPS from './Component/Account/Transaction/IMPS';
 import NEFT from './Component/Account/Transaction/NEFT'
 import RTGS from './Component/Account/Transaction/RTGS'
 import Account from './Component/Account/Account';
+//import Withdraw from './Component/Account/Withdraw';
+
 
 function App() {
   /*const [inputs, setInputs] = useState({});
@@ -89,6 +91,8 @@ function App() {
             <Route path='imps' element={<IMPS />} />
             <Route path='neft' element={<NEFT />} />
             <Route path='rtgs' element={<RTGS />} />
+            {/*<Route path='withdraw' element={<Withdraw />} />
+            <Route path='deposit' element={<Deposit />} />*/}
           </Route>
         </Route>
 
