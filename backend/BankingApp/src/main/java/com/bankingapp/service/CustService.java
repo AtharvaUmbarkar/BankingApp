@@ -27,7 +27,7 @@ public class CustService {
 	{
 		String result = "";
 		Customer cust = null;
-		Optional<Customer> objt = custRepo.findById(loginUser.getUsername());
+		Optional<Customer> objt = custRepo.findByUserName(loginUser.getUsername());
 		if (objt.isPresent())
 		{
 			cust = objt.get();

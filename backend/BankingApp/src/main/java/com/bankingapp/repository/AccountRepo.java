@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.bankingapp.models.Account;
 
 @Repository
-public interface AccountRepo extends JpaRepository<Account, Integer> {
+public interface AccountRepo extends JpaRepository<Account, Long> {
 	
 	@Query("select account.accountNumber from Account account where account.customer.customerId=?1")
 	public List<Integer> findByAccountNumber(int custId);

@@ -2,14 +2,14 @@ package com.bankingapp.types;
 
 public class LoginModel {
 	
-	private int username;
+	private String username;
 	private String password;
 	private String email;
 	
-	public int getUsername() {
+	public String getUsername() {
 		return username;
 	}
-	public void setUsername(int username) {
+	public void setUsername(String username) {
 		this.username = username;
 	}
 	public String getPassword() {
