@@ -58,6 +58,41 @@ public class TransactionService {
 	}
 	
 	@Transactional
+	public String deposit(TransactionModel transactionModel)
+	{
+		String result="";
+		long accountNumber = transactionModel.getReceiverAccountNumber();
+		
+			Optional<Account> obj = accountRepo.findById(accountNumber);
+			if(!obj.isPresent()) {
+				result="Receiver account does not exist";
+			}
+			else {
+				Account acnt = obj.get();
+				Transaction transaction = transactionModel.getTransaction();
+				//acnt.setAccountBalance(100000);
+				double new_balance = acnt.getAccountBalance() + transaction.getTxnAmount();
+				
+				int rowsAffected = accountRepo.updateBalance(new_balance, accountNumber);
+				if(rowsAffected > 0) {
+					transaction.setReceiverAccount(acnt);
+					transaction.setReceiverBalance(new_balance);
+					transaction.setTxnStatus("Successful");
+					transRepo.save(transaction);
+//					acnt.setAccountBalance(new_balance);
+					result = "Transaction is successful with transaction id: " + transaction.getTxnId();
+				}
+				else {
+					result = "unable to process the request";
+					
+				}
+			}
+		
+		
+		return result;
+	}
+	
+	@Transactional
 	public String fundTransfer(TransactionModel transactionModel)
 	{
 		String result="";
