@@ -14,6 +14,13 @@ import UserProfile from './Component/User/UserProfile';
 import SavingsAccountRegistration from './Component/User/SavingsAccountRegistration';
 import OnlineBankingRegistration from './Component/User/OnlineBankingRegistration';
 import Main from './Component/Home/Main';
+import AccountDashboard from './Component/Account/AccountDashboard';
+import AccountDetails from './Component/Account/AccountDetails';
+import AccountStatement from './Component/Account/AccountStatement';
+import AccountTransaction from './Component/Account/AccountTransaction';
+import IMPS from './Component/Account/Transaction/IMPS';
+import NEFT from './Component/Account/Transaction/NEFT'
+import RTGS from './Component/Account/Transaction/RTGS'
 
 function App() {
   /*const [inputs, setInputs] = useState({});
@@ -62,14 +69,27 @@ function App() {
           <Route exact path="login" element={<Login />} />
           <Route path='savings-account-registration' element={<SavingsAccountRegistration />} />
           <Route path='online-banking-registration' element={<OnlineBankingRegistration />} />
-
         </Route>
-        {/* <Route exact path="/registration" element={<Registration />} /> */}
+
         <Route exact path="/logout" element={<Logout />} />
+
         <Route path="/user" element={<UserDashboard />}>
           <Route index element={<Navigate to='profile' />} />
           <Route path='profile' index element={<UserProfile />} />
         </Route>
+
+        <Route path='/account' element={<AccountDashboard />}>
+          <Route index element={<Navigate to='details' />} />
+          <Route path='details' element={<AccountDetails />} />
+          <Route path='statement' element={<AccountStatement />} />
+          <Route path='transaction' element={<AccountTransaction />} >
+            <Route index element={<Navigate to='imps' />} />
+            <Route path='imps' element={<IMPS />} />
+            <Route path='neft' element={<NEFT />} />
+            <Route path='rtgs' element={<RTGS />} />
+          </Route>
+        </Route>
+
       </Routes>
     </BrowserRouter>
   )
