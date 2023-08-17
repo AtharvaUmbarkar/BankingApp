@@ -25,6 +25,12 @@ public class TransactionController
 		return tService.withdraw(transactionModel);
 	}
 	
+	@PostMapping("/save/deposit")
+	public String deposit(@RequestBody TransactionModel transactionModel)
+	{
+		return tService.deposit(transactionModel);
+	}
+	
 	@PostMapping("/save/fundTransfer")
 	public String fundTransfer(@RequestBody TransactionModel transactionModel)
 	{
