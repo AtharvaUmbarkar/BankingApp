@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.models.Customer;
 import com.bankingapp.service.CustService;
+import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
 
@@ -42,10 +45,15 @@ public class CustController {
 		return accountList;
 	}
 	
-	@PostMapping("/netBankingRegistration")
+	@PutMapping("/netBankingRegistration")
 	public String netbankingreg(@RequestBody NetBankingModel nb)
 	{
 		return custService.netbankingreg(nb);
+	}
+	
+	@PutMapping("/forgotPassword")
+	public String changePassword(@RequestBody ChangePasswordModel obj, @RequestParam("userName") String userName) {
+		return custService.changePassword(obj, userName);
 	}
 	
 

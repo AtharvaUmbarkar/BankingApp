@@ -40,6 +40,12 @@
     "otp" : "1234"
 }
 
+"/forgotPassword" : {
+    "password" : "newpass@123",
+    "otp" : "1234",
+    "passwordType" : "Login"
+}
+
 http://localhost:8090/createAccount?userName=jayant13
 {
     "accountType" : "Savings",

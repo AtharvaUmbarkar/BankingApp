@@ -17,13 +17,13 @@ export default function Main() {
           }}
         />
       </div>
-      <div className="hidden lg:block absolute w-80 -z-10 m-auto top-80 left-80">
+      {/* <div className="hidden lg:block absolute w-80 -z-10 m-auto top-80 left-80">
         <Savings className="h-80 w-80" />
-      </div>
+      </div> */}
       <div className="hidden lg:block absolute w-60 -z-10 m-auto top-40 right-60">
         <Finance className="h-60 w-60" />
       </div>
-      <div className="mx-auto max-w-2xl py-32">
+      <div className="mx-auto max-w-2xl py-8">
         <div className="hidden sm:mb-8 sm:flex sm:justify-center">
           <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
             One stop solution for all your banking needs.{' '}

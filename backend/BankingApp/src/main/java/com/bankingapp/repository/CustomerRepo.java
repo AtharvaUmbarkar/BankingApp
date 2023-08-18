@@ -19,6 +19,13 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
 	@Query("update Customer c set c.userName = ?1, c.loginPassword = ?2, c.transactionPassword = ?3, c.netBankingEnabled = true where c.customerId = ?4")
 	public int setUserName(String userName, String lPassword, String tPassword, int customerId);
 	
+	@Modifying
+	@Query("update Customer c set c.loginPassword = ?1 where c.userName = ?2")
+	public int changeLoginPassword(String password, String userName);
+	
+	@Modifying
+	@Query("update Customer c set c.transactionPassword = ?1 where c.userName = ?2")
+	public int changeTransactionPassword(String password, String userName);
 
 }
 
