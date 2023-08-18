@@ -83,7 +83,7 @@ const SavingsAccountRegistration = () => {
         accountType: "Savings",
       }
     }
-    console.log(accountDetails);
+    // console.log(accountDetails);
 
     axios.post(CUSTOMER_DATA_URL, accountDetails
     ).then((response) => {
