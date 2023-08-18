@@ -53,17 +53,17 @@ public class Account {
 		this.debitCardAvailed = debitCardAvailed;
 	}
 	
-//	@JsonBackReference
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="customerId")
 	private Customer customer;
 	
-//	@JsonManagedReference(value="acnt-txns1")
-	@OneToMany(mappedBy="senderAccount", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference(value="acnt-txns1")
+	@OneToMany(mappedBy="senderAccount", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Transaction> debitTransactions;
 	
-//	@JsonManagedReference(value="acnt-txns2")
-	@OneToMany(mappedBy="receiverAccount", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference(value="acnt-txns2")
+	@OneToMany(mappedBy="receiverAccount", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Transaction> creditTransactions;
 	
 //	@OneToMany(mappedBy="account", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
