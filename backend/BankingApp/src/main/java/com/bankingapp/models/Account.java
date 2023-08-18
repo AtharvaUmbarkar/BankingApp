@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -59,10 +60,12 @@ public class Account {
 	private Customer customer;
 	
 	@JsonManagedReference(value="acnt-txns1")
+	@JsonIgnore
 	@OneToMany(mappedBy="senderAccount", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Transaction> debitTransactions;
 	
 	@JsonManagedReference(value="acnt-txns2")
+	@JsonIgnore
 	@OneToMany(mappedBy="receiverAccount", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Transaction> creditTransactions;
 	
@@ -88,7 +91,7 @@ public class Account {
 	public void setCreditTransactions(List<Transaction> creditTransactions) {
 		this.creditTransactions = creditTransactions;
 	}
-	
+	@JsonIgnore
 	public Customer getCustomer() {
 		return customer;
 	}
