@@ -68,4 +68,20 @@ public class AccountService {
 		}
 		return result;
 	}
+	
+	public Account fetchAccount(long accountNo) {
+		Optional<Account> obj = accountRepo.findById(accountNo);
+		if(obj.isPresent())
+			return obj.get();
+		else
+			return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

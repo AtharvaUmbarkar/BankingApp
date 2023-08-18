@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -53,17 +54,19 @@ public class Account {
 		this.debitCardAvailed = debitCardAvailed;
 	}
 	
-//	@JsonBackReference
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="customerId")
 	private Customer customer;
 	
-//	@JsonManagedReference(value="acnt-txns1")
-	@OneToMany(mappedBy="senderAccount", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference(value="acnt-txns1")
+	@JsonIgnore
+	@OneToMany(mappedBy="senderAccount", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Transaction> debitTransactions;
 	
-//	@JsonManagedReference(value="acnt-txns2")
-	@OneToMany(mappedBy="receiverAccount", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference(value="acnt-txns2")
+	@JsonIgnore
+	@OneToMany(mappedBy="receiverAccount", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Transaction> creditTransactions;
 	
 //	@OneToMany(mappedBy="account", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
@@ -88,7 +91,7 @@ public class Account {
 	public void setCreditTransactions(List<Transaction> creditTransactions) {
 		this.creditTransactions = creditTransactions;
 	}
-	
+	@JsonIgnore
 	public Customer getCustomer() {
 		return customer;
 	}

@@ -43,12 +43,12 @@ public class Transaction {
 	private String txnStatus;
 	private String userRemarks;
 
-//	@JsonBackReference(value="acnt-trans1")
+	@JsonBackReference(value="acnt-trans1")
 	@ManyToOne
 	@JoinColumn(name="sender_accountNumber", referencedColumnName="accountNumber")
 	private Account senderAccount;
 
-//	@JsonBackReference(value="acnt-trans2")
+	@JsonBackReference(value="acnt-trans2")
 	@ManyToOne
 	@JoinColumn(name="receiver_accountNumber", referencedColumnName="accountNumber")
 	private Account receiverAccount;
