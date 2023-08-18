@@ -41,14 +41,16 @@ class TestCustomerController {
 		LoginModel login = new LoginModel();
 		login.setUsername("shradha");
 		login.setPassword("smk@123456");
-		//login.setEmail("");
 		
+		//Test login with valid credentials
 		Mockito.when(customerService.validateCustomer(login)
 				).thenReturn("Login Success");
 		
 		System.out.println("Testing login unit....");
 		
 		assertEquals("Login Success",customerService.validateCustomer(login));
-}
-
+	}
+	
+	
+	//Test for checking the customer accounts 
 }
