@@ -28,7 +28,7 @@ const AccountNavbar = () => {
 
     return (
         <header className=" inset-x-0 top-0 z-50 w-full">
-            <nav className="flex items-center justify-between p-6 lg:px-8 w-full" aria-label="Global">
+            <nav className="shadow-md flex items-center justify-between p-6 lg:px-8 w-full" aria-label="Global">
                 <div className="flex lg:flex-1">
                     <Link to='/' className="-m-1.5 p-1.5">
                         <span className="sr-only">Banking App</span>
