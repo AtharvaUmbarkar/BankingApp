@@ -42,7 +42,7 @@ public class CustController {
 		return accountList;
 	}
 	
-	@PostMapping("/NetBankingRegistration")
+	@PostMapping("/netBankingRegistration")
 	public String netbankingreg(@RequestBody NetBankingModel nb)
 	{
 		return custService.netbankingreg(nb);

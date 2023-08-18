@@ -13,6 +13,8 @@ import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CustService {
 	@Autowired
@@ -61,10 +63,14 @@ public class CustService {
 		return accRepo.findByAccountNumber(custId);
 	}
 	
+	@Transactional
 	public String netbankingreg(NetBankingModel nb)
 	{
 		String result = "";
-		Optional<Account> obj = accRepo.findByAccountNum(nb.getAccountNumber());
+		if(nb.getLoginPassword().equals(nb.getTransactionPassword())) {
+			return result = "Login and Transaction password cannot be same";
+		}
+		Optional<Account> obj = accRepo.findById(nb.getAccountNumber());
 		if (obj.isPresent())
 		{
 			Customer cust = obj.get().getCustomer();
@@ -75,22 +81,8 @@ public class CustService {
 			}
 			else
 			{
-				if (!((nb.getLoginPassword()).equals(nb.getConfirmLoginPassword())))
-				{
-					result = "Login Password and Confirm Login Password not same";
-				}
-				else if (!((nb.getTransactionPassword()).equals(nb.getConfirmTransactionPassword())))
-				{
-					result = "Transaction Password and Confirm Transaction Password are not same";
-				}
-				else
-				{
-				cust.setUserName(nb.getUserName());
-				cust.setLoginPassword(nb.getLoginPassword());
-				cust.setTransactionPassword(nb.getTransactionPassword());
-				cust.setNetBankingEnabled(true);
-				//cust.validateotp();
-				}
+				custRepo.setUserName(nb.getUserName(), nb.getLoginPassword(), nb.getTransactionPassword(), cust.getCustomerId());
+				result = "successfully registered for net banking";
 			}
 		}
 		else

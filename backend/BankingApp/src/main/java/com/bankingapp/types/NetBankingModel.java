@@ -2,18 +2,16 @@ package com.bankingapp.types;
 
 public class NetBankingModel {
 	
-	private int accountNumber;
+	private long accountNumber;
 	private String userName;
 	private String loginPassword;
-	private String confirmLoginPassword;
 	private String transactionPassword;
-	private String confirmTransactionPassword;
 	private int otp;
 	
-	public int getAccountNumber() {
+	public long getAccountNumber() {
 		return accountNumber;
 	}
-	public void setAccountNumber(int accountNumber) {
+	public void setAccountNumber(long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 	public String getUserName() {
@@ -28,23 +26,12 @@ public class NetBankingModel {
 	public void setLoginPassword(String loginPassword) {
 		this.loginPassword = loginPassword;
 	}
-	public String getConfirmLoginPassword() {
-		return confirmLoginPassword;
-	}
-	public void setConfirmLoginPassword(String confirmLoginPassword) {
-		this.confirmLoginPassword = confirmLoginPassword;
-	}
+	
 	public String getTransactionPassword() {
 		return transactionPassword;
 	}
 	public void setTransactionPassword(String transactionPassword) {
 		this.transactionPassword = transactionPassword;
-	}
-	public String getConfirmTransactionPassword() {
-		return confirmTransactionPassword;
-	}
-	public void setConfirmTransactionPassword(String confirmTransactionPassword) {
-		this.confirmTransactionPassword = confirmTransactionPassword;
 	}
 	public int getOtp() {
 		return otp;

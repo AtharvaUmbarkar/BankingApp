@@ -21,7 +21,7 @@ public interface AccountRepo extends JpaRepository<Account, Long> {
 	@Query("update Account account set account.accountBalance = ?1 where account.accountNumber = ?2")
 	public int updateBalance(double balance, long accountNumber);
 	
-	Optional<Account> findByAccountNum(int accountNumber);
+//	Optional<Account> findByAccountNum(int accountNumber);
 
 	
 }
