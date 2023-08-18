@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import { Card, Typography } from "@material-tailwind/react";
 
-const BASE_URL = sessionStorage.getItem('user') ? "http://localhost:8090/fetchAccounts/" + sessionStorage.getItem('user').substring(13, 18) : "";
+const BASE_URL = "http://localhost:8090/fetchAccounts/"
 const TABLE_HEAD = ["Accounts"];
+const USER_NAME = JSON.parse(sessionStorage.getItem('user'));
 
 const Account = () => {
-  const [accountsList, setAccounts] = useState([1, 2]);
+  const [accountsList, setAccounts] = useState([]);
 
   const fetchAccounts = () => {
-    axios.get(BASE_URL).then((response) => {
+    axios.get(BASE_URL + USER_NAME.username).then((response) => {
+      console.log(response.data);
       setAccounts(response.data);
     }).catch(error => {
       //alert("Error while fetching data from user accounts...."+BASE_URL);
@@ -35,9 +37,10 @@ const Account = () => {
                     className="border-b border-blue-black-200 bg-blue-gray-200 p-4"
                   >
                     <Typography
-                      varian="large"
+                      variant="h3"
                       color="black"
                       className="font-100 leading-none opacity-100"
+                      chil
                     >
                       {head}
                     </Typography>
