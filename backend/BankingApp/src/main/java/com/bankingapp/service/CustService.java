@@ -6,10 +6,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.types.LoginModel;
+import com.bankingapp.types.NetBankingModel;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class CustService {
@@ -57,6 +61,35 @@ public class CustService {
 		Optional<Customer> obj = custRepo.findByUserName(username);
 		int custId = (obj.get()).getCustomerId();
 		return accRepo.findByAccountNumber(custId);
+	}
+	
+	@Transactional
+	public String netbankingreg(NetBankingModel nb)
+	{
+		String result = "";
+		if(nb.getLoginPassword().equals(nb.getTransactionPassword())) {
+			return result = "Login and Transaction password cannot be same";
+		}
+		Optional<Account> obj = accRepo.findById(nb.getAccountNumber());
+		if (obj.isPresent())
+		{
+			Customer cust = obj.get().getCustomer();
+
+			if (cust.isNetBankingEnabled())
+			{
+				result = "User already exists";
+			}
+			else
+			{
+				custRepo.setUserName(nb.getUserName(), nb.getLoginPassword(), nb.getTransactionPassword(), cust.getCustomerId());
+				result = "successfully registered for net banking";
+			}
+		}
+		else
+		{
+			result = "Account does not exist, Open an account first";
+		}
+		return result;
 	}
 
 }

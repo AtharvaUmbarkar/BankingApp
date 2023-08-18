@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bankingapp.models.Customer;
 import com.bankingapp.service.CustService;
 import com.bankingapp.types.LoginModel;
+import com.bankingapp.types.NetBankingModel;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -39,6 +40,12 @@ public class CustController {
 	{
 		List<Integer> accountList = custService.fetchAccounts(username);
 		return accountList;
+	}
+	
+	@PostMapping("/netBankingRegistration")
+	public String netbankingreg(@RequestBody NetBankingModel nb)
+	{
+		return custService.netbankingreg(nb);
 	}
 	
 
