@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
-const CUSTOMER_DATA_URL = "http://localhost:8090/saveCustomer";
+const CUSTOMER_DATA_URL = "http://localhost:8090/createFirstAccount";
 
 const SavingsAccountRegistration = () => {
   const navigate = useNavigate()
@@ -43,7 +43,7 @@ const SavingsAccountRegistration = () => {
   })
 
   const [sameAddress, setSameAddress] = useState(false);
-  const [debitCardEnabled, setDebitCard] = useState(false);
+  const [debitCardAvailed, setDebitCardAvailed] = useState(false);
   const [onlineBanking, setOnlineBanking] = useState(false);
   const [agree, setAgree] = useState(false);
 
@@ -71,25 +71,30 @@ const SavingsAccountRegistration = () => {
       permPincode: sameAddress ? residentialAddress.tempPincode : permanentAddress.permPincode,
     }
     const accountDetails = {
-      ...personalDetails,
-      ...residentialAddress,
-      ...permAddress,
-      ...occupationDetails,
-      debitCardEnabled,
-      netBankingEnabled: onlineBanking,
+      customer: {
+        ...personalDetails,
+        ...residentialAddress,
+        ...permAddress,
+        ...occupationDetails,
+      },
+      account: {
+        debitCardAvailed,
+        netBankingOpted: onlineBanking,
+        accountType: "Savings",
+      }
     }
     console.log(accountDetails);
 
-    axios.post(CUSTOMER_DATA_URL,accountDetails
+    axios.post(CUSTOMER_DATA_URL, accountDetails
     ).then((response) => {
       console.log(response);
-      alert("Welcome "+personalDetails.firstName);
+      alert("Welcome " + personalDetails.firstName);
       navigate("/online-banking-registration")
     }, (error) => {
-      console.log("Failure.."+error);
+      console.log("Failure.." + error);
       alert("Account creation failed")
     });
-    
+
   }
 
   return (
@@ -375,9 +380,9 @@ const SavingsAccountRegistration = () => {
         <label className=" my-2">Want Debit Card:
           <input
             type="checkbox"
-            name="debitCardEnabled"
-            value={debitCardEnabled}
-            onChange={() => setDebitCard(!debitCardEnabled)}
+            name="debitCardAvailed"
+            value={debitCardAvailed}
+            onChange={() => setDebitCardAvailed(!debitCardAvailed)}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
         </label>
