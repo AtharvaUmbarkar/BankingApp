@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import { Card, Typography } from "@material-tailwind/react";
 
-const BASE_URL = "http://localhost:8090/fetchAccounts/"+sessionStorage.getItem('user')
+
 const BASE_URL = sessionStorage.getItem('user') ? "http://localhost:8090/fetchAccounts/" + sessionStorage.getItem('user').substring(13, 18) : "";
 const TABLE_HEAD = ["Accounts"];
 
