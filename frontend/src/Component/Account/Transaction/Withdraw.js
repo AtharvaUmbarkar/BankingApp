@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from "axios"
 
+const WITHDRAW_URL = "http://localhost:8090/save/withdraw";
+
 const Withdraw = () => {
+    const { accountNumber } = useParams();
+    const navigate = useNavigate();
+
     const [transactionDetails, setTransactionDetails] = useState({
-        senderAccount: 0,
+        senderAccountNumber: accountNumber,
         txnAmount: 0,
         userRemarks: "",
     })
-
-    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setTransactionDetails((transactionDetails) =>
@@ -21,20 +24,21 @@ const Withdraw = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(transactionDetails);
-        const res = await axios.post("http://localhost:8090/save/withdraw", JSON.stringify(
+        const res = await axios.post(WITHDRAW_URL, JSON.stringify(
             {
                 "transaction": {
                     "txnType": "Withdraw",
                     "txnAmount": transactionDetails.txnAmount,
                     "userRemarks": transactionDetails.userRemarks
                 },
-                "senderAccountNumber": transactionDetails.senderAccount
+                "senderAccountNumber": transactionDetails.senderAccountNumber
             }
         ), {
             headers: {
                 "Content-Type": "application/json"
             }
         })
+        window.alert(res.data);
     }
 
     return (
@@ -43,9 +47,10 @@ const Withdraw = () => {
 
             <label className=" my-2">Sender Account Number:
                 <input
+                    disabled
                     type="number"
-                    name="senderAccount"
-                    value={transactionDetails.senderAccount}
+                    name="senderAccountNumber"
+                    value={transactionDetails.senderAccountNumber}
                     onChange={handleChange}
                     className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
                 />
