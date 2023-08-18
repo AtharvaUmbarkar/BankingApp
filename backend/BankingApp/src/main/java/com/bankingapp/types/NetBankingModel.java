@@ -6,7 +6,7 @@ public class NetBankingModel {
 	private String userName;
 	private String loginPassword;
 	private String transactionPassword;
-	private int otp;
+	private String otp;
 	
 	public long getAccountNumber() {
 		return accountNumber;
@@ -33,10 +33,10 @@ public class NetBankingModel {
 	public void setTransactionPassword(String transactionPassword) {
 		this.transactionPassword = transactionPassword;
 	}
-	public int getOtp() {
+	public String getOtp() {
 		return otp;
 	}
-	public void setOtp(int otp) {
+	public void setOtp(String otp) {
 		this.otp = otp;
 	}
 	
