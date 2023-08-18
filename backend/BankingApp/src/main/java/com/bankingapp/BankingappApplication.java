@@ -10,5 +10,4 @@ public class BankingappApplication {
 		SpringApplication.run(BankingappApplication.class, args);
 		System.out.println("Welcome to our banking app...");
 	}
-
 }

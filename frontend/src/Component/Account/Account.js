@@ -3,7 +3,7 @@ import axios from "axios";
 import { Card, Typography } from "@material-tailwind/react";
 
 const BASE_URL = "http://localhost:8090/fetchAccounts/"+sessionStorage.getItem('user').substring(13,18)
-const TABLE_HEAD = ["Accounts","Creation Date","Last Update"];
+const TABLE_HEAD = ["Accounts"];
 
 const Account = () => {
   const [accountsList, setAccounts] = useState([1,2]);
