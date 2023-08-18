@@ -23,7 +23,7 @@ function Login() {
                 }
             })
             if(response){
-                if(response.data == "Login Success"){
+                if(response.data.customerId){
                     const toastId = toast.loading("Logging you in...")
                     setTimeout(() => {
                         sessionStorage.setItem("user", JSON.stringify({username}))
