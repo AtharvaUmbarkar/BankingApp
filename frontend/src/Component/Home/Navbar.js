@@ -62,7 +62,7 @@ const Navbar = () => {
             Log in <span aria-hidden="true">&rarr;</span>
           </Link>
             :
-            <button type='button' className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
+            <button type='button' onClick={handleLogout} className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
               Log out
             </button>
           }
