@@ -20,16 +20,16 @@ import jakarta.validation.constraints.Pattern;
 public class Beneficiary {
 	@Id
 	@GeneratedValue
-	private int beneficiaryID;
+	private int id;
 	
 	@Column(nullable=false)
 	@NotBlank(message="Beneficiary name cannot be blank")
 	@Length(min=3, max=30, message="Name size must be between 3-30 characters")
 //	@Pattern(regexp="^[A-za-z]+$")
-	private String beneficiaryName;
+	private String name;
 	
 	@Length(max=30, message="nickname cannot have more than 30 characters")
-	private String beneficiaryNickname;
+	private String nickname;
 
 //	@JsonBackReference
 	@ManyToOne
@@ -37,9 +37,17 @@ public class Beneficiary {
 	private Customer customer;
 
 //	@JsonBackReference
-	@ManyToOne
-	@JoinColumn(name="accountNumber")
-	private Account account;
+//	@ManyToOne
+//	@JoinColumn(name="accountNumber")
+	private long accountNumber;
+
+	public long getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(long accountNumber) {
+		this.accountNumber = accountNumber;
+	}
 
 	public Customer getCustomer() {
 		return customer;
@@ -49,37 +57,36 @@ public class Beneficiary {
 		this.customer = customer;
 	}
 
-
-	public int getBeneficiaryID() {
-		return beneficiaryID;
+	public int getId() {
+		return id;
 	}
 
-	public void setBeneficiaryID(int beneficiaryID) {
-		this.beneficiaryID = beneficiaryID;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public Account getAccount() {
-		return account;
+//	public Account getAccount() {
+//		return account;
+//	}
+//
+//	public void setAccount(Account account) {
+//		this.account = account;
+//	}
+
+	public String getName() {
+		return name;
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getBeneficiaryName() {
-		return beneficiaryName;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setBeneficiaryName(String beneficiaryName) {
-		this.beneficiaryName = beneficiaryName;
-	}
-
-	public String getBeneficiaryNickname() {
-		return beneficiaryNickname;
-	}
-
-	public void setBeneficiaryNickname(String beneficiaryNickname) {
-		this.beneficiaryNickname = beneficiaryNickname;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	
