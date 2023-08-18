@@ -10,6 +10,7 @@ import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.CustomerRepo;
+import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
 
@@ -88,6 +89,34 @@ public class CustService {
 		else
 		{
 			result = "Account does not exist, Open an account first";
+		}
+		return result;
+	}
+	
+	@Transactional
+	public String changePassword(ChangePasswordModel obj, String userName) {
+		String result="";
+		Optional<Customer> optCust= custRepo.findByUserName(userName);
+		if(optCust.isPresent()) {
+			int rowsAffected;
+			if(obj.getPasswordType().equals("Login")) {
+				rowsAffected = custRepo.changeLoginPassword(obj.getPassword(), userName);
+			}
+			else if(obj.getPasswordType().equals("Transactional")){
+				rowsAffected = custRepo.changeTransactionPassword(obj.getPassword(), userName);
+			}
+			else {
+				return result = "Not a valid password type";
+			}
+			if(rowsAffected > 0) {
+				result = "Successfully changed the Password";
+			}
+			else {
+				result = "Failed to change the password";
+			}
+		}
+		else {
+			result = "Customer does not exist";
 		}
 		return result;
 	}
