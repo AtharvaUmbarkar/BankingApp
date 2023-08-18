@@ -31,7 +31,7 @@ public class Beneficiary {
 	@Length(max=30, message="nickname cannot have more than 30 characters")
 	private String nickname;
 
-//	@JsonBackReference
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="customerId")
 	private Customer customer;

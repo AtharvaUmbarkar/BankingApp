@@ -28,7 +28,7 @@ public class CustService {
 		return obj;
 	}
 	
-	public String validateCustomer(LoginModel loginUser)
+	public Customer validateCustomer(LoginModel loginUser)
 	{
 		String result = "";
 		Customer cust = null;
@@ -36,25 +36,28 @@ public class CustService {
 		if (objt.isPresent())
 		{
 			cust = objt.get();
+			if (loginUser.getPassword().equals(cust.getLoginPassword())) {
+				return cust;
+			}
 		}
-//		Customer cust=custRepo.findById(u.getUsername()).get();
+		return null;
 		
-		if (cust==null)
-		{
-			result = "Invalid user";
-		}
-		else
-		{
-			if (loginUser.getPassword().equals(cust.getLoginPassword()))
-			{
-				result = "Login Success";
-			}
-			else
-			{
-				result = "Login Failed";
-			}
-		}
-		return result;
+//		if (cust==null)
+//		{
+//			result = "Invalid user"; 
+//		}
+//		else
+//		{
+//			if (loginUser.getPassword().equals(cust.getLoginPassword()))
+//			{
+//				result = "Login Success";
+//			}
+//			else
+//			{
+//				result = "Login Failed";
+//			}
+//		}
+//		return cust;
 	}
 	
 	public List<Integer> fetchAccounts(String username)

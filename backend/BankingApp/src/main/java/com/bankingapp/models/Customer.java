@@ -10,6 +10,9 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -125,20 +128,28 @@ public class Customer {
 	@Column(name="login_password")
 	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String loginPassword;
+	
 	@Column(name="transaction_password")
 	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String transactionPassword;
 	
-	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
+	@JsonIgnore
+	@OneToMany(mappedBy="customer", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Account> account;
 	
+	@JsonManagedReference
+	@JsonIgnore
 	@OneToMany(mappedBy="customer", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Beneficiary> beneficiaries;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@JsonManagedReference
+	@JsonIgnore
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="customer_id")
 	private List<Transaction> transactions;
 	
+//	@JsonIgnore
 	public List<Account> getAccount() {
 		return account;
 	}
@@ -146,11 +157,19 @@ public class Customer {
 		this.account = account;
 	}
 	
-	public List<Beneficiary> getBeneficiary() {
+//	@JsonIgnore
+	public List<Beneficiary> getBeneficiaries() {
 		return beneficiaries;
 	}
-	public void addBeneficiary(Beneficiary beneficiary) {
-		this.beneficiaries.add(beneficiary);
+	public void setBeneficiaries(List<Beneficiary> beneficiaries) {
+		this.beneficiaries = beneficiaries;
+	}
+//	@JsonIgnore
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 	public int getCustomerId() {
 		return customerId;
@@ -320,12 +339,14 @@ public class Customer {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	@JsonIgnore
 	public String getLoginPassword() {
 		return loginPassword;
 	}
 	public void setLoginPassword(String loginPassword) {
 		this.loginPassword = loginPassword;
 	}
+	@JsonIgnore
 	public String getTransactionPassword() {
 		return transactionPassword;
 	}

@@ -3,6 +3,8 @@ package com.bankingapp.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +35,24 @@ public class CustController {
 	}
 	
 	@PostMapping("/Login")
-	public String validateCustomer(@RequestBody LoginModel u)
+	public ResponseEntity<Object> validateCustomer(@RequestBody LoginModel u)
 	{
-		return custService.validateCustomer(u);
+		Customer cust = custService.validateCustomer(u);
+		if(cust == null) {
+			return new ResponseEntity<>("Invalid Credidentials", HttpStatus.UNAUTHORIZED);
+		}
+		else {
+			return new ResponseEntity<>(cust, HttpStatus.OK);
+		}
+//		if(response.equals("Invalid user")) {
+//			return new ResponseEntity<>("Invalid User Name", HttpStatus.NOT_FOUND);
+//		}
+//		else if(response.equals("Login failed")) {
+//			return new ResponseEntity<>("Incorrect Password", HttpStatus.UNAUTHORIZED);
+//		}
+//		else {
+//			Customer cust = custRepo.findByUserName(loginUser.getUsername());
+//		}
 	}
 	
 	@GetMapping("/fetchAccounts/{username}")
