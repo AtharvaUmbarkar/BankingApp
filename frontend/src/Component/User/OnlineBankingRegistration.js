@@ -29,11 +29,11 @@ const OnlineBankingRegistration = () => {
 
           <div className=''>
 
-            <label className="text-lg my-2">Account Number:
+            <label className="text-lg my-2">User Name:
               <input
                 type="text"
-                name="account_no"
-                value={inputs.account_no || ""}
+                name="user_name"
+                value={inputs.user_name || ""}
                 onChange={handleChange}
                 className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
               />

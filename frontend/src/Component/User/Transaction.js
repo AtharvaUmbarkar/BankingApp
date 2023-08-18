@@ -34,51 +34,15 @@ const Transaction = () => {
               type="text"
               name="account_no"
               value={inputs.account_no || ""}
-              onChange={handleChange}
+              
               className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
             />
           </label>
-          <label className="text-lg my-2">Set Login Password:
+          <label className="text-lg my-2">Amount:
             <input
-              type="password"
-              name="login_password"
-              value={inputs.login_password || ""}
-              onChange={handleChange}
-              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
-            />
-          </label>
-          <label className="text-lg my-2">Confirm Login Password:
-            <input
-              type="password"
-              name="confirm_login_password"
-              value={inputs.confirm_login_password || ""}
-              onChange={handleChange}
-              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
-            />
-          </label>
-          <label className="text-lg my-2">Set Transaction Password:
-            <input
-              type="password"
-              name="transaction_password"
-              value={inputs.transaction_password || ""}
-              onChange={handleChange}
-              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
-            />
-          </label>
-          <label className="text-lg my-2">Confirm Transaction Password:
-            <input
-              type="password"
-              name="confirm_transaction_password"
-              value={inputs.confirm_transaction_password || ""}
-              onChange={handleChange}
-              className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
-            />
-          </label>
-          <label className="text-lg my-2">Enter OTP:
-            <input
-              type="otp"
-              name="otp"
-              value={inputs.otp || ""}
+              type="amount"
+              name="amount"
+              value={inputs.amount || ""}
               onChange={handleChange}
               className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
             />
