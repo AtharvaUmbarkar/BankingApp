@@ -1,12 +1,15 @@
 package com.bankingapp.service;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.models.Account;
+import com.bankingapp.models.Customer;
 import com.bankingapp.models.Transaction;
 import com.bankingapp.repository.AccountRepo;
+import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.repository.TransactionRepo;
 import com.bankingapp.types.TransactionModel;
 
@@ -18,6 +21,25 @@ public class TransactionService {
 	TransactionRepo transRepo;
 	@Autowired
 	AccountRepo accountRepo;
+	
+	
+	//********** Code added for getting list of transactions of a account
+	public List<Transaction> getAllTransactions(long accountNo)
+	{
+		Optional<Account> obj = accountRepo.findById(accountNo);
+		if(obj.isPresent()) {
+			return obj.get().getDebitTransactions();
+		}
+		else
+		{
+			return List.of();
+		}
+	}
+	
+	//*******************************
+	
+	
+	
 	
 	@Transactional
 	public String withdraw(TransactionModel transactionModel)
