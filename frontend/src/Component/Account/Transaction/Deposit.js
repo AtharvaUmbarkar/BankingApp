@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import axios from 'axios'
+
+const DEPOSIT_URL = "http://localhost:8090/save/deposit"
 
 const Deposit = () => {
+    const { accountNumber } = useParams();
+    const navigate = useNavigate();
+
     const [transactionDetails, setTransactionDetails] = useState({
-        receiverAccount: "",
+        receiverAccountNumber: accountNumber,
         txnAmount: 0,
         userRemarks: "",
     })
-
-    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setTransactionDetails((transactionDetails) =>
@@ -17,9 +21,23 @@ const Deposit = () => {
         // console.log(transactionDetails);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(transactionDetails);
+        const response = await axios.post(DEPOSIT_URL, JSON.stringify({
+            transaction: {
+                txnAmount: transactionDetails.txnAmount,
+                userRemarks: transactionDetails.userRemarks,
+                txnType: "Deposit",
+            },
+            receiverAccountNumber: transactionDetails.receiverAccountNumber,
+        }), {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        window.alert(response.data);
+
     }
 
     return (
@@ -28,9 +46,10 @@ const Deposit = () => {
 
             <label className=" my-2">Receiver Account Number:
                 <input
+                    disabled
                     type="text"
-                    name="receiverAccount"
-                    value={transactionDetails.receiverAccount}
+                    name="receiverAccountNumber"
+                    value={transactionDetails.receiverAccountNumber}
                     onChange={handleChange}
                     className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
                 />

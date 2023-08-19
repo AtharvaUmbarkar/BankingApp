@@ -22,7 +22,7 @@ const AccountTransaction = () => {
   return (
     <div className='w-full flex flex-col items-center'>
       <div className='w-2/5 px-4'>
-        <Listbox as={'div'} className='relative w-full' value={type} onChange={handleChange}>
+        <Listbox as={'div'} className='relative w-full mt-8' value={type} onChange={handleChange}>
           <Listbox.Button className='uppercase p-1 bg-blue-600 text-white w-full'>{type}</Listbox.Button>
           <Listbox.Options className='absolute w-full text-center'>
             {transactionTypes.map((t, i) => (
