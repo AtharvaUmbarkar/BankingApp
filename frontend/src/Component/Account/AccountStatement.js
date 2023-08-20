@@ -29,7 +29,7 @@ const handleSubmit = () => {
                 var amountColumn = row.insertCell(1);
                 var balanceColumn = row.insertCell(2);
 
-                dtColumn.innerHTML = response.data[i].txnDate;
+                dtColumn.innerHTML = response.data[i].txnDate.substring(0,10);
                 amountColumn.innerHTML = response.data[i].txnAmount;
                 balanceColumn.innerHTML = response.data[i].senderBalance;
             }
@@ -83,36 +83,33 @@ const changeToDate = (event) => {
     </form>
     <div>
       <br></br>
-    <center>
-      <span id='display' name='display' className="p-2 bg-blue-100 text-black text-lg">Transactions Data</span>
-     <br></br>
-     <br></br>
-<div class="relative overflow-x-auto">
-    <table id="txnList" class="p-100 text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-center text-sm text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Date
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Amount
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Balance
-                </th>
-            </tr>
-        </thead>
-        <tbody id="tblBody" class="m-20 text-center text-lg text-gray-700 uppercase bg-blue-100 dark:bg-blue-700 dark:text-gray-400">
+      <center>
+        <span id='display' name='display' className="p-2 bg-blue-100 text-black text-lg">Transactions Data</span>
+      <br></br>
+      <br></br>
+      <div class="relative overflow-x-auto">
+        <table id="txnList" class="border-collapse border border-slate-400 p-100 text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-center text-sm text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Date
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Amount
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Balance
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tblBody" class="space-x-0 m-20 text-center text-lg text-gray-700 uppercase bg-blue-100 dark:bg-blue-700 dark:text-gray-400">
 
-        </tbody>
-    </table>
-    </div>
-
+            </tbody>
+        </table>
+      </div>
     </center>
-
-    </div>
-    
-    </div>
+  </div>
+  </div>
 
   )
 }
