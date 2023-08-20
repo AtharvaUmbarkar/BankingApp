@@ -1,6 +1,7 @@
 package com.bankingapp.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 //import org.hibernate.mapping.List;
@@ -43,5 +44,10 @@ public class TransactionController
 	@GetMapping("/getAllTransactions")
 	public List<Transaction> getAllTransactions(@RequestParam long accountNo){
 		return tService.getAllTransactions(accountNo);
+	}
+	
+	@GetMapping("/getStatementTransactions")
+	public List<Transaction> getStatementTransactions(@RequestParam long accountNo, @RequestParam String fromDt, @RequestParam String toDt){
+		return tService.getStatementTransactions(accountNo,fromDt,toDt);
 	}
 }

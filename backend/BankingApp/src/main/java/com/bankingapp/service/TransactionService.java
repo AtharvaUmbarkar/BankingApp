@@ -1,5 +1,10 @@
 package com.bankingapp.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +34,56 @@ public class TransactionService {
 		Optional<Account> obj = accountRepo.findById(accountNo);
 		if(obj.isPresent()) {
 			return obj.get().getDebitTransactions();
+		}
+		else
+		{
+			return List.of();
+		}
+	}
+	
+	
+	
+	public List<Transaction> getStatementTransactions(long accountNo, String fromDt, String toDt)
+	{
+		Optional<Account> obj = accountRepo.findById(accountNo);
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		if(obj.isPresent()) {
+			
+			List<Transaction> txns = new ArrayList<Transaction>();
+			try
+			{
+				for(Transaction t:obj.get().getDebitTransactions())
+				{
+					if(fromDt.equals(toDt)) {
+						//System.out.println("Dates are same : "+fromDt);
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(t.getTxnDate());
+						String month = "";
+						if((cal.get(Calendar.MONTH)+1) < 10)
+						{
+							month = "0"+(cal.get(Calendar.MONTH)+1);
+						}
+						else
+						{
+							month = ""+(cal.get(Calendar.MONTH)+1);
+						}
+						String txnDt = ""+cal.get(Calendar.YEAR)+"-"+month+"-"+cal.get(Calendar.DAY_OF_MONTH);
+						//System.out.println("Transaction date : "+txnDt);
+						if(txnDt.equals(fromDt)) {
+							txns.add(t);
+						}
+					}
+					else if(t.getTxnDate().compareTo(format.parse(fromDt))>0 && t.getTxnDate().compareTo(format.parse(toDt))>0)
+					{
+						txns.add(t);
+					}
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("Exception ......");
+			}
+			return txns;
 		}
 		else
 		{
