@@ -1,13 +1,14 @@
-"Customer": 
+"customerAndAccount":{
+    "customer": 
 {
     "title" : "Mr",
     "firstName" : "jBSJKsd",
     "middleName" : "jbsdjsd",
     "lastName" : "cdascdscs",
     "fatherName" : "anksjaka",
-    "emailId" :"ahdjkahknd@gmail.com",
+    "emailId" :"ahdjkahand@gmail.com",
     "dateOfBirth" : "2002-01-01",
-    "aadhaarNumber" : "123456189012",
+    "aadhaarNumber" : "123486189012",
     "mobileNumber" : "1234567890",
     "tempAddressLine1" : "shdjkhdks",
     "tempAddressLine2" : "kadkandlkma",
@@ -23,11 +24,26 @@
     "permPincode" : "560103",
     "occupation" : "Doctor",
     "sourceOfIncome" : "Job",
-    "grossAnnualIncome" : "12344",
-    "netBankingEnabled" : "true",
-    "userName" : "jayant13",
-    "loginPassword" : "kajnskA@23",
-    "transactionPassword" : "ahjjaSha@2423"
+    "grossAnnualIncome" : "12344"
+},
+"account":{
+    "accountType" : "Savings",
+    "debitCardAvailed" : "true"
+}
+}
+
+"/netBankingRegistration": {
+    "accountNumber" : "1000000015",
+    "userName" : "jayant28",
+    "loginPassword" : "Jayant@12",
+    "transactionPassword" : "Jayant@13",
+    "otp" : "1234"
+}
+
+"/forgotPassword" : {
+    "password" : "newpass@123",
+    "otp" : "1234",
+    "passwordType" : "Login"
 }
 
 http://localhost:8090/createAccount?userName=jayant13

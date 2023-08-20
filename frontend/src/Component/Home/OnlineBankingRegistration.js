@@ -18,12 +18,36 @@ const OnlineBankingRegistration = () => {
   }
 
   const handleSubmit = async (event) => {
+    event.preventDefault();
+    const valid = (inputs.loginPassword === inputs.confirmLoginPassword) &&
+      (inputs.transactionPassword === inputs.confirmTransactionPassword) &&
+      (inputs.loginPassword != inputs.transactionPassword);
 
+    if (!valid) {
+      window.alert("Entered details are not valid");
+    }
+    else {
+      axios.put("http://localhost:8090/netBankingRegistration", {
+        accountNumber: inputs.accountNumber,
+        userName: inputs.userName,
+        loginPassword: inputs.loginPassword,
+        transactionPassword: inputs.transactionPassword,
+        otp: inputs.otp,
+      }
+      ).then((response) => {
+        console.log(response);
+        alert("Welcome " + inputs.userName);
+        navigate("/login")
+      }, (error) => {
+        console.log("Failure.." + error);
+        alert("Account creation failed")
+      });
+    }
   }
 
   return (
     <div className='w-full flex flex-col'>
-      <div className="flex flex-col w-2/5 mt-8 self-center">
+      <div className="flex flex-col w-2/5 mt-3 self-center">
         <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-blue-500 pb-2">Internet Banking</h2>
         <form onSubmit={handleSubmit} className=''>
 
@@ -32,8 +56,17 @@ const OnlineBankingRegistration = () => {
             <label className="text-lg my-2">Account Number:
               <input
                 type="text"
-                name="account_no"
-                value={inputs.account_no || ""}
+                name="accountNumber"
+                value={inputs.accountNumber || ""}
+                onChange={handleChange}
+                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+              />
+            </label>
+            <label className="text-lg my-2">User Name:
+              <input
+                type="text"
+                name="userName"
+                value={inputs.userName || ""}
                 onChange={handleChange}
                 className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
               />
@@ -41,8 +74,8 @@ const OnlineBankingRegistration = () => {
             <label className="text-lg my-2">Set Login Password:
               <input
                 type="password"
-                name="login_password"
-                value={inputs.login_password || ""}
+                name="loginPassword"
+                value={inputs.loginPassword || ""}
                 onChange={handleChange}
                 className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
               />
@@ -50,8 +83,8 @@ const OnlineBankingRegistration = () => {
             <label className="text-lg my-2">Confirm Login Password:
               <input
                 type="password"
-                name="confirm_login_password"
-                value={inputs.confirm_login_password || ""}
+                name="confirmLoginPassword"
+                value={inputs.confirmLoginPassword || ""}
                 onChange={handleChange}
                 className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
               />
@@ -59,8 +92,8 @@ const OnlineBankingRegistration = () => {
             <label className="text-lg my-2">Set Transaction Password:
               <input
                 type="password"
-                name="transaction_password"
-                value={inputs.transaction_password || ""}
+                name="transactionPassword"
+                value={inputs.transactionPassword || ""}
                 onChange={handleChange}
                 className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
               />
@@ -68,8 +101,8 @@ const OnlineBankingRegistration = () => {
             <label className="text-lg my-2">Confirm Transaction Password:
               <input
                 type="password"
-                name="confirm_transaction_password"
-                value={inputs.confirm_transaction_password || ""}
+                name="confirmTransactionPassword"
+                value={inputs.confirmTransactionPassword || ""}
                 onChange={handleChange}
                 className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
               />

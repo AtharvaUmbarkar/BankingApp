@@ -6,10 +6,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.CustomerRepo;
+import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.LoginModel;
+import com.bankingapp.types.NetBankingModel;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class CustService {
@@ -23,7 +28,7 @@ public class CustService {
 		return obj;
 	}
 	
-	public String validateCustomer(LoginModel loginUser)
+	public Customer validateCustomer(LoginModel loginUser)
 	{
 		String result = "";
 		Customer cust = null;
@@ -31,25 +36,28 @@ public class CustService {
 		if (objt.isPresent())
 		{
 			cust = objt.get();
+			if (loginUser.getPassword().equals(cust.getLoginPassword())) {
+				return cust;
+			}
 		}
-//		Customer cust=custRepo.findById(u.getUsername()).get();
+		return null;
 		
-		if (cust==null)
-		{
-			result = "Invalid user";
-		}
-		else
-		{
-			if (loginUser.getPassword().equals(cust.getLoginPassword()))
-			{
-				result = "Login Success";
-			}
-			else
-			{
-				result = "Login Failed";
-			}
-		}
-		return result;
+//		if (cust==null)
+//		{
+//			result = "Invalid user"; 
+//		}
+//		else
+//		{
+//			if (loginUser.getPassword().equals(cust.getLoginPassword()))
+//			{
+//				result = "Login Success";
+//			}
+//			else
+//			{
+//				result = "Login Failed";
+//			}
+//		}
+//		return cust;
 	}
 	
 	public List<Integer> fetchAccounts(String username)
@@ -57,6 +65,63 @@ public class CustService {
 		Optional<Customer> obj = custRepo.findByUserName(username);
 		int custId = (obj.get()).getCustomerId();
 		return accRepo.findByAccountNumber(custId);
+	}
+	
+	@Transactional
+	public String netbankingreg(NetBankingModel nb)
+	{
+		String result = "";
+		if(nb.getLoginPassword().equals(nb.getTransactionPassword())) {
+			return result = "Login and Transaction password cannot be same";
+		}
+		Optional<Account> obj = accRepo.findById(nb.getAccountNumber());
+		if (obj.isPresent())
+		{
+			Customer cust = obj.get().getCustomer();
+
+			if (cust.isNetBankingEnabled())
+			{
+				result = "User already exists";
+			}
+			else
+			{
+				custRepo.setUserName(nb.getUserName(), nb.getLoginPassword(), nb.getTransactionPassword(), cust.getCustomerId());
+				result = "successfully registered for net banking";
+			}
+		}
+		else
+		{
+			result = "Account does not exist, Open an account first";
+		}
+		return result;
+	}
+	
+	@Transactional
+	public String changePassword(ChangePasswordModel obj, String userName) {
+		String result="";
+		Optional<Customer> optCust= custRepo.findByUserName(userName);
+		if(optCust.isPresent()) {
+			int rowsAffected;
+			if(obj.getPasswordType().equals("Login")) {
+				rowsAffected = custRepo.changeLoginPassword(obj.getPassword(), userName);
+			}
+			else if(obj.getPasswordType().equals("Transactional")){
+				rowsAffected = custRepo.changeTransactionPassword(obj.getPassword(), userName);
+			}
+			else {
+				return result = "Not a valid password type";
+			}
+			if(rowsAffected > 0) {
+				result = "Successfully changed the Password";
+			}
+			else {
+				result = "Failed to change the password";
+			}
+		}
+		else {
+			result = "Customer does not exist";
+		}
+		return result;
 	}
 
 }

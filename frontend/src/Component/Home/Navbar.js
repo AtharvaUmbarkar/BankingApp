@@ -22,7 +22,7 @@ const Navbar = () => {
 
   return (
     <header className="inset-x-0 top-0 z-50">
-      <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+      <nav className="flex items-center justify-between p-6 lg:px-8 shadow-md" aria-label="Global">
         <div className="flex lg:flex-1">
           <Link to='/' className="-m-1.5 p-1.5">
             <span className="sr-only">Banking App</span>
@@ -62,7 +62,7 @@ const Navbar = () => {
             Log in <span aria-hidden="true">&rarr;</span>
           </Link>
             :
-            <button type='button' className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
+            <button type='button' onClick={handleLogout} className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
               Log out
             </button>
           }

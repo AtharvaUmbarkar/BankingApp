@@ -11,8 +11,8 @@ import UserDashboard from './Component/User/UserDashboard'
 import { Toaster } from 'react-hot-toast';
 import Logout from './Component/Logout';
 import UserProfile from './Component/User/UserProfile';
-import SavingsAccountRegistration from './Component/User/SavingsAccountRegistration';
-import OnlineBankingRegistration from './Component/User/OnlineBankingRegistration';
+import SavingsAccountRegistration from './Component/Home/SavingsAccountRegistration';
+import OnlineBankingRegistration from './Component/Home/OnlineBankingRegistration';
 import Main from './Component/Home/Main';
 import AccountDashboard from './Component/Account/AccountDashboard';
 import AccountDetails from './Component/Account/AccountDetails';
@@ -21,12 +21,13 @@ import AccountTransaction from './Component/Account/AccountTransaction';
 import IMPS from './Component/Account/Transaction/IMPS';
 import NEFT from './Component/Account/Transaction/NEFT'
 import RTGS from './Component/Account/Transaction/RTGS'
+import Account from './Component/User/UserAccounts';
 import AddBeneficiary from './Component/Beneficiary/AddBeneficiary';
 import Beneficiaries from './Component/Beneficiary/Beneficiaries';
 import Withdraw from './Component/Account/Transaction/Withdraw';
 import Deposit from './Component/Account/Transaction/Deposit';
 import { UserContextProvider } from './Utilities/context/userContext';
-
+import UserAccounts from './Component/User/UserAccounts';
 
 function App() {
   /*const [inputs, setInputs] = useState({});
@@ -83,11 +84,12 @@ function App() {
         <Route path="/user" element={<UserDashboard />}>
           <Route index element={<Navigate to='profile' />} />
           <Route path='profile' index element={<UserProfile />} />
+          <Route path='account' index element={<UserAccounts />} />
           <Route path='addBeneficiary' element={<AddBeneficiary />} />
           <Route path='beneficiaries' element={<Beneficiaries />} />
         </Route>
 
-        <Route path='/account' element={<AccountDashboard />}>
+        <Route path='/account/:accountNumber' element={<AccountDashboard />}>
           <Route index element={<Navigate to='details' />} />
           <Route path='details' element={<AccountDetails />} />
           <Route path='statement' element={<AccountStatement />} />

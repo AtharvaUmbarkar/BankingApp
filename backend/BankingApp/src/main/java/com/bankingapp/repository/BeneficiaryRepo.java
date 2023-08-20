@@ -11,5 +11,5 @@ import com.bankingapp.models.Beneficiary;
 @Repository
 public interface BeneficiaryRepo extends JpaRepository<Beneficiary,Integer> {
 	@Query("SELECT b FROM Beneficiary b  WHERE b.customer.userName = ?1")
-	List<Beneficiary> getAllBeneficiaries(String username);
+	List<Beneficiary> getAllBeneficiaries(String userName);
 }

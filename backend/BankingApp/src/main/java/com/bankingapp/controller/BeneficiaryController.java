@@ -34,7 +34,7 @@ public class BeneficiaryController {
 	}
 	
 	@GetMapping("/getAllBeneficiaries")
-	public List<Beneficiary> getAllBeneficiary(@RequestParam String username){
-		return benService.getAllBeneficiaries(username);
+	public List<Beneficiary> getAllBeneficiary(@RequestParam String userName){
+		return benService.getAllBeneficiaries(userName);
 	}
 }

@@ -129,6 +129,7 @@ public class Customer {
 	@Column(name="login_password")
 	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String loginPassword;
+	
 	@Column(name="transaction_password")
 	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String transactionPassword;
@@ -158,8 +159,15 @@ public class Customer {
 	public List<Beneficiary> getBeneficiaries() {
 		return beneficiaries;
 	}
-	public void addBeneficiary(Beneficiary beneficiary) {
-		this.beneficiaries.add(beneficiary);
+	public void setBeneficiaries(List<Beneficiary> beneficiaries) {
+		this.beneficiaries = beneficiaries;
+	}
+//	@JsonIgnore
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 	public int getCustomerId() {
 		return customerId;
@@ -329,12 +337,14 @@ public class Customer {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	@JsonIgnore
 	public String getLoginPassword() {
 		return loginPassword;
 	}
 	public void setLoginPassword(String loginPassword) {
 		this.loginPassword = loginPassword;
 	}
+	@JsonIgnore
 	public String getTransactionPassword() {
 		return transactionPassword;
 	}

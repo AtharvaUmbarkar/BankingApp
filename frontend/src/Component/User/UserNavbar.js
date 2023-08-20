@@ -6,7 +6,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const navigation = [
     { name: 'Profile', to: '/user/profile' },
-    { name: 'Accounts', to: '/user/accounts' },
+    { name: 'Accounts', to: '/user/account' },
     { name: 'Beneficiaries', to: '/user/beneficiaries' },
 ]
 
@@ -28,7 +28,7 @@ const UserNavbar = () => {
 
     return (
         <header className=" inset-x-0 top-0 z-50 w-full">
-            <nav className="flex items-center justify-between p-6 lg:px-8 w-full" aria-label="Global">
+            <nav className="shadow-md flex items-center justify-between p-6 lg:px-8 w-full" aria-label="Global">
                 <div className="flex lg:flex-1">
                     <Link to='/' className="-m-1.5 p-1.5">
                         <span className="sr-only">Banking App</span>
@@ -58,7 +58,7 @@ const UserNavbar = () => {
                     ))}
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end flex-row ml-12">
-                    <button type='button' className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
+                    <button type='button' onClick={handleLogout} className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
                         Log out
                     </button>
                     <span aria-hidden="true">&rarr;</span>

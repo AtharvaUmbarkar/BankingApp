@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
+
+const CUSTOMER_DATA_URL = "http://localhost:8090/createFirstAccount";
 
 const SavingsAccountRegistration = () => {
+  const navigate = useNavigate()
   const [personalDetails, setPersonalDetails] = useState({
     title: "",
     firstName: "",
@@ -9,7 +14,7 @@ const SavingsAccountRegistration = () => {
     fatherName: "",
     mobileNumber: "",
     emailId: "",
-    aadharNumber: "",
+    aadhaarNumber: "",
     dateOfBirth: "",
   })
 
@@ -38,7 +43,7 @@ const SavingsAccountRegistration = () => {
   })
 
   const [sameAddress, setSameAddress] = useState(false);
-  const [debitCardEnabled, setDebitCard] = useState(false);
+  const [debitCardAvailed, setDebitCardAvailed] = useState(false);
   const [onlineBanking, setOnlineBanking] = useState(false);
   const [agree, setAgree] = useState(false);
 
@@ -66,14 +71,30 @@ const SavingsAccountRegistration = () => {
       permPincode: sameAddress ? residentialAddress.tempPincode : permanentAddress.permPincode,
     }
     const accountDetails = {
-      ...personalDetails,
-      ...residentialAddress,
-      ...permAddress,
-      ...occupationDetails,
-      debitCardEnabled,
-      netBankingEnabled: onlineBanking,
+      customer: {
+        ...personalDetails,
+        ...residentialAddress,
+        ...permAddress,
+        ...occupationDetails,
+      },
+      account: {
+        debitCardAvailed,
+        netBankingOpted: onlineBanking,
+        accountType: "Savings",
+      }
     }
-    console.log(accountDetails);
+    // console.log(accountDetails);
+
+    axios.post(CUSTOMER_DATA_URL, accountDetails
+    ).then((response) => {
+      console.log(response);
+      alert("Welcome " + personalDetails.firstName);
+      navigate("/online-banking-registration")
+    }, (error) => {
+      console.log("Failure.." + error);
+      alert("Account creation failed")
+    });
+
   }
 
   return (
@@ -152,11 +173,11 @@ const SavingsAccountRegistration = () => {
           />
         </label>
 
-        <label className=" my-2">Aadhar Number:
+        <label className=" my-2">Aadhaar Number:
           <input
             type="text"
-            name="aadharNumber"
-            value={personalDetails.aadharNumber}
+            name="aadhaarNumber"
+            value={personalDetails.aadhaarNumber}
             onChange={handlePersonalDetailsChange}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
@@ -359,9 +380,9 @@ const SavingsAccountRegistration = () => {
         <label className=" my-2">Want Debit Card:
           <input
             type="checkbox"
-            name="debitCardEnabled"
-            value={debitCardEnabled}
-            onChange={() => setDebitCard(!debitCardEnabled)}
+            name="debitCardAvailed"
+            value={debitCardAvailed}
+            onChange={() => setDebitCardAvailed(!debitCardAvailed)}
             className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
           />
         </label>

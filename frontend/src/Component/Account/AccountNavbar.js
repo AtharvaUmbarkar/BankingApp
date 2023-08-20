@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 
-const navigation = [
-    { name: 'Details', to: '/account/details' },
-    { name: 'Statement', to: '/account/statement' },
-    { name: 'Transaction', to: '/account/transaction' },
-]
 
 const AccountNavbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
+    const { accountNumber } = useParams();
+    const navigation = [
+        { name: 'Details', to: `/account/${accountNumber}/details` },
+        { name: 'Statement', to: `/account/${accountNumber}/statement` },
+        { name: 'Transaction', to: `/account/${accountNumber}/transaction` },
+    ]
 
     const handleLogout = () => {
         sessionStorage.removeItem('user');
@@ -20,15 +21,15 @@ const AccountNavbar = () => {
     }
 
     useEffect(() => {
-      if(!sessionStorage.getItem('user')) {
-        navigate('/');
-      }
+        if (!sessionStorage.getItem('user')) {
+            navigate('/');
+        }
     }, [])
-    
+
 
     return (
         <header className=" inset-x-0 top-0 z-50 w-full">
-            <nav className="flex items-center justify-between p-6 lg:px-8 w-full" aria-label="Global">
+            <nav className="shadow-md flex items-center justify-between p-6 lg:px-8 w-full" aria-label="Global">
                 <div className="flex lg:flex-1">
                     <Link to='/' className="-m-1.5 p-1.5">
                         <span className="sr-only">Banking App</span>
@@ -58,7 +59,7 @@ const AccountNavbar = () => {
                     ))}
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end flex-row ml-12">
-                    <button type='button' className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
+                    <button type='button' onClick={handleLogout} className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
                         Log out
                     </button>
                     <span aria-hidden="true">&rarr;</span>
