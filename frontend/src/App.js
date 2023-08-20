@@ -28,6 +28,7 @@ import Withdraw from './Component/Account/Transaction/Withdraw';
 import Deposit from './Component/Account/Transaction/Deposit';
 import { UserContextProvider } from './Utilities/context/userContext';
 import UserAccounts from './Component/User/UserAccounts';
+import AccountTransactionHistory from './Component/Account/AccountTransactionHistory';
 
 function App() {
   /*const [inputs, setInputs] = useState({});
@@ -93,6 +94,7 @@ function App() {
           <Route index element={<Navigate to='details' />} />
           <Route path='details' element={<AccountDetails />} />
           <Route path='statement' element={<AccountStatement />} />
+          <Route path='transactionHistory' element={<AccountTransactionHistory />} />
           <Route path='transaction' element={<AccountTransaction />} >
             <Route index element={<Navigate to='imps' />} />
             <Route path='imps' element={<IMPS />} />

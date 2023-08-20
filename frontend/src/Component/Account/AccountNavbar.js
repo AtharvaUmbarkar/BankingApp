@@ -13,6 +13,7 @@ const AccountNavbar = () => {
         { name: 'Details', to: `/account/${accountNumber}/details` },
         { name: 'Statement', to: `/account/${accountNumber}/statement` },
         { name: 'Transaction', to: `/account/${accountNumber}/transaction` },
+        { name: 'Transaction History', to: `/account/${accountNumber}/transactionHistory` },
     ]
 
     const handleLogout = () => {
