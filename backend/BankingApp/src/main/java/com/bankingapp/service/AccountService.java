@@ -45,9 +45,9 @@ public class AccountService {
 		if(!optObj.isPresent()) {
 			Account account = obj.getAccount();
 			account.setCustomer(customer);
-			customer.setAccount(Arrays.asList(account));
+			customer.setAccounts(Arrays.asList(account));
 			Customer new_cust = custRepo.save(customer);
-			result= String.format("successfully created customer with id: %d and account number: %d" , new_cust.getCustomerId(), new_cust.getAccount().get(0).getAccountNumber());
+			result= String.format("successfully created customer with id: %d and account number: %d" , new_cust.getCustomerId(), new_cust.getAccounts().get(0).getAccountNumber());
 		}
 		else{
 			Customer existingCust = optObj.get();
@@ -59,10 +59,10 @@ public class AccountService {
 //				customer.set
 				Account account = obj.getAccount();
 				account.setCustomer(customer);
-				existingCust.getAccount().add(account);
-				customer.setAccount(existingCust.getAccount());
+				existingCust.getAccounts().add(account);
+				customer.setAccounts(existingCust.getAccounts());
 				Customer new_cust = custRepo.save(customer);
-				result= String.format("successfully created account with account number: %d for customer id: %d" ,  new_cust.getAccount().get(new_cust.getAccount().size()-1).getAccountNumber(), new_cust.getCustomerId()); 
+				result= String.format("successfully created account with account number: %d for customer id: %d" ,  new_cust.getAccounts().get(new_cust.getAccounts().size()-1).getAccountNumber(), new_cust.getCustomerId()); 
 			
 			}
 		}

@@ -10,6 +10,9 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,7 +34,7 @@ public class Customer {
 	@NotBlank(message="cannot be blank")
 	private String title;
 	
-	@Column(name="first_name")
+	@Column(name="first_name", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String firstName;
 	
@@ -39,79 +42,80 @@ public class Customer {
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String middleName;
 	
-	@Column(name="last_name")
+	@Column(name="last_name", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String lastName;
 	
-	@Column(name="father_name")
+	@Column(name="father_name", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String fatherName;
 	
 	@Column(name="email_id")
 	private String emailId;
 	
-	@Column(name="dob")
+	
+	@Column(name="dob", nullable=false)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate dateOfBirth;
-	
-	@Column(name="mobile")
+	 
+	@Column(name="mobile", nullable=false)
 	@Pattern(regexp ="^\\d{10}$")
 //	@Length(min=10, max=10, message="mobile number must be of 10 digits")
 	private String mobileNumber;
 	
-	@Column(name="aadhaar", unique=true)
+	@Column(name="aadhaar", nullable=false, unique=true)
 	@Pattern(regexp="^[0-9]{12}$")
 	private String aadhaarNumber;
 	
-	@Column(name="temp_line1")
+	@Column(name="temp_line1", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempAddressLine1;
-	@Column(name="temp_line2")
+	@Column(name="temp_line2", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempAddressLine2;
 	@Column(name="temp_landmark")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempLandmark;
-	@Column(name="temp_state")
+	@Column(name="temp_state", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempState;
-	@Column(name="temp_city")
+	@Column(name="temp_city", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempCity;
-	@Column(name="temp_pincode")
+	@Column(name="temp_pincode", nullable=false)
 	@Pattern(regexp="^[0-9]{6}$", message="must be of 6 digits")
 	private String tempPincode;
 	
-	@Column(name="perm_line1")
+	@Column(name="perm_line1", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permAddressLine1;
-	@Column(name="perm_line2")
+	@Column(name="perm_line2", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permAddressLine2;
 	@Column(name="perm_landmark")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permLandmark;
-	@Column(name="perm_state")
+	@Column(name="perm_state", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permState;
-	@Column(name="perm_city")
+	@Column(name="perm_city", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permCity;
-	@Column(name="perm_pincode")
+	@Column(name="perm_pincode", nullable=false)
 	@Pattern(regexp="^[0-9]{6}$", message="must be of 6 digits")
 	private String permPincode;
 	
 	@Column(nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String occupation;
-	@Column(name="source_of_income")
+	@Column(name="source_of_income", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String sourceOfIncome;
-	@Column(name="gross_annual_income")
+	@Column(name="gross_annual_income", nullable=false)
 	@Range(min=0, message="must be non negative")
 	private int grossAnnualIncome;
 	
-	@Column(name="net_banking")
+	@Column(name="net_banking", nullable=false)
 	@Value("${some.key:false}")
 	private boolean netBankingEnabled;
 	
@@ -129,24 +133,29 @@ public class Customer {
 	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String transactionPassword;
 	
-	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private List<Account> account;
+	@JsonManagedReference
+	@JsonIgnore
+	@OneToMany(mappedBy="customer", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<Account> accounts;
 	
+	@JsonManagedReference
+	@JsonIgnore
 	@OneToMany(mappedBy="customer", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Beneficiary> beneficiaries;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@JsonManagedReference
+	@JsonIgnore
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="customer_id")
 	private List<Transaction> transactions;
 	
-	public List<Account> getAccount() {
-		return account;
+	public List<Account> getAccounts() {
+		return this.accounts;
 	}
-	public void setAccount(List<Account> account) {
-		this.account = account;
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
 	}
-	
-	public List<Beneficiary> getBeneficiary() {
+	public List<Beneficiary> getBeneficiaries() {
 		return beneficiaries;
 	}
 	public void addBeneficiary(Beneficiary beneficiary) {
