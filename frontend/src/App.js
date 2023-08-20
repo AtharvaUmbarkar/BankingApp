@@ -25,6 +25,8 @@ import AddBeneficiary from './Component/Beneficiary/AddBeneficiary';
 import Beneficiaries from './Component/Beneficiary/Beneficiaries';
 import Withdraw from './Component/Account/Transaction/Withdraw';
 import Deposit from './Component/Account/Transaction/Deposit';
+import { UserContextProvider } from './Utilities/context/userContext';
+
 
 function App() {
   /*const [inputs, setInputs] = useState({});
@@ -65,6 +67,7 @@ function App() {
  }
 */
   return (
+  <UserContextProvider>   
     <BrowserRouter>
       <Toaster />
       <Routes>
@@ -100,6 +103,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
+  </UserContextProvider>
   )
 }
 
