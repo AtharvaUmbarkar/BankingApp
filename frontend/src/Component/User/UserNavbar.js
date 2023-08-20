@@ -19,11 +19,11 @@ const UserNavbar = () => {
         navigate('/');
     }
 
-    useEffect(() => {
-      if(!sessionStorage.getItem('user')) {
-        navigate('/');
-      }
-    }, [])
+    // useEffect(() => {
+    //   if(!sessionStorage.getItem('user')) {
+    //     navigate('/');
+    //   }
+    // }, [])
     
 
     return (

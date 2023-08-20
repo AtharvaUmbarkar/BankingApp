@@ -1,15 +1,19 @@
 
-import React from 'react'
-import { useState } from "react"
+import React, { useContext } from 'react'
+import { useState, useEffect } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import { addBeneficiaryToCustomer } from '../../Utilities/api';
+import { UserContext } from '../../Utilities/context/userContext';
+import withAuthorization from '../../Utilities/context/withAuthorization';
+import { LOGIN } from '../../Utilities/routes';
 
 
+const condition = (authUser) => !authUser // User not logged in -> Redirect to Login
 
-const AddBeneficiary = () => {
-
+export default withAuthorization(condition, LOGIN)(() => {
   const [inputs, setInputs] = useState({});
-  const navigate = useNavigate()
+  const { username } = useContext(UserContext)
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -18,7 +22,7 @@ const AddBeneficiary = () => {
   }
 
   const handleSubmit = async (event) => {
-
+    await addBeneficiaryToCustomer()
   }
 
   return (
@@ -80,6 +84,6 @@ const AddBeneficiary = () => {
       </div>
     </div>
   )
-}
+})
 
-export default AddBeneficiary
+

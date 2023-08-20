@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Main from './Main'
 import { toast } from 'react-hot-toast'
+import { UserContext } from '../../Utilities/context/userContext'
 
 const Home = () => {
 
+    const { username } = useContext(UserContext)
 
     useEffect(() => {
-        let user = sessionStorage.getItem("user")
-        if(user) {
-            user = JSON.parse(user)
+        if(username) {
             setTimeout(() => {
-                toast.success(`Welcome ${user.username}`)
+                toast.success(`Welcome ${username}`)
             }, 1000)
         }
     })
