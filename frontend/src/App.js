@@ -29,45 +29,9 @@ import Deposit from './Component/Account/Transaction/Deposit';
 import { UserContextProvider } from './Utilities/context/userContext';
 import UserAccounts from './Component/User/UserAccounts';
 import AccountTransactionHistory from './Component/Account/AccountTransactionHistory';
+import ForgotPassword from './Component/Home/ForgotPassword';
 
 function App() {
-  /*const [inputs, setInputs] = useState({});
-
- const handleChange = (event) => {
-   const name = event.target.name;
-   const value = event.target.value;
-   setInputs(values => ({...values, [name]: value}))
- }
-
- const handleSubmit = async (event) => {
-   console.log(inputs)
-   event.preventDefault();
-   if(Object.keys(inputs).length == 4){
-     let allFieldsEntered = true;
-     Object.keys(inputs).map(field => {
-       if(!inputs[field]){
-         allFieldsEntered = false;
-       }
-     })
-     if(!allFieldsEntered){
-       return alert("All fields are mandatory!");
-     }
-     else{
-       alert(JSON.stringify(inputs));
-       console.log(inputs)
-       inputs["customer_phone"] = parseInt(inputs[["customer_phone"]])
-       inputs["customer_aadhar"] = parseInt(inputs[["customer_aadhar"]])
-         const res = await axios.post("http://localhost:8090/saveCustomer", JSON.stringify(inputs), {headers: {"Content-Type": "application/json"}})
-         if(res){
-             alert(JSON.stringify(res));
-           }
-       setInputs({})
-    }
-   } else{
-     return alert("All fields are mandatory!");
-   }
- }
-*/
   return (
   <UserContextProvider>   
     <BrowserRouter>
@@ -104,10 +68,33 @@ function App() {
             <Route path='deposit' element={<Deposit />} />
           </Route>
         </Route>
+          <Route exact path="/logout" element={<Logout />} />
 
-      </Routes>
-    </BrowserRouter>
-  </UserContextProvider>
+          <Route path="/user" element={<UserDashboard />}>
+            <Route index element={<Navigate to='profile' />} />
+            <Route path='profile' index element={<UserProfile />} />
+            <Route path='account' index element={<UserAccounts />} />
+            <Route path='addBeneficiary' element={<AddBeneficiary />} />
+            <Route path='beneficiaries' element={<Beneficiaries />} />
+          </Route>
+
+          <Route path='/account/:accountNumber' element={<AccountDashboard />}>
+            <Route index element={<Navigate to='details' />} />
+            <Route path='details' element={<AccountDetails />} />
+            <Route path='statement' element={<AccountStatement />} />
+            <Route path='transaction' element={<AccountTransaction />} >
+              <Route index element={<Navigate to='imps' />} />
+              <Route path='imps' element={<IMPS />} />
+              <Route path='neft' element={<NEFT />} />
+              <Route path='rtgs' element={<RTGS />} />
+              <Route path='withdraw' element={<Withdraw />} />
+              <Route path='deposit' element={<Deposit />} />
+            </Route>
+          </Route>
+
+        </Routes>
+      </BrowserRouter>
+    </UserContextProvider>
   )
 }
 

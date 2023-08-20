@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Listbox } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
+import axios from 'axios'
 
 const transactionTypes = [
   'imps',
@@ -14,11 +15,27 @@ const transactionTypes = [
 const AccountTransaction = () => {
   const [type, setType] = useState(transactionTypes[0]);
   const navigate = useNavigate();
+  const [beneficiaries, setBeneficiaries] = useState([])
+  const userName = JSON.parse(sessionStorage.getItem("user"));
 
   const handleChange = (t) => {
     navigate(t)
     setType(t);
   }
+
+  useEffect(() => {
+    console.log(userName);
+    axios.get("http://localhost:8090/getAllBeneficiaries", { params: { userName: userName.username } }).then(
+      (response) => {
+        setBeneficiaries(response.data)
+      }
+    ).catch(
+      (errors) => {
+        console.log(errors);
+      }
+    );
+  }, [])
+
 
   return (
     <div className='w-full flex flex-col items-center'>
@@ -42,7 +59,7 @@ const AccountTransaction = () => {
             ))}
           </Listbox.Options>
         </Listbox>
-        <Outlet />
+        <Outlet context={[beneficiaries]} />
       </div>
     </div>
   )

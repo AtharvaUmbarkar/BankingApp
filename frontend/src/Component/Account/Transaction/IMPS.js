@@ -74,10 +74,10 @@ export default withAuthorization (condition, LOGIN)(() => {
 
       <label className=" my-2">Sender Account Number:
         <input
+          disabled
           type="text"
           name="senderAccount"
           value={transactionDetails.senderAccount}
-          disabled
           className="border rounded-md pl-3 pr-10 disabled:border-slate-500 disabled:bg-slate-50 disabled:text-slate-500 p-1.5 mt-1 mb-3"
         />
       </label>
