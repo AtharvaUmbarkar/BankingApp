@@ -2,24 +2,9 @@ import React, { useContext } from 'react'
 import axios from "axios"
 import { UserContext } from '../../Utilities/context/userContext'
 
-
-const userData = {
-  title: "Miss",
-  firstName: "Shradha",
-  middleName: "Manoj",
-  lastName: "Kumavat",
-  fatherName: "Manoj",
-  mobileNumber: "7058774805",
-  emailId: "shradha.kumavat@cumminscollege.in",
-  aadhaarNumber: "523412341234",
-  dateOfBirth: "13/10/2001"
-}
-
-
-
 const UserProfile = () => {
   const { user } = useContext(UserContext)
-  console.log(user);
+  // console.log(user);
   return (
     <div className='w-full p-8'>
       <div className='w-1/3 flex flex-col mx-auto items-center'>
