@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
@@ -76,5 +77,21 @@ public class AccountService {
 		else
 			return null;
 	}	
+	
+	@Transactional
+	public boolean toggleActivation(long acntNo) throws ResourceNotFoundException {
+		Optional<Account> obj = accountRepo.findById(acntNo);
+		if(obj.isPresent()) {
+			Account acnt = obj.get(); 
+			int rowsAffected = accountRepo.toggleActivation(!acnt.isActive(), acntNo);
+			if(rowsAffected > 0)
+				return true;
+			else
+				return false;
+		}
+		else {
+			throw new ResourceNotFoundException("Invalid Account Number");
+		}
+	}
 	
 }

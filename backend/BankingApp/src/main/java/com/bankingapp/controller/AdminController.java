@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.exception.NoDataFoundException;
+import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.models.Account;
 import com.bankingapp.models.Admin;
 import com.bankingapp.models.Customer;
+import com.bankingapp.service.AccountService;
 import com.bankingapp.service.AdminService;
 import com.bankingapp.service.CustService;
 import com.bankingapp.types.ChangePasswordModel;
@@ -29,6 +32,8 @@ import com.bankingapp.types.NetBankingModel;
 public class AdminController {
 	@Autowired
 	AdminService adminService;
+	@Autowired
+	AccountService acntService;
 	
 	
 	@PostMapping("/LoginAdmin")
@@ -48,6 +53,9 @@ public class AdminController {
 		return adminService.allCustomers();
 	}
 	
-//	@PutMapping("toggle/Activation")
+	@PutMapping("toggle/Activation")
+	public boolean toggleActivation(@RequestParam("acntNo") long acntNo) throws ResourceNotFoundException {
+		return acntService.toggleActivation(acntNo);
+	}
 
 }
