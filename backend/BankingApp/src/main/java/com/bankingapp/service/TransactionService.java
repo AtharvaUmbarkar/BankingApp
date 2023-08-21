@@ -1,6 +1,5 @@
 package com.bankingapp.service;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,13 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bankingapp.models.Account;
-import com.bankingapp.models.Customer;
 import com.bankingapp.models.Transaction;
 import com.bankingapp.repository.AccountRepo;
-import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.repository.TransactionRepo;
 import com.bankingapp.types.TransactionModel;
 
@@ -219,7 +215,7 @@ public class TransactionService {
 		return transRepo.getLatestTransactionForAccount(accountNumber);
 	}
 	
-	public List<Object[]> getAccountStatement(long accountNumber, int month, int year){
-		return transRepo.getAccountStatementForMonthAndYear(accountNumber, month, year);
+	public List<Object[]> getAccountStatement(long accountNumber, Date from, Date to){
+		return transRepo.getAccountStatement(accountNumber, from, to);
 	}
 }
