@@ -43,3 +43,20 @@ export const getStatement = async (accountNumber, from, to) => {
     const response = await axios.get(`${API_URL}/getAccountStatement?accountNumber=${accountNumber}&from=${from}&to=${to}`)
     return response;
 }
+
+export const getAllCustomers = async () => {
+    const response = await axios.get(`${API_URL}/fetch/AllCustomers`)
+    return response;
+}
+
+export const getCustomerDetails = async (id) => {
+    const response = await axios.get(`${API_URL}/fetchUser?customerId=${id}`)
+    return response;
+}
+
+export const getCustomerAccounts = async (username) => {
+    const response = await axios.get(`${API_URL}/fetchAccounts/${username}`)
+    return response;
+}
+
+
