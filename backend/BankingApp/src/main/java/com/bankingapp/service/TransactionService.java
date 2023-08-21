@@ -7,8 +7,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
@@ -175,10 +179,8 @@ public class TransactionService {
 	}
 	
 	@Transactional
-	public String fundTransfer(TransactionModel transactionModel)
+	public ResponseEntity<String> fundTransfer(TransactionModel transactionModel)
 	{
-		String result="";
-		
 			Optional<Account> obj1 = accountRepo.findById(transactionModel.getSenderAccountNumber());
 			Optional<Account> obj2 = accountRepo.findById(transactionModel.getReceiverAccountNumber());
 			if(obj1.isPresent() && obj2.isPresent()) {
@@ -189,7 +191,7 @@ public class TransactionService {
 				double senderNewBalance = senderAccount.getAccountBalance() - transaction.getTxnAmount();
 				double receiverNewBalance = receiverAccount.getAccountBalance() + transaction.getTxnAmount();
 				if(senderNewBalance < 0.00d) {
-					result="Insufficient balance";
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance");
 				}
 				else {
 					int rowsAffected1 = accountRepo.updateBalance(senderNewBalance, senderAccount.getAccountNumber());
@@ -201,18 +203,23 @@ public class TransactionService {
 						transaction.setReceiverBalance(receiverNewBalance);
 						transaction.setTxnStatus("Successful");
 						transRepo.save(transaction);
-						result = "Transaction is successful with transaction id: " + transaction.getTxnId();
+						return ResponseEntity.status(HttpStatus.OK).body("Transaction is successful with transaction id: " + transaction.getTxnId());	
 					}
 					else {
-						result = "unable to process the request";
+						return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unable to process the request!");
 					}
 				}
 			}
 			else {
-				result = "sender's or receiver's account doesn't exist";
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sender's or receiver's account doesn't exist");
 			}
-		
-		
-		return result;
+	}
+	
+	public List<Object[]> getLatestTransactions(long accountNumber){
+		return transRepo.getLatestTransactionForAccount(accountNumber);
+	}
+	
+	public List<Object[]> getAccountStatement(long accountNumber, int month, int year){
+		return transRepo.getAccountStatementForMonthAndYear(accountNumber, month, year);
 	}
 }

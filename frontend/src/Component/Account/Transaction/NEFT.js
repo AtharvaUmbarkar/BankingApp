@@ -1,16 +1,11 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-
-const benificiaries = [
-  { name: 'Jayant', account: '12345678' },
-  { name: 'Atharva', account: '12345678' },
-  { name: 'Shradha', account: '12345678' },
-  { name: 'Mukesh', account: '12345678' },
-]
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
+import axios from 'axios'
 
 const NEFT = () => {
+  const { accountNumber } = useParams();
   const [transactionDetails, setTransactionDetails] = useState({
-    senderAccount: "",
+    senderAccount: accountNumber,
     receiverAccount: "",
     txnAmount: 0,
     // txnDate: new Date(),
@@ -18,6 +13,7 @@ const NEFT = () => {
   })
 
   const navigate = useNavigate();
+  const [beneficiaries] = useOutletContext();
 
   const handleChange = (e) => {
     setTransactionDetails((transactionDetails) =>
@@ -26,9 +22,20 @@ const NEFT = () => {
     // console.log(transactionDetails);
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(transactionDetails);
+    const response = await axios.post("http://localhost:8090/save/fundTransfer", {
+      "transaction": {
+        "txnType": "NEFT",
+        "txnAmount": transactionDetails.txnAmount,
+        "userRemarks": transactionDetails.userRemarks,
+      },
+      "receiverAccountNumber": transactionDetails.receiverAccount,
+      "senderAccountNumber": transactionDetails.senderAccount,
+    }, {
+      headers: { "Content-Type": "application/json" }
+    });
+    window.alert(response.data)
   }
 
   return (
@@ -37,6 +44,7 @@ const NEFT = () => {
 
       <label className=" my-2">Sender Account Number:
         <input
+          disabled
           type="text"
           name="senderAccount"
           value={transactionDetails.senderAccount}
@@ -52,13 +60,13 @@ const NEFT = () => {
           className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-1 w-full"
         >
           <option className='w-full' value={""} ></option>
-          {benificiaries.map((b, i) => {
+          {beneficiaries.map((b, i) => {
             return <option key={i} className='w-full' value={b.account} >{b.name + " " + b.account}</option>
           })}
         </select>
       </label>
 
-      <button type='button' to='/user/benificiaries' onClick={() => navigate('/user/benificiaries')} className='p-1.5 mt-0.5 mb-3 w-full bg-blue-600 text-white'>ADD NEW</button>
+      <button type='button' to='/user/beneficiaries' onClick={() => navigate('/user/beneficiaries')} className='p-1.5 mt-0.5 mb-3 w-full bg-blue-600 text-white'>ADD NEW</button>
 
       <label className="w-full my-2">Amount
         <input

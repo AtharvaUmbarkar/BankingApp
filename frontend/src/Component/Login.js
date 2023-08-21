@@ -22,10 +22,10 @@ export default withAuthorization(condition, HOME)(() => {
       if(username && password){
           const response = await loginUser({username, password})
           if(response){
-              if(response.data == "Login Success"){
+              if(response.data.aadhaarNumber){
                   const toastId = toast.loading("Logging you in...")
                   setTimeout(() => {
-                      setUsernameInContext(username)
+                      setUsernameInContext(response.data)
                       toast.dismiss(toastId)
                       navigate("/")
                   }, 1000)
@@ -80,7 +80,7 @@ export default withAuthorization(condition, HOME)(() => {
                 Password
               </label>
               <div className="text-sm">
-                <Link to="/" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                <Link to="/forgot-password" className="font-semibold text-indigo-600 hover:text-indigo-500">
                   Forgot password?
                 </Link>
               </div>

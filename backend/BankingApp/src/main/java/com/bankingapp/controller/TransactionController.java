@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-//import org.hibernate.mapping.List;
+import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,10 +38,21 @@ public class TransactionController
 	}
 	
 	@PostMapping("/save/fundTransfer")
-	public String fundTransfer(@RequestBody TransactionModel transactionModel)
+	public ResponseEntity<String> fundTransfer(@RequestBody TransactionModel transactionModel)
 	{
 		return tService.fundTransfer(transactionModel);
 	}
+	
+	@GetMapping("/getLatestTransactions")
+	public ResponseEntity<List<Object[]>> getLatestTransactions(@RequestParam long accountNumber){
+		return new ResponseEntity<>(tService.getLatestTransactions(accountNumber), HttpStatus.OK);
+	}
+	
+	@GetMapping("/getAccountStatement")
+	public ResponseEntity<List<Object[]>> getAccountStatement(@RequestParam long accountNumber, @RequestParam int month, @RequestParam int year){
+		return new ResponseEntity<>(tService.getAccountStatement(accountNumber, month, year), HttpStatus.OK);
+	}
+	
 	
 	@GetMapping("/getAllTransactions")
 	public List<Transaction> getAllTransactions(@RequestParam long accountNo){

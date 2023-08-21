@@ -122,6 +122,4 @@ const changeToDate = (event) => {
   </div>
 
   )
-}
-
-export default AccountStatement
+})

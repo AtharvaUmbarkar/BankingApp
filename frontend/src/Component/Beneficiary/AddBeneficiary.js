@@ -7,6 +7,7 @@ import { addBeneficiaryToCustomer } from '../../Utilities/api';
 import { UserContext } from '../../Utilities/context/userContext';
 import withAuthorization from '../../Utilities/context/withAuthorization';
 import { LOGIN } from '../../Utilities/routes';
+import { toast } from 'react-hot-toast';
 
 
 const condition = (authUser) => !authUser // User not logged in -> Redirect to Login
@@ -22,7 +23,12 @@ export default withAuthorization(condition, LOGIN)(() => {
   }
 
   const handleSubmit = async (event) => {
-    await addBeneficiaryToCustomer()
+    event.preventDefault();
+    const response = await addBeneficiaryToCustomer(inputs, username)
+    if(response){
+      toast.success("Beneficiary added!")
+      setInputs({})
+    }
   }
 
   return (

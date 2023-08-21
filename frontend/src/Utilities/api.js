@@ -12,14 +12,34 @@ export const loginUser = async (userCredentials) => {
 }
 
 export const getAllBeneficiaries = async (currentUsername) => {
-    const response = await axios.get(`${API_URL}/getAllBeneficiaries?username=${currentUsername}`)
+    const response = await axios.get(`${API_URL}/getAllBeneficiaries?userName=${currentUsername}`)
     return response;
 }
 
-export const addBeneficiaryToCustomer = async (beneficiary) => {
-    const response = await axios.post(`${API_URL}/save/beneficiary}`, JSON.stringify(beneficiary), {
+export const addBeneficiaryToCustomer = async (beneficiary, userName) => {
+    const response = await axios.post(`${API_URL}/save/beneficiary?userName=${userName}`, JSON.stringify(beneficiary), {
         headers: {
             "Content-Type": "application/json"
         }
     })
+    return response
+}
+
+export const makeFundTransfer = async (transactionDetails) => {
+    const response = await axios.post(`${API_URL}/save/fundTransfer`, JSON.stringify(transactionDetails), {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    return response
+}
+
+export const getLatestTransactions = async (accountNumber) => {
+    const response = await axios.get(`${API_URL}/getLatestTransactions?accountNumber=${accountNumber}`)
+    return response;
+}
+
+export const getStatement = async (accountNumber, month, year) => {
+    const response = await axios.get(`${API_URL}/getAccountStatement?accountNumber=${accountNumber}&month=${month}&year=${year}`)
+    return response;
 }
