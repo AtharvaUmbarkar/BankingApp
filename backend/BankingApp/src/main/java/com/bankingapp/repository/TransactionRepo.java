@@ -9,8 +9,4 @@ import org.springframework.data.jpa.repository.Query;
 import com.bankingapp.models.Transaction;
 
 public interface TransactionRepo extends JpaRepository<Transaction, Integer>{
-	
-	//********** Code added for getting list of transactions of a account
-	//@Query("SELECT t FROM Transaction t WHERE t.senderAccount.accountNumber = ?1")
-	//List<Transaction> getAllTransactions(long accountNumber);
 }

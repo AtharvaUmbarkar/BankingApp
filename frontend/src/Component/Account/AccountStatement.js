@@ -48,7 +48,17 @@ const changeFromDate = (event) => {
   setFromDate(event.target.value)
 }
 const changeToDate = (event) => {
-  setToDate(event.target.value)
+  alert(" "+event.target.value.localeCompare(fromDate))
+  if(event.target.value.localeCompare(fromDate) < 0)
+  {
+    alert("To-Date cant not be older than From-Date");
+    setToDate("");
+  }
+  else
+  {
+    setToDate(event.target.value)
+  }
+  
 }
 
   return (

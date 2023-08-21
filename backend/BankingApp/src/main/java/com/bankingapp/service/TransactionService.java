@@ -50,31 +50,36 @@ public class TransactionService {
 		if(obj.isPresent()) {
 			
 			List<Transaction> txns = new ArrayList<Transaction>();
+			
 			try
 			{
 				for(Transaction t:obj.get().getDebitTransactions())
 				{
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(t.getTxnDate());
+					String month = "";
+					if((cal.get(Calendar.MONTH)+1) < 10)
+					{
+						month = "0"+(cal.get(Calendar.MONTH)+1);
+					}
+					else
+					{
+						month = ""+(cal.get(Calendar.MONTH)+1);
+					}
+					String txnDt = ""+cal.get(Calendar.YEAR)+"-"+month+"-"+cal.get(Calendar.DAY_OF_MONTH);
+					System.out.println("DT : "+txnDt);
 					if(fromDt.equals(toDt)) {
 						//System.out.println("Dates are same : "+fromDt);
-						Calendar cal = Calendar.getInstance();
-						cal.setTime(t.getTxnDate());
-						String month = "";
-						if((cal.get(Calendar.MONTH)+1) < 10)
-						{
-							month = "0"+(cal.get(Calendar.MONTH)+1);
-						}
-						else
-						{
-							month = ""+(cal.get(Calendar.MONTH)+1);
-						}
-						String txnDt = ""+cal.get(Calendar.YEAR)+"-"+month+"-"+cal.get(Calendar.DAY_OF_MONTH);
+						
 						//System.out.println("Transaction date : "+txnDt);
 						if(txnDt.equals(fromDt)) {
 							txns.add(t);
 						}
 					}
-					else if(t.getTxnDate().compareTo(format.parse(fromDt))>0 && t.getTxnDate().compareTo(format.parse(toDt))>0)
+					//else if(t.getTxnDate().compareTo(format.parse(fromDt))>0 && t.getTxnDate().compareTo(format.parse(toDt))>0)
+					else if(txnDt.compareTo(fromDt)>=0 && txnDt.compareTo(toDt)<=0)
 					{
+						System.out.println("Transaction date : "+t.getTxnDate()+" from : "+fromDt);
 						txns.add(t);
 					}
 				}
