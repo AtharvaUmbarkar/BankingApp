@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bankingapp.exception.InsufficientBalanceException;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.models.Transaction;
@@ -106,7 +107,7 @@ public class TransactionService {
 	
 	
 	@Transactional
-	public String withdraw(TransactionModel transactionModel)
+	public String withdraw(TransactionModel transactionModel) throws InsufficientBalanceException
 	{
 		String result="";
 		long accountNumber = transactionModel.getSenderAccountNumber();
@@ -121,7 +122,7 @@ public class TransactionService {
 				//acnt.setAccountBalance(100000);
 				double new_balance = acnt.getAccountBalance() - transaction.getTxnAmount();
 				if(new_balance < 0.00d) {
-					result="Insufficient balance";
+					throw new InsufficientBalanceException("Insufficient Balance");
 				}
 				else {
 					int rowsAffected = accountRepo.updateBalance(new_balance, accountNumber);
