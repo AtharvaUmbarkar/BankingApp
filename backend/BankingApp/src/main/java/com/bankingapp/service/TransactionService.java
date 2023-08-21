@@ -1,5 +1,10 @@
 package com.bankingapp.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,8 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bankingapp.models.Account;
+import com.bankingapp.models.Customer;
 import com.bankingapp.models.Transaction;
 import com.bankingapp.repository.AccountRepo;
+import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.repository.TransactionRepo;
 import com.bankingapp.types.TransactionModel;
 
@@ -23,6 +30,80 @@ public class TransactionService {
 	TransactionRepo transRepo;
 	@Autowired
 	AccountRepo accountRepo;
+	
+	
+	//********** Code added for getting list of transactions of a account
+	public List<Transaction> getAllTransactions(long accountNo)
+	{
+		Optional<Account> obj = accountRepo.findById(accountNo);
+		if(obj.isPresent()) {
+			return obj.get().getDebitTransactions();
+		}
+		else
+		{
+			return List.of();
+		}
+	}
+	
+	
+	
+	public List<Transaction> getStatementTransactions(long accountNo, String fromDt, String toDt)
+	{
+		Optional<Account> obj = accountRepo.findById(accountNo);
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		if(obj.isPresent()) {
+			
+			List<Transaction> txns = new ArrayList<Transaction>();
+			
+			try
+			{
+				for(Transaction t:obj.get().getDebitTransactions())
+				{
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(t.getTxnDate());
+					String month = "";
+					if((cal.get(Calendar.MONTH)+1) < 10)
+					{
+						month = "0"+(cal.get(Calendar.MONTH)+1);
+					}
+					else
+					{
+						month = ""+(cal.get(Calendar.MONTH)+1);
+					}
+					String txnDt = ""+cal.get(Calendar.YEAR)+"-"+month+"-"+cal.get(Calendar.DAY_OF_MONTH);
+					System.out.println("DT : "+txnDt);
+					if(fromDt.equals(toDt)) {
+						//System.out.println("Dates are same : "+fromDt);
+						
+						//System.out.println("Transaction date : "+txnDt);
+						if(txnDt.equals(fromDt)) {
+							txns.add(t);
+						}
+					}
+					//else if(t.getTxnDate().compareTo(format.parse(fromDt))>0 && t.getTxnDate().compareTo(format.parse(toDt))>0)
+					else if(txnDt.compareTo(fromDt)>=0 && txnDt.compareTo(toDt)<=0)
+					{
+						System.out.println("Transaction date : "+t.getTxnDate()+" from : "+fromDt);
+						txns.add(t);
+					}
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("Exception ......");
+			}
+			return txns;
+		}
+		else
+		{
+			return List.of();
+		}
+	}
+	
+	//*******************************
+	
+	
+	
 	
 	@Transactional
 	public String withdraw(TransactionModel transactionModel)

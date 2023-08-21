@@ -43,8 +43,8 @@ class TestCustomerController {
 		login.setPassword("smk@123456");
 		
 		//Test login with valid credentials
-		Mockito.when(customerService.validateCustomer(login)
-				).thenReturn("Login Success");
+		/*Mockito.when(customerService.validateCustomer(login)
+				).thenReturn("Login Success");*/
 		
 		System.out.println("Testing login unit....");
 		
