@@ -8,6 +8,7 @@ const navigation = [
     { name: 'Profile', to: '/user/profile' },
     { name: 'Accounts', to: '/user/account' },
     { name: 'Beneficiaries', to: '/user/beneficiaries' },
+    { name: 'Add Beneficiary', to: '/user/addBeneficiary' },
 ]
 
 const UserNavbar = () => {
