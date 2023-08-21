@@ -1,5 +1,6 @@
 package com.bankingapp.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,14 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
 	@Modifying
 	@Query("update Customer c set c.transactionPassword = ?1 where c.userName = ?2")
 	public int changeTransactionPassword(String password, String userName);
+	
+	@Modifying
+	@Query("update Customer c set c.lastLogin = ?1 where c.userName = ?2")
+	public int changeLastLogin(Date date, String userName);
+	
+	@Modifying
+	@Query("update Customer c set c.userName = ?1 where c.aadhaarNumber = ?2")
+	public int changeUserName(String userName, String aadhaarNumber);
 
 }
 

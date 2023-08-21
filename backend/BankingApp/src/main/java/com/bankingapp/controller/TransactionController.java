@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bankingapp.exception.InsufficientBalanceException;
 import com.bankingapp.models.Transaction;
 import com.bankingapp.service.TransactionService;
 import com.bankingapp.types.TransactionModel;
@@ -26,7 +27,7 @@ public class TransactionController
 	@Autowired
 	TransactionService tService;
 	@PostMapping("/save/withdraw")
-	public String withdraw(@RequestBody TransactionModel transactionModel)
+	public String withdraw(@RequestBody TransactionModel transactionModel) throws InsufficientBalanceException
 	{
 		return tService.withdraw(transactionModel);
 	}
