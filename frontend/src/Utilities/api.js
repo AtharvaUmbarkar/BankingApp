@@ -2,13 +2,23 @@ import axios from "axios";
 import { API_URL } from "./constants";
 
 
-export const loginUser = async (userCredentials) => {
-    const response = await axios.post(`${API_URL}/Login`, JSON.stringify(userCredentials), {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    return response;
+export const loginUser = async (userCredentials, admin) => {
+    if (!admin) {
+        const response = await axios.post(`${API_URL}/Login`, JSON.stringify(userCredentials), {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        return response;
+    }
+    else {
+        const response = await axios.post(`${API_URL}/LoginAdmin`, JSON.stringify(userCredentials), {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        return response;
+    }
 }
 
 export const getAllBeneficiaries = async (currentUsername) => {
