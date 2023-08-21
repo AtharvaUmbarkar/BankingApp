@@ -44,7 +44,7 @@ public class Account {
 //	@Value("${some.key:2023-08-14T01:30:00.000-05:00}")
 	@CreatedDate
 	private Date accountCreationDate =  new Date();
-	private boolean netBankingOpted; //need to be removed
+	private boolean active; //need to be removed
 	private boolean debitCardAvailed;
 	
 	public boolean isDebitCardAvailed() {
@@ -122,11 +122,11 @@ public class Account {
 	public void setAccountCreationDate(Date accountCreationDate) {
 		this.accountCreationDate = accountCreationDate;
 	}
-	public boolean isNetBankingOpted() {
-		return netBankingOpted;
+	public boolean isActive() {
+		return active;
 	}
-	public void setNetBankingOpted(boolean netBankingOpted) {
-		this.netBankingOpted = netBankingOpted;
+	public void setActive(boolean netBankingOpted) {
+		this.active = netBankingOpted;
 	}
 	
 	
