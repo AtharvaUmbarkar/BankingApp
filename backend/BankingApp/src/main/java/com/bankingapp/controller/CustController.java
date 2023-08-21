@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bankingapp.models.Customer;
 import com.bankingapp.service.CustService;
 import com.bankingapp.types.ChangePasswordModel;
+import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
 
@@ -26,6 +27,7 @@ public class CustController {
 	@Autowired
 	CustService custService;
 	
+	//no longer needed
 	@PostMapping("/saveCustomer")
 	public Customer saveCustomer(@RequestBody Customer cust)
 	{
@@ -73,5 +75,20 @@ public class CustController {
 		return custService.changePassword(obj, userName);
 	}
 	
+	@PutMapping("/forgotUserName")
+	public String changeUserName(@RequestBody ChangeUserNameModel obj) {
+		return custService.changeUserName(obj);
+	}
+	
+	@GetMapping("/fetchUser")
+	public ResponseEntity<Object> fetchUser(@RequestParam("customerId") int custId){
+		Customer cust = custService.fetchUser(custId);
+		if(cust == null) {
+			return new ResponseEntity<>("Invalid Customer ID", HttpStatus.NOT_FOUND);
+		}
+		else {
+			return new ResponseEntity<>(cust, HttpStatus.OK);
+		}
+	}
 
 }

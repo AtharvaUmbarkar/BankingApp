@@ -18,16 +18,24 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Customer {
 	@Id
-	@GeneratedValue
+//	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="customer_generator")
+	@SequenceGenerator(
+			name="customer_generator",
+			sequenceName = "custmer_seq",
+			initialValue=10000000,
+			allocationSize=1)
 	private int customerId;
 	
 	@Column(nullable=false)
@@ -50,7 +58,7 @@ public class Customer {
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String fatherName;
 	
-	@Column(name="email_id")
+	@Column(name="email_id", unique=true)
 	private String emailId;
 	
 	
@@ -58,7 +66,7 @@ public class Customer {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate dateOfBirth;
 	 
-	@Column(name="mobile", nullable=false)
+	@Column(name="mobile", nullable=false, unique=true)
 	@Pattern(regexp ="^\\d{10}$")
 //	@Length(min=10, max=10, message="mobile number must be of 10 digits")
 	private String mobileNumber;
@@ -136,12 +144,12 @@ public class Customer {
 	
 	@JsonManagedReference
 	@JsonIgnore
-	@OneToMany(mappedBy="customer", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Account> accounts;
 	
 	@JsonManagedReference
 	@JsonIgnore
-	@OneToMany(mappedBy="customer", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Beneficiary> beneficiaries;
 	
 	@JsonManagedReference

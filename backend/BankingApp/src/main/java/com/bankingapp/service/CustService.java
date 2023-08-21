@@ -1,5 +1,6 @@
 package com.bankingapp.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.types.ChangePasswordModel;
+import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
 
@@ -28,6 +30,7 @@ public class CustService {
 		return obj;
 	}
 	
+	@Transactional
 	public Customer validateCustomer(LoginModel loginUser)
 	{
 		String result = "";
@@ -37,6 +40,7 @@ public class CustService {
 		{
 			cust = objt.get();
 			if (loginUser.getPassword().equals(cust.getLoginPassword())) {
+				custRepo.changeLastLogin(new Date(),loginUser.getUsername());
 				return cust;
 			}
 		}
@@ -122,6 +126,27 @@ public class CustService {
 			result = "Customer does not exist";
 		}
 		return result;
+	}
+	
+	@Transactional
+	public String changeUserName(ChangeUserNameModel obj) {
+		Optional<Customer> optCust = custRepo.findByAadhaarNumber(obj.getAadhaarNumber());
+		if(optCust.isPresent()) {
+			Optional<Customer> checkCust = custRepo.findByUserName(obj.getUserName());
+			if(checkCust.isPresent())
+				return "username is already taken";
+			custRepo.changeUserName(obj.getUserName(), obj.getAadhaarNumber());
+			return "successful";
+		}
+		return "User with given aadhaaar number doesn't exist";
+	}
+	
+	public Customer fetchUser(int custId) {
+		Customer cust = null;
+		Optional<Customer> obj = custRepo.findById(custId);
+		if(obj.isPresent())
+			cust = obj.get();
+		return cust;
 	}
 
 }
