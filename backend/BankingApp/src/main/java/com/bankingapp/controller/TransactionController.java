@@ -1,11 +1,11 @@
 package com.bankingapp.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 //import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -50,8 +50,8 @@ public class TransactionController
 	}
 	
 	@GetMapping("/getAccountStatement")
-	public ResponseEntity<List<Object[]>> getAccountStatement(@RequestParam long accountNumber, @RequestParam int month, @RequestParam int year){
-		return new ResponseEntity<>(tService.getAccountStatement(accountNumber, month, year), HttpStatus.OK);
+	public ResponseEntity<List<Object[]>> getAccountStatement(@RequestParam long accountNumber, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date to){
+		return new ResponseEntity<>(tService.getAccountStatement(accountNumber, from, to), HttpStatus.OK);
 	}
 	
 	

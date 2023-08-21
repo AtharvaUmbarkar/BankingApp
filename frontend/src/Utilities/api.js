@@ -39,7 +39,7 @@ export const getLatestTransactions = async (accountNumber) => {
     return response;
 }
 
-export const getStatement = async (accountNumber, month, year) => {
-    const response = await axios.get(`${API_URL}/getAccountStatement?accountNumber=${accountNumber}&month=${month}&year=${year}`)
+export const getStatement = async (accountNumber, from, to) => {
+    const response = await axios.get(`${API_URL}/getAccountStatement?accountNumber=${accountNumber}&from=${from}&to=${to}`)
     return response;
 }
