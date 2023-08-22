@@ -30,15 +30,14 @@ function AccountDetails() {
               <div className="shrink-0 sm:flex sm:flex-col sm:items-start">
               <p className="text-xl font-semibold leading-6 text-gray-900">{receiver}</p>
               <button type="button" disabled className="mt-2 flex justify-center rounded-md bg-indigo-600 px-1.5 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{transaction.txnType}</button>
+              <p className="text-sm font-semibold leading-6 text-gray-900">#{transaction.txnId}</p>
               </div>
               :
               <div className="shrink-0 sm:flex sm:flex-col sm:items-start">
               <button type="button" disabled className="mt-2 flex justify-center rounded-md bg-indigo-600 px-1.5 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 uppercase">{transaction.txnType}</button>
+                <p className="text-sm font-semibold leading-6 text-gray-900">#{transaction.txnId}</p>
               </div>
               }
-            {/* <div className="min-w-0 flex-auto">
-              <p className="text-sm font-semibold leading-6 text-gray-900">{transaction.userRemarks}</p>
-            </div> */}
           </div>
           <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
             {sender == accountNumber ? 

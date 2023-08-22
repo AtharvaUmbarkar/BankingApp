@@ -1,7 +1,7 @@
 const stats = [
-    { id: 1, name: 'New users', value: '12' },
-    { id: 2, name: 'Transactions every 24 hours', value: '100' },
-    { id: 3, name: 'Assets under holding', value: '₹25,000' },
+    { id: 1, name: 'new users', value: '12' },
+    { id: 2, name: 'transactions so far', value: '100' },
+    { id: 3, name: 'transacted', value: '₹25,000' },
 ]
   
 
