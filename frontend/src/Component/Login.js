@@ -15,7 +15,7 @@ export default withAuthorization(condition, HOME)(() => {
   const [password, setPassword] = useState("")
   const [admin, setAdmin] = useState(false);
   const navigate = useNavigate()
-  const { setUsernameInContext } = useContext(UserContext)
+  const { setUserInContext } = useContext(UserContext)
 
 
   const handleSubmit = async (e) => {
@@ -23,13 +23,10 @@ export default withAuthorization(condition, HOME)(() => {
     if (username && password) {
       try {
         const response = await loginUser({ username, password }, admin)
-        console.log(response);
         if (response) {
           if (response.data.mobileNumber) {
-            const toastId = toast.loading("Logging you in...")
             setTimeout(() => {
-              setUsernameInContext(response.data)
-              toast.dismiss(toastId)
+              setUserInContext(response.data)
               if (admin) navigate("/")
               else navigate("/user")
             }, 1000)
@@ -38,7 +35,7 @@ export default withAuthorization(condition, HOME)(() => {
           }
         }
       } catch (error) {
-        console.log(error.response.data);
+        toast.error(error.response.data);
       }
     }
   }
@@ -129,7 +126,7 @@ export default withAuthorization(condition, HOME)(() => {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Don't have an account?{' '}
-          <Link to="/" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+          <Link to="/savings-account-registration" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
             Register here
           </Link>
         </p>

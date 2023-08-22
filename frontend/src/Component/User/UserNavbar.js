@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { UserContext } from '../../Utilities/context/userContext';
 
 
 const navigation = [
@@ -14,9 +15,10 @@ const navigation = [
 const UserNavbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
+    const { user, removeUser } = useContext(UserContext)
 
     const handleLogout = () => {
-        sessionStorage.removeItem('user');
+        removeUser()
         navigate('/');
     }
 
@@ -25,7 +27,7 @@ const UserNavbar = () => {
     //     navigate('/');
     //   }
     // }, [])
-    
+
 
     return (
         <header className=" inset-x-0 top-0 z-50 w-full">
@@ -59,10 +61,12 @@ const UserNavbar = () => {
                     ))}
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end flex-row ml-12">
+                    {sessionStorage.getItem('user') &&
+                        <div className='py-1 px-3 text-white bg-indigo-700 mr-8 rounded'>{user}</div>
+                    }
                     <button type='button' onClick={handleLogout} className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
                         Log out
                     </button>
-                    <span aria-hidden="true">&rarr;</span>
                 </div>
             </nav>
             <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -101,6 +105,9 @@ const UserNavbar = () => {
                                 ))}
                             </div>
                             <div className="py-6">
+                                {sessionStorage.getItem('user') &&
+                                    <div className='py-1 px-3 text-white bg-indigo-700 rounded'>{user}</div>
+                                }
                                 <button
                                     onClick={handleLogout}
                                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"

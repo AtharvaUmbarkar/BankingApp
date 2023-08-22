@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from 'react-hot-toast';
 
 const CUSTOMER_DATA_URL = "http://localhost:8090/createFirstAccount";
 
@@ -83,334 +84,333 @@ const SavingsAccountRegistration = () => {
         accountType: "Savings",
       }
     }
-    // console.log(accountDetails);
 
     axios.post(CUSTOMER_DATA_URL, accountDetails
     ).then((response) => {
       console.log(response);
-      alert("Welcome " + personalDetails.firstName);
+      toast.success("Welcome " + personalDetails.firstName, { duration: 3000 });
       navigate("/online-banking-registration")
     }, (error) => {
-      console.log("Failure.." + error);
-      alert("Account creation failed")
+      console.log(error);
+      toast.error("Account Creation Failed", { duration: 2000 });
     });
 
   }
 
   return (
     <form onSubmit={handleSubmit} className='w-full flex flex-col items-center'>
-      <h1 className='text-2xl m-4 self-center'>Open a Savings Account</h1>
+      <h1 className='text-2xl m-4 mt-6 self-center'>Open a Savings Account</h1>
       <div className='px-4 my-2 w-full lg:w-1/3'>
-        <h2 className='text-xl mb-3 border-b border-blue-500 font-semibold'>Personal Details</h2>
+        <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold pb-2'>Personal Details</h2>
 
-        <label className=" my-2">Title:
+        <label className="text-base my-2">Title:
           <input
             type="text"
             name="title"
             value={personalDetails.title}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Firstname:
+        <label className="text-base my-2">Firstname:
           <input
             type="text"
             name="firstName"
             value={personalDetails.firstName}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Middlename:
+        <label className="text-base my-2">Middlename:
           <input
             type="text"
             name="middleName"
             value={personalDetails.middleName}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Lastname:
+        <label className="text-base my-2">Lastname:
           <input
             type="text"
             name="lastName"
             value={personalDetails.lastName}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Father's Name:
+        <label className="text-base my-2">Father's Name:
           <input
             type="text"
             name="fatherName"
             value={personalDetails.fatherName}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Mobile Number:
+        <label className="text-base my-2">Mobile Number:
           <input
             type="text"
             name="mobileNumber"
             value={personalDetails.mobileNumber}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Email Id:
+        <label className="text-base my-2">Email Id:
           <input
             type="text"
             name="emailId"
             value={personalDetails.emailId}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Aadhaar Number:
+        <label className="text-base my-2">Aadhaar Number:
           <input
             type="text"
             name="aadhaarNumber"
             value={personalDetails.aadhaarNumber}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Date of Birth:
+        <label className="text-base my-2">Date of Birth:
           <input
             type='date'
             name="dateOfBirth"
             value={personalDetails.dateOfBirth}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
       </div>
 
       <div className='px-4 my-2 w-full lg:w-1/3'>
-        <h2 className='text-xl mb-3 border-b border-blue-500 font-semibold'>Residential Address</h2>
+        <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold pb-2'>Residential Address</h2>
 
-        <label className=" my-2">Address Line 1:
+        <label className="text-base my-2">Address Line 1:
           <input
             type="text"
             name="tempAddressLine1"
             value={residentialAddress.tempAddressLine1}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Address Line 2:
+        <label className="text-base my-2">Address Line 2:
           <input
             type="text"
             name="tempAddressLine2"
             value={residentialAddress.tempAddressLine2}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Landmark:
+        <label className="text-base my-2">Landmark:
           <input
             type="text"
             name="tempLandmark"
             value={residentialAddress.tempLandmark}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">State:
+        <label className="text-base my-2">State:
           <input
             type="text"
             name="tempState"
             value={residentialAddress.tempState}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">City:
+        <label className="text-base my-2">City:
           <input
             type="text"
             name="tempCity"
             value={residentialAddress.tempCity}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Pincode:
+        <label className="text-base my-2">Pincode:
           <input
             type="text"
             name="tempPincode"
             value={residentialAddress.tempPincode}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
       </div>
 
       <div className='px-4 my-2 w-full lg:w-1/3'>
-        <h2 className='text-xl mb-3 border-b border-blue-500 font-semibold'>Permanent Address</h2>
-
-        <label className=" my-2">Same as Residential:
+        <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold pb-2'>Permanent Address</h2>
+        <div className='flex flex-row items-center mt-4 mb-2'>
+          <label className="text-base mr-6 whitespace-nowrap flex-grow">Same as Residential:</label>
           <input
             type="checkbox"
             name="sameAddress"
             value={sameAddress}
             onChange={() => setSameAddress(!sameAddress)}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="h-4 w-4"
           />
-        </label>
+        </div>
 
-        <label className=" my-2">Address Line 1:
+        <label className="text-base my-2">Address Line 1:
           <input
             disabled={sameAddress}
             type="text"
             name="permAddressLine1"
             value={permanentAddress.permAddressLine1}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Address Line 2:
+        <label className="text-base my-2">Address Line 2:
           <input
             disabled={sameAddress}
             type="text"
             name="permAddressLine2"
             value={permanentAddress.permAddressLine2}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Landmark:
+        <label className="text-base my-2">Landmark:
           <input
             disabled={sameAddress}
             type="text"
             name="permLandmark"
             value={permanentAddress.permLandmark}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">State:
+        <label className="text-base my-2">State:
           <input
             disabled={sameAddress}
             type="text"
             name="permState"
             value={permanentAddress.permState}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">City:
+        <label className="text-base my-2">City:
           <input
             disabled={sameAddress}
             type="text"
             name="permCity"
             value={permanentAddress.permCity}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Pincode:
+        <label className="text-base my-2">Pincode:
           <input
             disabled={sameAddress}
             type="text"
             name="permPincode"
             value={permanentAddress.permPincode}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
       </div>
 
       <div className='px-4 my-2 w-full lg:w-1/3'>
-        <h2 className='text-xl mb-3 border-b border-blue-500 font-semibold'>Occupation Details</h2>
+        <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold pb-2'>Occupation Details</h2>
 
-        <label className=" my-2">Occupation Type:
+        <label className="text-base my-2">Occupation Type:
           <input
             type="text"
             name="occupation"
             value={occupationDetails.occupation}
             onChange={handleOccupationDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Source of Income:
+        <label className="text-base my-2">Source of Income:
           <input
             type="text"
             name="sourceOfIncome"
             value={occupationDetails.sourceOfIncome}
             onChange={handleOccupationDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
 
-        <label className=" my-2">Gross Annual Income:
+        <label className="text-base my-2">Gross Annual Income:
           <input
             type="text"
             name="grossAnnualIncome"
             value={occupationDetails.grossAnnualIncome}
             onChange={handleOccupationDetailsChange}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
           />
         </label>
       </div>
 
       <div className='px-4 my-2 w-full lg:w-1/3'>
-        <h2 className='text-xl mb-3 border-b border-blue-500 font-semibold'>Additional Details</h2>
-
-        <label className=" my-2">Want Debit Card:
+        <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold pb-2'>Additional Details</h2>
+        <div className='flex flex-row items-center mt-4 mb-2'>
+          <label className="text-base mr-6 whitespace-nowrap flex-grow">Want Debit Card:</label>
           <input
             type="checkbox"
             name="debitCardAvailed"
             value={debitCardAvailed}
             onChange={() => setDebitCardAvailed(!debitCardAvailed)}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="h-4 w-4"
           />
-        </label>
-
-        <label className=" my-2">Activate Online Banking:
+        </div>
+        <div className='flex flex-row items-center mt-4 mb-2'>
+          <label className="text-base mr-6 whitespace-nowrap flex-grow">Activate Online Banking:</label>
           <input
             type="checkbox"
             name="onlineBanking"
             value={onlineBanking}
             onChange={() => setOnlineBanking(!onlineBanking)}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="h-4 w-4"
           />
-        </label>
-
-        <label className=" my-2">Do you agree to our terms and conditions:
+        </div>
+        <div className='flex flex-row items-center mt-4 mb-2'>
+          <label className="text-base mr-6 whitespace-nowrap flex-grow">Do you agree to our terms and conditions:</label>
           <input
             type="checkbox"
             name="agree"
             value={agree}
             onChange={() => setAgree(!agree)}
-            className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+            className="h-4 w-4"
           />
-        </label>
+        </div>
 
       </div>
 
       <div className='px-4 my-2 w-full lg:w-1/3'>
-        <button type='submit' disabled={!agree} className='p-2 my-4 w-full bg-blue-500 text-xl text-white rounded-sm'>SUBMIT</button>
+        <button type='submit' disabled={!agree} className={(agree ? "bg-indigo-700" : "bg-slate-500") + ' p-2 my-4 w-full text-xl text-white rounded-sm'}>SUBMIT</button>
       </div>
 
     </form>

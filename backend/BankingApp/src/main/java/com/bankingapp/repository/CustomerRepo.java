@@ -36,5 +36,7 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
 	@Query("update Customer c set c.userName = ?1 where c.aadhaarNumber = ?2")
 	public int changeUserName(String userName, String aadhaarNumber);
 
+	@Query("SELECT c from Customer c WHERE c.userName LIKE ?1")
+	public List<Customer> searchByUsername(String query);
 }
 

@@ -58,4 +58,8 @@ public class AdminController {
 		return acntService.toggleActivation(acntNo);
 	}
 
+	@GetMapping("/searchCustomerByUsername")
+	public List<Customer> searchCustomersByUsername(@RequestParam("query") String query) throws NoDataFoundException{
+		return adminService.searchCustomersByUsername(query);
+	}
 }

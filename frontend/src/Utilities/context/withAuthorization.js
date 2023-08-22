@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom"
 
 export default (condition, redirectURL) => (Component) => (props) => {
 
-    const { username } = useContext(UserContext)
+    const { user } = useContext(UserContext)
     const navigate = useNavigate()
 
     
     useEffect(() => {
         // if condition satisfies for user, redirect.
-        if(condition(username)){
+        if(condition(user)){
            if(typeof window !== "undefined") navigate(redirectURL)
         }
     }, []) 
