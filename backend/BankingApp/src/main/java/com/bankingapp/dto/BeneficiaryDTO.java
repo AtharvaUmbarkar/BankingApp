@@ -1,12 +1,11 @@
-package com.bankingapp.types;
+package com.bankingapp.dto;
 
-public class AddBeneficiaryModel {
 
+
+public class BeneficiaryDTO {
 	private String name;
 	private String nickname;
 	private long accountNumber;
-	private String userName;
-	
 	public String getName() {
 		return name;
 	}
@@ -25,12 +24,5 @@ public class AddBeneficiaryModel {
 	public void setAccountNumber(long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	
 	
 }

@@ -69,16 +69,18 @@ public class Account {
 	@OneToMany(mappedBy="receiverAccount", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Transaction> creditTransactions;
 	
-//	@OneToMany(mappedBy="account", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-//	private List<Beneficiary> beneficiaries;
-//	
-//
-//	public List<Beneficiary> getBeneficiaries() {
-//		return beneficiaries;
-//	}
-//	public void setBeneficiaries(List<Beneficiary> beneficiaries) {
-//		this.beneficiaries = beneficiaries;
-//	}
+	@JsonManagedReference
+	@JsonIgnore
+	@OneToMany(mappedBy="account", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<Beneficiary> beneficiaries;
+	
+
+	public List<Beneficiary> getBeneficiaries() {
+		return beneficiaries;
+	}
+	public void setBeneficiaries(List<Beneficiary> beneficiaries) {
+		this.beneficiaries = beneficiaries;
+	}
 	public List<Transaction> getDebitTransactions() {
 		return debitTransactions;
 	}

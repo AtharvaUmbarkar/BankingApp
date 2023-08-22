@@ -1,5 +1,6 @@
 package com.bankingapp.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bankingapp.dto.AccountDTO;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
@@ -24,13 +26,16 @@ import jakarta.validation.Valid;
 public class AccountController {
 	@Autowired
 	private AccountService accountService;
+	@Autowired ModelMapper modelMapper;
 	//To be tested for exception
 	@PostMapping("/createAccount")
-	public String createAccount(@RequestBody Account account, @RequestParam("userName") String userName) throws ResourceNotFoundException
+	public String createAccount(@RequestBody AccountDTO accountDto, @RequestParam("userName") String userName) throws ResourceNotFoundException
 	{
+		Account account = modelMapper.map(accountDto, Account.class);
 		return accountService.createAccount(account, userName);
 	}
 	//To be tested for Exception
+	//add dto to model
 	@PostMapping("/createFirstAccount")
 	public String firstAccount(@RequestBody CustomerAndAccountModel obj) throws AlreadyExistsException
 	{
@@ -38,7 +43,7 @@ public class AccountController {
 	}
 	
 	@GetMapping("/fetchAccount")
-	public Account fetchAccount(@RequestParam("accountNo") long accountNo) throws NoDataFoundException{
-		return accountService.fetchAccount(accountNo);
+	public AccountDTO fetchAccount(@RequestParam("accountNo") long accountNo) throws NoDataFoundException{
+		return modelMapper.map(accountService.fetchAccount(accountNo), AccountDTO.class);
 	}
 }

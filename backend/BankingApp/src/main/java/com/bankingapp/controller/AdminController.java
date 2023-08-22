@@ -1,7 +1,9 @@
 package com.bankingapp.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bankingapp.dto.AdminDTO;
+import com.bankingapp.dto.CustomerDTO;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Admin;
 import com.bankingapp.models.Customer;
@@ -34,17 +39,19 @@ public class AdminController {
 	AdminService adminService;
 	@Autowired
 	AccountService acntService;
+	@Autowired
+	ModelMapper modelMapper;
 	
 	
 	@PostMapping("/LoginAdmin")
-	public Admin validateAdmin(@RequestBody LoginModel u)
+	public AdminDTO validateAdmin(@RequestBody LoginModel u) throws ResourceNotFoundException, UnauthorizedAccessException
 	{
-		return adminService.validateAdmin(u);
+		return modelMapper.map(adminService.validateAdmin(u),AdminDTO.class);
 	}
 	
 	@GetMapping("/fetch/AllCustomers")
-	public List<Customer> allCustomers() throws NoDataFoundException{
-		return adminService.allCustomers();
+	public List<CustomerDTO> allCustomers() throws NoDataFoundException{
+		return adminService.allCustomers().stream().map(cust -> modelMapper.map(cust, CustomerDTO.class)).collect(Collectors.toList());
 	}
 	
 	@PutMapping("toggle/Activation")

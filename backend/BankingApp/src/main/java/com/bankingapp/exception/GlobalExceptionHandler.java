@@ -60,9 +60,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(value = AlreadyExistsException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public @ResponseBody ErrorResponse handleAlreadyExistsException(AlreadyExistsException ex) {
-		return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+		return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
 	}
 	
 }
