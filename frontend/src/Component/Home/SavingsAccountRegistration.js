@@ -410,7 +410,7 @@ const SavingsAccountRegistration = () => {
       </div>
 
       <div className='px-4 my-2 w-full lg:w-1/3'>
-        <button type='submit' disabled={!agree} className={agree ? "bg-indigo-700" : "bg-slate-500" + ' p-2 my-4 w-full text-xl text-white rounded-sm'}>SUBMIT</button>
+        <button type='submit' disabled={!agree} className={(agree ? "bg-indigo-700" : "bg-slate-500") + ' p-2 my-4 w-full text-xl text-white rounded-sm'}>SUBMIT</button>
       </div>
 
     </form>
