@@ -12,8 +12,7 @@ public class AccountDTO {
 	private Date accountCreationDate;
 	private boolean active; 
 	private boolean debitCardAvailed;
-	private Customer customer;
-	
+//	private Customer customer;
 //	private List<Transaction> debitTransactions;
 //	private List<Transaction> creditTransactions;
 	
@@ -52,13 +51,5 @@ public class AccountDTO {
 	}
 	public void setDebitCardAvailed(boolean debitCardAvailed) {
 		this.debitCardAvailed = debitCardAvailed;
-	}
-	public Customer getCustomer() {
-		return customer;
-	}
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-	
-	
+	}	
 }

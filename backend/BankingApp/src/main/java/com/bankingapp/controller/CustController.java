@@ -1,7 +1,10 @@
 package com.bankingapp.controller;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bankingapp.dto.AccountDTO;
+import com.bankingapp.dto.CustomerDTO;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.InvalidTypeException;
 import com.bankingapp.exception.NoDataFoundException;
@@ -31,6 +36,8 @@ import com.bankingapp.types.NetBankingModel;
 public class CustController {
 	@Autowired
 	CustService custService;
+	@Autowired
+	ModelMapper modelMapper;
 	
 	//no longer needed
 	@PostMapping("/saveCustomer")
@@ -42,24 +49,15 @@ public class CustController {
 	}
 	
 	@PostMapping("/Login")
-	public Customer validateCustomer(@RequestBody LoginModel u) throws UnauthorizedAccessException, ResourceNotFoundException
+	public CustomerDTO validateCustomer(@RequestBody LoginModel u) throws UnauthorizedAccessException, ResourceNotFoundException
 	{
-		return custService.validateCustomer(u);
-//		if(response.equals("Invalid user")) {
-//			return new ResponseEntity<>("Invalid User Name", HttpStatus.NOT_FOUND);
-//		}
-//		else if(response.equals("Login failed")) {
-//			return new ResponseEntity<>("Incorrect Password", HttpStatus.UNAUTHORIZED);
-//		}
-//		else {
-//			Customer cust = custRepo.findByUserName(loginUser.getUsername());
-//		}
+		return modelMapper.map(custService.validateCustomer(u), CustomerDTO.class);
 	}
 	
-	@GetMapping("/fetchAccounts/")
-	public List<Integer> fetchAccounts(@RequestParam("username") String username) throws ResourceNotFoundException, NoDataFoundException
+	@GetMapping("/fetchAccounts")
+	public List<AccountDTO> fetchAccounts(@RequestParam("username") String username) throws ResourceNotFoundException, NoDataFoundException
 	{
-		return custService.fetchAccounts(username);
+		return custService.fetchAccounts(username).stream().map(acnt -> modelMapper.map(acnt, AccountDTO.class)).collect(Collectors.toList());
 	}
 	// To be tested for exception
 	@PutMapping("/netBankingRegistration")

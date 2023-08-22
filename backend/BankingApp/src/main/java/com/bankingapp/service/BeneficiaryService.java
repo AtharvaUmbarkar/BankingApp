@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.interfaces.BeneficiaryServiceInterface;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Beneficiary;
 import com.bankingapp.models.Customer;
@@ -19,7 +20,7 @@ import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.types.AddBeneficiaryModel;
 
 @Service
-public class BeneficiaryService {
+public class BeneficiaryService implements BeneficiaryServiceInterface{
 	@Autowired
 	BeneficiaryRepo benRepo;
 	@Autowired

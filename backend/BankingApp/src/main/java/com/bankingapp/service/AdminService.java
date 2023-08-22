@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
+import com.bankingapp.interfaces.AdminServiceInterface;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Admin;
 import com.bankingapp.models.Customer;
@@ -24,7 +25,7 @@ import com.bankingapp.types.NetBankingModel;
 import jakarta.transaction.Transactional;
 
 @Service
-public class AdminService {
+public class AdminService implements AdminServiceInterface{
 	@Autowired
 	AdminRepo adminRepo;
 	@Autowired

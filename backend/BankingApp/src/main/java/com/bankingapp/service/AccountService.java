@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.interfaces.AccountServiceInterface;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
@@ -17,7 +18,7 @@ import com.bankingapp.types.CustomerAndAccountModel;
 import jakarta.transaction.Transactional;
 
 @Service
-public class AccountService {
+public class AccountService implements AccountServiceInterface {
 	@Autowired 
 	private CustomerRepo custRepo;
 	

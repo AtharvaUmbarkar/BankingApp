@@ -1,7 +1,7 @@
 package com.bankingapp.exception;
 
 public class ErrorResponse {
-	private int Statuscode;
+	private int status;
 	private String message;
 	
 	public ErrorResponse(String message) {
@@ -11,16 +11,16 @@ public class ErrorResponse {
 	
 	public ErrorResponse(int statusCode, String message) {
 		super();
-		this.Statuscode = statusCode;
+		this.status = statusCode;
 		this.message = message;
 	}
 
-	public int getStatuscode() {
-		return Statuscode;
+	public int getStatus() {
+		return status;
 	}
 
-	public void setStatuscode(int statuscode) {
-		Statuscode = statuscode;
+	public void setStatus(int statuscode) {
+		status = statuscode;
 	}
 
 	public String getMessage() {

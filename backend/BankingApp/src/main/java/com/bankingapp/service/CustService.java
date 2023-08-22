@@ -53,33 +53,16 @@ public class CustService {
 			}
 		}
 		throw new ResourceNotFoundException("Customer not Present");
-		
-//		if (cust==null)
-//		{
-//			result = "Invalid user"; 
-//		}
-//		else
-//		{
-//			if (loginUser.getPassword().equals(cust.getLoginPassword()))
-//			{
-//				result = "Login Success";
-//			}
-//			else
-//			{
-//				result = "Login Failed";
-//			}
-//		}
-//		return cust;
 	}
 	
-	public List<Integer> fetchAccounts(String username) throws ResourceNotFoundException, NoDataFoundException
+	public List<Account> fetchAccounts(String username) throws ResourceNotFoundException, NoDataFoundException
 	{
 		Optional<Customer> obj = custRepo.findByUserName(username);
 		if (!obj.isPresent()) {
 			throw new ResourceNotFoundException("Customer not found");
 		}
-		int custId = (obj.get()).getCustomerId();
-		List<Integer> accounts = accRepo.findByAccountNumber(custId);
+		Customer cust = obj.get();
+		List<Account> accounts = cust.getAccounts();
 		if (accounts.isEmpty()) {
 			throw new NoDataFoundException("");
 		}
