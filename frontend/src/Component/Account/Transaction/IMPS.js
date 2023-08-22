@@ -69,10 +69,10 @@ export default withAuthorization (condition, LOGIN)(() => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='my-4 w-full'>
+    <form onSubmit={handleSubmit} className='my-4 w-full flex flex-col'>
       <h2 className='text-xl mb-3 font-semibold'>Transaction Details</h2>
 
-      <label className=" my-2">Sender Account Number:
+      <label className="w-full">Sender Account Number:
         <input
           disabled
           type="text"
@@ -82,7 +82,7 @@ export default withAuthorization (condition, LOGIN)(() => {
         />
       </label>
 
-      <label className=" my-2">Receiver Account Number:
+      <label className="w-full">Receiver Account Number:
         <select
           name="receiverAccount"
           onChange={handleChange}
@@ -94,7 +94,7 @@ export default withAuthorization (condition, LOGIN)(() => {
         </select>
       </label>
 
-      <button type='button' onClick={() => navigate(ADD_BENEFICIARY)} className='rounded-md p-1 pr-1.5 mt-0.5 mb-3 block bg-slate-500 text-white'>+ Add new</button>
+      <button type='button' onClick={() => navigate(ADD_BENEFICIARY)} className='rounded p-1 uppercase px-2 mt-0.5 mb-1 block bg-slate-500 text-sm text-white self-end'>+ Add new</button>
 
       <label className="w-full my-2">Amount
         <input
@@ -102,27 +102,27 @@ export default withAuthorization (condition, LOGIN)(() => {
           name="txnAmount"
           value={transactionDetails.txnAmount}
           onChange={handleChange}
-          className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1 mb-3"
+          className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1"
         />
       </label>
 
-      {/* <label className=" my-2">Transaction Date:
+      {/* <label className="w-full">Transaction Date:
         <input
           type="date"
           name="txnDate"
           value={transactionDetails.txnDate}
           onChange={handleChange}
-          className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1 mb-3"
+          className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1"
         />
       </label> */}
 
-      <label className=" my-2">Remarks:
+      <label className="w-full">Remarks:
         <input
           type="text"
           name="userRemarks"
           value={transactionDetails.userRemarks}
           onChange={handleChange}
-          className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1 mb-3"
+          className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1"
         />
       </label>
 

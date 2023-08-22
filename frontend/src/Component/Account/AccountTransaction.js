@@ -24,7 +24,6 @@ const AccountTransaction = () => {
   }
 
   useEffect(() => {
-    console.log(userName);
     axios.get("http://localhost:8090/getAllBeneficiaries", { params: { userName: userName.username } }).then(
       (response) => {
         setBeneficiaries(response.data)

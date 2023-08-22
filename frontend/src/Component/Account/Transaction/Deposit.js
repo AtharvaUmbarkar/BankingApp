@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import { toast } from 'react-hot-toast'
 
 const DEPOSIT_URL = "http://localhost:8090/save/deposit"
 
@@ -36,13 +37,13 @@ const Deposit = () => {
             }
         });
 
-        window.alert(response.data);
+        toast.loading(response.data, { duration: 3000 })
 
     }
 
     return (
         <form onSubmit={handleSubmit} className='my-4 w-full'>
-            <h2 className='text-xl mb-3 border-b border-blue-500 font-semibold'>Transaction Details</h2>
+            <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold'>Transaction Details</h2>
 
             <label className=" my-2">Receiver Account Number:
                 <input
@@ -51,7 +52,7 @@ const Deposit = () => {
                     name="receiverAccountNumber"
                     value={transactionDetails.receiverAccountNumber}
                     onChange={handleChange}
-                    className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+                    className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
                 />
             </label>
 
@@ -61,7 +62,7 @@ const Deposit = () => {
                     name="txnAmount"
                     value={transactionDetails.txnAmount}
                     onChange={handleChange}
-                    className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+                    className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
                 />
             </label>
 
@@ -71,11 +72,11 @@ const Deposit = () => {
                     name="userRemarks"
                     value={transactionDetails.userRemarks}
                     onChange={handleChange}
-                    className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+                    className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
                 />
             </label>
 
-            <button type='submit' className='p-2 my-4 w-full bg-blue-600 text-xl text-white rounded-sm'>SUBMIT</button>
+            <button type='submit' className='p-2 my-4 w-full bg-indigo-700 text-xl text-white rounded-sm'>SUBMIT</button>
         </form>
     )
 }

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { ADD_BENEFICIARY, LOGIN } from '../../../Utilities/routes';
 
 const RTGS = () => {
   const { accountNumber } = useParams();
@@ -24,49 +26,52 @@ const RTGS = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await axios.post("http://localhost:8090/save/fundTransfer", {
-      "transaction": {
-        "txnType": "RTGS",
-        "txnAmount": transactionDetails.txnAmount,
-        "userRemarks": transactionDetails.userRemarks,
-      },
-      "receiverAccountNumber": transactionDetails.receiverAccount,
-      "senderAccountNumber": transactionDetails.senderAccount,
-    }, {
-      headers: { "Content-Type": "application/json" }
-    });
-    window.alert(response.data)
+    try {
+      const response = await axios.post("http://localhost:8090/save/fundTransfer", {
+        "transaction": {
+          "txnType": "RTGS",
+          "txnAmount": transactionDetails.txnAmount,
+          "userRemarks": transactionDetails.userRemarks,
+        },
+        "receiverAccountNumber": transactionDetails.receiverAccount,
+        "senderAccountNumber": transactionDetails.senderAccount,
+      }, {
+        headers: { "Content-Type": "application/json" }
+      });
+      toast.success(response.data, { duration: 3000 })
+    } catch (error) {
+      toast.error(error.response.data, { duration: 3000 })
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className='my-4 w-full'>
-      <h2 className='text-xl mb-3 border-b border-blue-500 font-semibold'>Transaction Details</h2>
+    <form onSubmit={handleSubmit} className='my-4 w-full flex flex-col'>
+      <h2 className='text-xl mb-3 font-semibold'>Transaction Details</h2>
 
-      <label className=" my-2">Sender Account Number:
+      <label className="w-full">Sender Account Number:
         <input
           disabled
           type="text"
           name="senderAccount"
           value={transactionDetails.senderAccount}
-          onChange={handleChange}
-          className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+          className="border rounded-md pl-3 pr-10 disabled:border-slate-500 disabled:bg-slate-50 disabled:text-slate-500 p-1.5 mt-1 mb-3"
         />
       </label>
 
-      <label className=" my-2">Receiver Account Number:
+      <label className="w-full">Receiver Account Number:
         <select
           name="receiverAccount"
           onChange={handleChange}
-          className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-1 w-full"
+          className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1 mb-1 w-full"
         >
-          <option className='w-full' value={""} ></option>
+          <option className='w-full' value="" ></option>
           {beneficiaries.map((b, i) => {
-            return <option key={i} className='w-full' value={b.account} >{b.name + " " + b.account}</option>
+            return <option key={i} className='w-full' value={b.accountNumber} >{b.name + " " + b.accountNumber}</option>
           })}
         </select>
       </label>
 
-      <button type='button' to='/user/beneficiaries' onClick={() => navigate('/user/beneficiaries')} className='p-1.5 mt-0.5 mb-3 w-full bg-blue-600 text-white'>ADD NEW</button>
+      <button type='button' onClick={() => navigate(ADD_BENEFICIARY)} className='rounded p-1 uppercase px-2 mt-0.5 mb-1 block bg-slate-500 text-sm text-white self-end'>+ Add new</button>
 
       <label className="w-full my-2">Amount
         <input
@@ -74,21 +79,31 @@ const RTGS = () => {
           name="txnAmount"
           value={transactionDetails.txnAmount}
           onChange={handleChange}
-          className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+          className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1"
         />
       </label>
 
-      <label className=" my-2">Remarks:
+      {/* <label className="w-full">Transaction Date:
+        <input
+          type="date"
+          name="txnDate"
+          value={transactionDetails.txnDate}
+          onChange={handleChange}
+          className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1"
+        />
+      </label> */}
+
+      <label className="w-full">Remarks:
         <input
           type="text"
           name="userRemarks"
           value={transactionDetails.userRemarks}
           onChange={handleChange}
-          className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-3"
+          className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1"
         />
       </label>
 
-      <button type='submit' className='p-2 my-4 w-full bg-blue-600 text-xl text-white rounded-sm'>SUBMIT</button>
+      <button type='submit' className='p-2 my-4 w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>SUBMIT</button>
     </form>
   )
 }
