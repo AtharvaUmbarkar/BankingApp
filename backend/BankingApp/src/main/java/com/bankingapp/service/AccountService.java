@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
@@ -22,12 +23,14 @@ public class AccountService {
 	@Autowired
 	private AccountRepo accountRepo;
 	
-	public String createAccount(Account account, String userName) {
+	public String createAccount(Account account, String userName) throws ResourceNotFoundException
+	{
 		String result="";
 		Customer customer;
 		Optional<Customer> obj = custRepo.findByUserName(userName);
 		if(!obj.isPresent()) {
-			result = "Customer not found";
+//			result = "Customer not found";
+			throw new ResourceNotFoundException("Customer not found");
 		}
 		else {
 			customer = obj.get();
@@ -39,7 +42,8 @@ public class AccountService {
 	}
 	
 	@Transactional
-	public String firstAccount(CustomerAndAccountModel obj) {
+	public String firstAccount(CustomerAndAccountModel obj) throws AlreadyExistsException
+	{
 		String result="";
 		Customer customer = obj.getCustomer();
 		Optional<Customer> optObj = custRepo.findByAadhaarNumber(customer.getAadhaarNumber());
@@ -53,7 +57,7 @@ public class AccountService {
 		else{
 			Customer existingCust = optObj.get();
 			if(existingCust.isNetBankingEnabled()) {
-				result = "please login to create a new account";
+				throw new AlreadyExistsException("Please login to create a new account");
 			}
 			else {
 				customer.setCustomerId(existingCust.getCustomerId());
@@ -70,7 +74,8 @@ public class AccountService {
 		return result;
 	}
 	
-	public Account fetchAccount(long accountNo) {
+	public Account fetchAccount(long accountNo) 
+	{
 		Optional<Account> obj = accountRepo.findById(accountNo);
 		if(obj.isPresent())
 			return obj.get();

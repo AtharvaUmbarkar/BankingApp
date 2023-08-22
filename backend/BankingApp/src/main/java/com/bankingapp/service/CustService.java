@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bankingapp.exception.AlreadyExistsException;
+import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
@@ -72,7 +74,7 @@ public class CustService {
 	}
 	
 	@Transactional
-	public String netbankingreg(NetBankingModel nb)
+	public String netbankingreg(NetBankingModel nb) throws AlreadyExistsException, ResourceNotFoundException
 	{
 		String result = "";
 		if(nb.getLoginPassword().equals(nb.getTransactionPassword())) {
@@ -85,7 +87,8 @@ public class CustService {
 
 			if (cust.isNetBankingEnabled())
 			{
-				result = "User already exists";
+//				result = "User already exists";
+				throw new AlreadyExistsException("User Already Exists");
 			}
 			else
 			{
@@ -95,7 +98,8 @@ public class CustService {
 		}
 		else
 		{
-			result = "Account does not exist, Open an account first";
+//			result = "Account does not exist, Open an account first";
+			throw new ResourceNotFoundException("Account does not exist, Open an account first");
 		}
 		return result;
 	}

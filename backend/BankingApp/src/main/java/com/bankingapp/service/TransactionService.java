@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.exception.InsufficientBalanceException;
+import com.bankingapp.exception.NoDataFoundException;
+import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Transaction;
 import com.bankingapp.repository.AccountRepo;
@@ -30,21 +32,28 @@ public class TransactionService {
 	
 	
 	//********** Code added for getting list of transactions of a account
-	public List<Transaction> getAllTransactions(long accountNo)
+	public List<Transaction> getAllTransactions(long accountNo) throws ResourceNotFoundException, NoDataFoundException
 	{
 		Optional<Account> obj = accountRepo.findById(accountNo);
 		if(obj.isPresent()) {
-			return obj.get().getDebitTransactions();
+			List<Transaction> statement = obj.get().getDebitTransactions();
+			if (statement.isEmpty())
+			{
+				throw new NoDataFoundException("No Transactions performed");
+			}
+			else {
+				return statement;
+			}
 		}
 		else
 		{
-			return List.of();
+			throw new ResourceNotFoundException("Account Not Present");
 		}
 	}
 	
 	
 	
-	public List<Transaction> getStatementTransactions(long accountNo, String fromDt, String toDt)
+	public List<Transaction> getStatementTransactions(long accountNo, String fromDt, String toDt) throws ResourceNotFoundException, NoDataFoundException
 	{
 		Optional<Account> obj = accountRepo.findById(accountNo);
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -52,48 +61,45 @@ public class TransactionService {
 			
 			List<Transaction> txns = new ArrayList<Transaction>();
 			
-			try
+			for(Transaction t:obj.get().getDebitTransactions())
 			{
-				for(Transaction t:obj.get().getDebitTransactions())
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(t.getTxnDate());
+				String month = "";
+				if((cal.get(Calendar.MONTH)+1) < 10)
 				{
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(t.getTxnDate());
-					String month = "";
-					if((cal.get(Calendar.MONTH)+1) < 10)
-					{
-						month = "0"+(cal.get(Calendar.MONTH)+1);
-					}
-					else
-					{
-						month = ""+(cal.get(Calendar.MONTH)+1);
-					}
-					String txnDt = ""+cal.get(Calendar.YEAR)+"-"+month+"-"+cal.get(Calendar.DAY_OF_MONTH);
-					System.out.println("DT : "+txnDt);
-					if(fromDt.equals(toDt)) {
-						//System.out.println("Dates are same : "+fromDt);
-						
-						//System.out.println("Transaction date : "+txnDt);
-						if(txnDt.equals(fromDt)) {
-							txns.add(t);
-						}
-					}
-					//else if(t.getTxnDate().compareTo(format.parse(fromDt))>0 && t.getTxnDate().compareTo(format.parse(toDt))>0)
-					else if(txnDt.compareTo(fromDt)>=0 && txnDt.compareTo(toDt)<=0)
-					{
-						System.out.println("Transaction date : "+t.getTxnDate()+" from : "+fromDt);
+					month = "0"+(cal.get(Calendar.MONTH)+1);
+				}
+				else
+				{
+					month = ""+(cal.get(Calendar.MONTH)+1);
+				}
+				String txnDt = ""+cal.get(Calendar.YEAR)+"-"+month+"-"+cal.get(Calendar.DAY_OF_MONTH);
+				System.out.println("DT : "+txnDt);
+				if(fromDt.equals(toDt)) {
+					//System.out.println("Dates are same : "+fromDt);
+					
+					//System.out.println("Transaction date : "+txnDt);
+					if(txnDt.equals(fromDt)) {
 						txns.add(t);
 					}
 				}
+				//else if(t.getTxnDate().compareTo(format.parse(fromDt))>0 && t.getTxnDate().compareTo(format.parse(toDt))>0)
+				else if(txnDt.compareTo(fromDt)>=0 && txnDt.compareTo(toDt)<=0)
+				{
+					System.out.println("Transaction date : "+t.getTxnDate()+" from : "+fromDt);
+					txns.add(t);
+				}
 			}
-			catch(Exception e)
+			if (txns.isEmpty())
 			{
-				System.out.println("Exception ......");
+				throw new NoDataFoundException("No transactions in the specified period");
 			}
 			return txns;
 		}
 		else
 		{
-			return List.of();
+			throw new ResourceNotFoundException("Account not Present");
 		}
 	}
 	
@@ -175,8 +181,8 @@ public class TransactionService {
 		return result;
 	}
 	
-	@Transactional
-	public ResponseEntity<String> fundTransfer(TransactionModel transactionModel)
+	@Transactional 
+	public String fundTransfer(TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException
 	{
 			Optional<Account> obj1 = accountRepo.findById(transactionModel.getSenderAccountNumber());
 			Optional<Account> obj2 = accountRepo.findById(transactionModel.getReceiverAccountNumber());
@@ -188,7 +194,8 @@ public class TransactionService {
 				double senderNewBalance = senderAccount.getAccountBalance() - transaction.getTxnAmount();
 				double receiverNewBalance = receiverAccount.getAccountBalance() + transaction.getTxnAmount();
 				if(senderNewBalance < 0.00d) {
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance");
+//					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance");
+					throw new InsufficientBalanceException("Insufficient Balance");
 				}
 				else {
 					int rowsAffected1 = accountRepo.updateBalance(senderNewBalance, senderAccount.getAccountNumber());
@@ -200,15 +207,22 @@ public class TransactionService {
 						transaction.setReceiverBalance(receiverNewBalance);
 						transaction.setTxnStatus("Successful");
 						transRepo.save(transaction);
-						return ResponseEntity.status(HttpStatus.OK).body("Transaction is successful with transaction id: " + transaction.getTxnId());	
+						return ("Transaction is successful with transaction id: " + transaction.getTxnId());	
 					}
 					else {
-						return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unable to process the request!");
+						return ("Unable to process the request!");
 					}
 				}
 			}
 			else {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sender's or receiver's account doesn't exist");
+//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sender's or receiver's account doesn't exist");
+				if (!(obj1.isPresent())) {
+					throw new ResourceNotFoundException("Sender's Account number Incorrect or doesn't exist");
+				}
+				if (!(obj2.isPresent())) {
+					throw new ResourceNotFoundException("Receiver's Account Number Incorrect or doesn't exist");
+				}
+			return "";
 			}
 	}
 	

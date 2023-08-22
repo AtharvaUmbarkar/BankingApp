@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bankingapp.exception.AlreadyExistsException;
+import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Customer;
 import com.bankingapp.service.CustService;
 import com.bankingapp.types.ChangePasswordModel;
@@ -58,14 +60,19 @@ public class CustController {
 	}
 	
 	@GetMapping("/fetchAccounts/{username}")
-	public List<Integer> fetchAccounts(@PathVariable("username") String username)
+	public ResponseEntity<Object> fetchAccounts(@PathVariable("username") String username)
 	{
 		List<Integer> accountList = custService.fetchAccounts(username);
-		return accountList;
+		if (accountList == null) {
+			return new ResponseEntity<>("Invalid Username", HttpStatus.NOT_FOUND);
+		}
+		else {
+			return new ResponseEntity<>(accountList, HttpStatus.OK);
+		}
 	}
-	
+	// To be tested for exception
 	@PutMapping("/netBankingRegistration")
-	public String netbankingreg(@RequestBody NetBankingModel nb)
+	public String netbankingreg(@RequestBody NetBankingModel nb) throws AlreadyExistsException, ResourceNotFoundException
 	{
 		return custService.netbankingreg(nb);
 	}

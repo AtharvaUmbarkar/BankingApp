@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bankingapp.exception.AlreadyExistsException;
+import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Account;
 import com.bankingapp.service.AccountService;
 import com.bankingapp.types.CustomerAndAccountModel;
@@ -21,14 +23,16 @@ import jakarta.validation.Valid;
 public class AccountController {
 	@Autowired
 	private AccountService accountService;
-	
+	//To be tested for exception
 	@PostMapping("/createAccount")
-	public String createAccount(@RequestBody Account account, @RequestParam("userName") String userName) {
+	public String createAccount(@RequestBody Account account, @RequestParam("userName") String userName) throws ResourceNotFoundException
+	{
 		return accountService.createAccount(account, userName);
 	}
-	
+	//To be tested for Exception
 	@PostMapping("/createFirstAccount")
-	public String firstAccount(@RequestBody CustomerAndAccountModel obj) {
+	public String firstAccount(@RequestBody CustomerAndAccountModel obj) throws AlreadyExistsException
+	{
 		return accountService.firstAccount(obj);
 	}
 	

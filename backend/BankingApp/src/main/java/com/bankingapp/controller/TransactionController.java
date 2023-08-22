@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.exception.InsufficientBalanceException;
+import com.bankingapp.exception.NoDataFoundException;
+import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Transaction;
 import com.bankingapp.service.TransactionService;
 import com.bankingapp.types.TransactionModel;
@@ -37,15 +39,16 @@ public class TransactionController
 	{
 		return tService.deposit(transactionModel);
 	}
-	
+	// To be tested
 	@PostMapping("/save/fundTransfer")
-	public ResponseEntity<String> fundTransfer(@RequestBody TransactionModel transactionModel)
+	public String fundTransfer(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException
 	{
 		return tService.fundTransfer(transactionModel);
 	}
 	
 	@GetMapping("/getLatestTransactions")
-	public ResponseEntity<List<Object[]>> getLatestTransactions(@RequestParam long accountNumber){
+	public ResponseEntity<List<Object[]>> getLatestTransactions(@RequestParam long accountNumber) throws ResourceNotFoundException, NoDataFoundException
+	{
 		return new ResponseEntity<>(tService.getLatestTransactions(accountNumber), HttpStatus.OK);
 	}
 	
@@ -56,12 +59,14 @@ public class TransactionController
 	
 	
 	@GetMapping("/getAllTransactions")
-	public List<Transaction> getAllTransactions(@RequestParam long accountNo){
+	public List<Transaction> getAllTransactions(@RequestParam long accountNo) throws NoDataFoundException, ResourceNotFoundException
+	{
 		return tService.getAllTransactions(accountNo);
 	}
-	
-	@GetMapping("/getStatementTransactions")
-	public List<Transaction> getStatementTransactions(@RequestParam long accountNo, @RequestParam String fromDt, @RequestParam String toDt){
+	// To be tested
+	@GetMapping("/getStatementTransactions") // What is the difference between this method and get account statement method?
+	public List<Transaction> getStatementTransactions(@RequestParam long accountNo, @RequestParam String fromDt, @RequestParam String toDt) throws NoDataFoundException, ResourceNotFoundException
+	{
 		return tService.getStatementTransactions(accountNo,fromDt,toDt);
 	}
 }
