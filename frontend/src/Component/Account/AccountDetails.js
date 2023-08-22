@@ -32,7 +32,7 @@ const AccountDetails = () => {
             }
             else
             {
-              netBanking.innerHTML = "Net Banking Opted : NO";
+              netBanking.innerHTML = "Opted for netbanking : NO";
             }
             if(response.data.debitCardAvailed)
             {
@@ -57,7 +57,8 @@ const AccountDetails = () => {
         <br></br>
         <br></br>
         <br></br>
-      <span  id="accNo" className="p-2 bg-blue-100 text-black text-lg"></span>
+        
+      <span  id="accNo" className="w-100 p-2 bg-blue-100 text-black text-lg"></span>
         <br></br>        
         <br></br>
         <span id="accType" className="p-2 bg-blue-100 text-black text-lg"></span>
