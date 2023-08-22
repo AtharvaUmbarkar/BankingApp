@@ -13,5 +13,5 @@ import com.bankingapp.types.AddBeneficiaryModel;
 
 public interface BeneficiaryServiceInterface {
 	public Beneficiary saveBeneficiary(AddBeneficiaryModel benModel) throws ResourceNotFoundException, AlreadyExistsException;
-	public List<Beneficiary> getAllBeneficiaries(String userName) throws ResourceNotFoundException, NoDataFoundException;
+	public List<Beneficiary> getAllBeneficiaries(String userName) throws ResourceNotFoundException;
 }

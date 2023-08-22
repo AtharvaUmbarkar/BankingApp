@@ -43,7 +43,7 @@ public class AccountController {
 	}
 	
 	@GetMapping("/fetchAccount")
-	public AccountDTO fetchAccount(@RequestParam("accountNo") long accountNo) throws NoDataFoundException{
+	public AccountDTO fetchAccount(@RequestParam("accountNo") long accountNo) throws ResourceNotFoundException{
 		return modelMapper.map(accountService.fetchAccount(accountNo), AccountDTO.class);
 	}
 }

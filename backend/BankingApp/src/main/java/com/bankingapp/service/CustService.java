@@ -1,5 +1,6 @@
 package com.bankingapp.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -38,18 +39,37 @@ public class CustService {
 	@Transactional
 	public Customer validateCustomer(LoginModel loginUser) throws UnauthorizedAccessException, ResourceNotFoundException
 	{
-		String result = "";
 		Customer cust = null;
-		Optional<Customer> objt = custRepo.findByUserName(loginUser.getUsername());
+		String userName = loginUser.getUsername();
+		Optional<Customer> objt = custRepo.findByUserName(userName);
 		if (objt.isPresent())
 		{
 			cust = objt.get();
+			if(!cust.isUnLocked()) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(cust.getLastLogin());
+				cal.add(Calendar.DATE, 1);
+				Date current = new Date();
+				if(cal.getTime().after(current)) {
+					throw new UnauthorizedAccessException("Exceeded 3 login attemps, please change your password to login");
+				}
+			}
 			if (loginUser.getPassword().equals(cust.getLoginPassword())) {
-				custRepo.changeLastLogin(new Date(),loginUser.getUsername());
+				custRepo.changeLastLogin(new Date(),0,true,userName); //also set 0 failed attempts
 				return cust;
 			}
 			else {
-				throw new UnauthorizedAccessException("Invalid Credentials");
+				int noAttempts = cust.getNoFailedAttemps()+1;
+				if(noAttempts>2) {
+					//update time, attempts, unLocked
+					custRepo.changeLastLogin(new Date(),0,false,userName);
+					throw new UnauthorizedAccessException("Invalid Credentials, your account have be locked for 1 day");
+				}
+				else {
+					//update time and attempts, unlocked
+					custRepo.changeLastLogin(new Date(),noAttempts,true,userName);
+					throw new UnauthorizedAccessException(String.format("Invalid Credentials, %d more attempts remaining", 3-noAttempts));
+ 				}
 			}
 		}
 		throw new ResourceNotFoundException("Customer not Present");
@@ -103,7 +123,6 @@ public class CustService {
 	@Transactional
 	public String changePassword(ChangePasswordModel obj, String userName) throws ResourceNotFoundException, InvalidTypeException 
 	{
-		String result="";
 		Optional<Customer> optCust= custRepo.findByUserName(userName);
 		if(optCust.isPresent()) {
 			int rowsAffected;
@@ -128,7 +147,7 @@ public class CustService {
 			throw new ResourceNotFoundException("Customer does not exist");
 //			result = "Customer does not exist";
 		}
-		return result;
+		return "Success";
 	}
 	
 	@Transactional

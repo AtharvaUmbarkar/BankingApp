@@ -49,14 +49,8 @@ public class AdminService implements AdminServiceInterface{
 		throw new ResourceNotFoundException("Admin not found");
 	}
 	
-	public List<Customer> allCustomers() throws NoDataFoundException{
-		List<Customer> allCust =  custRepo.findAll();
-		if(allCust.isEmpty()) {
-			throw new NoDataFoundException("No customers found");
-		}
-		else {
-			return allCust;
-		}
+	public List<Customer> allCustomers(){
+		return  custRepo.findAll();
 	}
 
 }

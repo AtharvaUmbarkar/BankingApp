@@ -32,18 +32,11 @@ public class TransactionService {
 	
 	
 	//********** Code added for getting list of transactions of a account
-	public List<Transaction> getAllTransactions(long accountNo) throws ResourceNotFoundException, NoDataFoundException
+	public List<Transaction> getAllTransactions(long accountNo) throws ResourceNotFoundException
 	{
 		Optional<Account> obj = accountRepo.findById(accountNo);
 		if(obj.isPresent()) {
-			List<Transaction> statement = obj.get().getDebitTransactions();
-			if (statement.isEmpty())
-			{
-				throw new NoDataFoundException("No Transactions performed");
-			}
-			else {
-				return statement;
-			}
+			return obj.get().getDebitTransactions();
 		}
 		else
 		{
@@ -53,7 +46,7 @@ public class TransactionService {
 	
 	
 	
-	public List<Transaction> getStatementTransactions(long accountNo, String fromDt, String toDt) throws ResourceNotFoundException, NoDataFoundException
+	public List<Transaction> getStatementTransactions(long accountNo, String fromDt, String toDt) throws ResourceNotFoundException
 	{
 		Optional<Account> obj = accountRepo.findById(accountNo);
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -90,10 +83,6 @@ public class TransactionService {
 					System.out.println("Transaction date : "+t.getTxnDate()+" from : "+fromDt);
 					txns.add(t);
 				}
-			}
-			if (txns.isEmpty())
-			{
-				throw new NoDataFoundException("No transactions in the specified period");
 			}
 			return txns;
 		}
@@ -228,17 +217,13 @@ public class TransactionService {
 			}
 	}
 	
-	public List<Object[]> getLatestTransactions(long accountNumber) throws ResourceNotFoundException, NoDataFoundException
+	public List<Object[]> getLatestTransactions(long accountNumber) throws ResourceNotFoundException
 	{
 		Optional<Account> acc = accountRepo.findById(accountNumber);
 		if (!acc.isPresent()) {
 			throw new ResourceNotFoundException("Account not Present");
 		}
-		List<Object[]> latesttxn = transRepo.getLatestTransactionForAccount(accountNumber);
-		if (latesttxn.isEmpty()) {
-			throw new NoDataFoundException("No Recent Transactions");
-		}
-		return latesttxn;
+		return transRepo.getLatestTransactionForAccount(accountNumber);
 	}
 	
 	public List<Object[]> getAccountStatement(long accountNumber, Date from, Date to){

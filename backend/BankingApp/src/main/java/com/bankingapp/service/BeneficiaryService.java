@@ -48,14 +48,10 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 		
 	}
 	
-	public List<Beneficiary> getAllBeneficiaries(String userName) throws ResourceNotFoundException, NoDataFoundException{
+	public List<Beneficiary> getAllBeneficiaries(String userName) throws ResourceNotFoundException{
 		Optional<Customer> obj = custRepo.findByUserName(userName);
 		if(obj.isPresent()) {
-			List<Beneficiary> list = obj.get().getBeneficiaries();
-			if(list.isEmpty())
-				throw new NoDataFoundException("Beneficary list is empty");
-			else
-				return list;
+			return obj.get().getBeneficiaries();
 		}
 		else {
 			throw new ResourceNotFoundException("Customer does not exist");

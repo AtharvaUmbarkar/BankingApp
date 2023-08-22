@@ -16,7 +16,7 @@ import com.bankingapp.types.NetBankingModel;
 public interface CustomerServiceInterface {
 	public Customer saveCustomer(Customer cust);
 	public Customer validateCustomer(LoginModel loginUser) throws UnauthorizedAccessException, ResourceNotFoundException;
-	public List<Account> fetchAccounts(String username) throws ResourceNotFoundException, NoDataFoundException;
+	public List<Account> fetchAccounts(String username) throws ResourceNotFoundException;
 	public String netbankingreg(NetBankingModel nb) throws AlreadyExistsException, ResourceNotFoundException;
 	public String changePassword(ChangePasswordModel obj, String userName) throws ResourceNotFoundException, InvalidTypeException;
 	public String changeUserName(ChangeUserNameModel obj) throws ResourceNotFoundException, InvalidTypeException;

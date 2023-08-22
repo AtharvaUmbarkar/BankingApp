@@ -12,5 +12,5 @@ import com.bankingapp.types.LoginModel;
 
 public interface AdminServiceInterface {
 	public Admin validateAdmin(LoginModel loginUser) throws ResourceNotFoundException, UnauthorizedAccessException;
-	public List<Customer> allCustomers() throws NoDataFoundException;
+	public List<Customer> allCustomers();
 }
