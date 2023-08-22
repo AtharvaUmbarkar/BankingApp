@@ -29,13 +29,13 @@ public class TransactionController
 	@Autowired
 	TransactionService tService;
 	@PostMapping("/save/withdraw")
-	public String withdraw(@RequestBody TransactionModel transactionModel) throws InsufficientBalanceException
+	public String withdraw(@RequestBody TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException
 	{
 		return tService.withdraw(transactionModel);
 	}
 	
 	@PostMapping("/save/deposit")
-	public String deposit(@RequestBody TransactionModel transactionModel)
+	public String deposit(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException
 	{
 		return tService.deposit(transactionModel);
 	}
