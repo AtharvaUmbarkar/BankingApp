@@ -1,8 +1,9 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-hot-toast';
 
 
 
@@ -24,7 +25,7 @@ const OnlineBankingRegistration = () => {
       (inputs.loginPassword != inputs.transactionPassword);
 
     if (!valid) {
-      window.alert("Entered details are not valid");
+      toast.error("Entered details are not valid", { duration: 2000 });
     }
     else {
       axios.put("http://localhost:8090/netBankingRegistration", {
@@ -36,14 +37,19 @@ const OnlineBankingRegistration = () => {
       }
       ).then((response) => {
         console.log(response);
-        alert("Welcome " + inputs.userName);
+        toast.success("Welcome " + inputs.userName, { duration: 3000 });
         navigate("/login")
       }, (error) => {
-        console.log("Failure.." + error);
-        alert("Account creation failed")
+        console.log(error);
+        toast.error("Credentials Generation Failed!", { duration: 2000 })
       });
     }
   }
+
+  useEffect(() => {
+    if (sessionStorage.getItem("user")) navigate("/user");
+  }, [])
+
 
   return (
     <div className='w-full flex flex-col'>
