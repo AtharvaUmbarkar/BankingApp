@@ -27,7 +27,7 @@ export default withAuthorization(condition, HOME)(() => {
           if (response.data.mobileNumber) {
             setTimeout(() => {
               setUserInContext(response.data)
-              if (admin) navigate("/")
+              if (admin) navigate("/admin")
               else navigate("/user")
             }, 1000)
           } else {

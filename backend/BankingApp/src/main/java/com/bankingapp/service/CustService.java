@@ -148,5 +148,9 @@ public class CustService {
 			cust = obj.get();
 		return cust;
 	}
+	
+	public List<Object> getCustomerAndAccountDetails(int custId) {
+		return custRepo.getCustomerAndAccountDetails(custId);
+	}
 
 }

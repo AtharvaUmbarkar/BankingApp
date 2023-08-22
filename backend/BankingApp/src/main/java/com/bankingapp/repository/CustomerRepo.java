@@ -38,5 +38,9 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
 
 	@Query("SELECT c from Customer c WHERE c.userName LIKE ?1")
 	public List<Customer> searchByUsername(String query);
+
+	@Query("SELECT c, a from Customer c JOIN Account a on a.customer.customerId = c.customerId WHERE c.customerId = ?1")
+	public List<Object> getCustomerAndAccountDetails(int id);
 }
+
 

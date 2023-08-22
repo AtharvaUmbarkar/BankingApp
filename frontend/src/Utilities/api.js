@@ -69,4 +69,12 @@ export const getCustomerAccounts = async (username) => {
     return response;
 }
 
+export const toggleActivation = async (actNo) => {
+    const response = await axios.put(`${API_URL}/toggle/Activation?acntNo=${actNo}`)
+    return response
+}
 
+export const getCustomerAndAccountDetails = async (id) => {
+    const response = await axios.get(`${API_URL}/getCustomerAndAccountDetails/${id}`)
+    return response;
+}

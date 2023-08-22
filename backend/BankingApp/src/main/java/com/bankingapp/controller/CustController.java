@@ -91,5 +91,11 @@ public class CustController {
 			return new ResponseEntity<>(cust, HttpStatus.OK);
 		}
 	}
+	
+	@GetMapping("/getCustomerAndAccountDetails/{id}")
+	public List<Object> getCustomerAndAccountDetails(@PathVariable("id") int id)
+	{
+		return custService.getCustomerAndAccountDetails(id);
+	}
 
 }
