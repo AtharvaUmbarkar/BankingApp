@@ -36,11 +36,6 @@ export default withAuthorization(condition, LOGIN)(() => {
                   <p className="flex flex-row items-center justify-between"><span className='font-semibold'>Account Number: </span><span>{b.accountNumber}</span></p>
                   <p className="flex flex-row items-center justify-between"><span className='font-semibold'>Nickname: </span><span>{b.nickname}</span></p>
                 </div>
-                <div key={i} className='w-full p-4 my-2 bg-slate-100 shadow-md flex flex-col rounded'>
-                  <p className="flex flex-row items-center justify-between"><span className='font-semibold'>Name: </span><span>{b.name}</span></p>
-                  <p className="flex flex-row items-center justify-between"><span className='font-semibold'>Account Number: </span><span>{b.accountNumber}</span></p>
-                  <p className="flex flex-row items-center justify-between"><span className='font-semibold'>Nickname: </span><span>{b.nickname}</span></p>
-                </div>
               </>
             )
           })}
