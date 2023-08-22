@@ -15,7 +15,7 @@ const AccountNavbar = () => {
     const navigation = [
         { name: 'Details', to: `/account/${accountNumber}/details` },
         { name: 'Statement', to: `/account/${accountNumber}/statement` },
-        { name: 'Transaction', to: `/account/${accountNumber}/transaction` },
+        { name: 'Transaction', to: `/account/${accountNumber}/transaction/imps` },
         { name: 'Transaction History', to: `/account/${accountNumber}/transactionHistory` },
     ]
 

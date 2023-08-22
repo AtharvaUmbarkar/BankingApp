@@ -37,32 +37,66 @@ function CustomerDetails() {
     }
 
   return (
-    <div className="bg-white py-24 sm:py-32">
-    <div className="mx-auto max-w-7xl px-6 lg:px-8">
-      <div className="mx-auto max-w-2xl lg:mx-0">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{customer && customer.firstName}</h2>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
-          {customer && customer.permAddressLine1}
-        </p>
-        <div className="flex items-center">
-          <PhoneIcon className="h-5 w-5 flex-shrink-0 text-indigo-600"/>{customer && customer.mobileNumber}
-        </div>
-        <div className="flex items-center">
-          <CalendarDaysIcon className="h-5 w-5 flex-shrink-0 text-indigo-600"/>{customer && customer.dateOfBirth}
-        </div>
-      </div>
-      <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+    <div className="mt-12 mx-8 md:h-1/3 p-16 grid grid-cols-1 md:grid-cols-2">
+      <div className="max-w-[360px] p-6 py-8 pb-12 shadow-md md:max-w-[480px] rounded-2xl border text-gray-700 border-black-700">
+        {customer && (
+          <>
+            <div className='flex flex-col items-center'>
+                <p className='text-lg text-indigo-700 font-bold'>#{customer.customerId}</p>
+              <p className="text-2xl font-bold tracking-tight text-gray-900">{customer.firstName}</p>
+                  <p>@{customer.userName}</p>
+            </div>
+            <div className='flex justify-between mt-4 px-8'>
+              <div className="flex items-center text-sm">
+                <PhoneIcon className="h-4 w-4 mr-[4px] flex-shrink-0 text-indigo-600"/>{customer.mobileNumber}
+              </div>
+              <div className="flex items-center text-sm">
+                <CalendarDaysIcon className="h-4 w-4 mr-[4px] flex-shrink-0 text-indigo-600"/>{customer.dateOfBirth}
+              </div>
+            </div>
+            <div className='flex flex-col gap-y-2 px-8 mt-4'>
+            <p className="w-full mt-2 text-sm leading-8 border-b border-gray-200 text-gray-600">
+              {customer.emailId}
+            </p>
+            <p className="w-full mt-2 text-sm leading-8 border-b border-gray-200 text-gray-600">
+              {customer.aadhaarNumber}
+            </p>
+            <p className="w-full mt-2 text-sm leading-8 border-b border-gray-200 text-gray-600">
+              {customer.permAddressLine1}
+            </p>
+            </div>
+            <div className='flex mt-5 px-8 text-xs text-gray-500 justify-end'>
+              <p className=''><span>Last Login: </span>{customer.lastLogin ? new Date(customer.lastLogin).toLocaleString() : "N/A"}</p>
+            </div>
+          </>
+        )}
+        
+    </div>
+    <div className="max-w-[360px] p-6 py-8 pb-12 shadow-md md:max-w-[480px] rounded-2xl border
+text-gray-700 border-black-700">
+      <p className="text-2xl px-7 mb-4 font-bold tracking-tight text-gray-900">Accounts</p>
+      <div className="flex flex-col px-3 gap-y-4 overflow-y-auto max-h-[280px]">
         {accounts.map(({accountNumber, accountType, accountBalance, active}) => (
-          <article key={accountNumber} className="flex max-w-xl flex-col items-start text-blue-500 justify-between">
-            <Link to={`/admin/viewAccount/${accountNumber}`}>{accountNumber}</Link>
-            <span className="p-2 bg-blue-100 mt-2 text-black text-lg">{accountType}</span>
-            <span className="p-2 bg-blue-100 mt-2 text-black text-lg"> Account Balance: &#8377;{accountBalance}</span>
+          <article key={accountNumber} className="flex border rounded-lg p-4 justify-between text-blue-500">
+            <div className='flex flex-col text-indigo-600'>
+              <Link className='flex gap-x-1' to={`/admin/viewAccount/${accountNumber}`}>
+                  <span>
+                  {accountNumber}
+                  </span>
+                  <ArrowTopRightOnSquareIcon className="h-5 w-5 flex-shrink-0 text-indigo-600" aria-hidden="true" /></Link>
+             <p className="mt-2 text-gray-700 text-sm"> Account Balance: &#8377;{accountBalance}</p>
+            </div>
+            <div>
+            <div className='flex flex-col w-[72px]'>
+              <p className="p-1 px-1.5 bg-indigo-200 text-black rounded-md text-sm text-center">{accountType}</p>
+              <button className={`mt-2 rounded-md px-1.5 p-1 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${active ? 'bg-red-600 hover:bg-red-500 focus-visible:outline-red-600': 'bg-green-600 hover:bg-green-500 focus-visible:outline-green-600'}`} onClick={(e) => handleDisable(accountNumber, active ? "disabled" : "activated")}>{active ? "Disable" : "Activate"}</button>
+            </div>
+            </div>
 
-            <button className="mt-2 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" onClick={(e) => handleDisable(accountNumber, active ? "disabled" : "activated")}>{active ? "Disable" : "Activate"}</button>
         </article>
         ))}
       </div>
-    </div>
+      </div>
   </div>
   )
 }

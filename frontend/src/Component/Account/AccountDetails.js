@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 const BASE_URL = "http://localhost:8090/fetchAccount";
 const AccountDetails = () => {
   const { accountNumber } = useParams();
-  const [accountDetails, setAccountDetails] = useState({});
+  const [accountDetails, setAccountDetails] = useState();
 
 
 
@@ -30,6 +30,7 @@ const AccountDetails = () => {
     <div className='w-full p-8'>
       <div className='w-2/5 flex flex-col mx-auto items-center'>
         <h1 className='font-semibold text-2xl mb-8'>Account Details</h1>
+        {accountDetails && (
         <div className='w-full shadow-md rounded bg-slate-200 p-2'>
           <div className='w-full flex flex-row items-center p-1 px-2 my-0.5 rounded'>
             <span className='w-1/2 font-semibold'>Account Number:</span>
@@ -52,6 +53,7 @@ const AccountDetails = () => {
             <span className='flex-grow'>{accountDetails.active ? "Activated" : "Deactivated"}</span>
           </div>
         </div>
+        )}
       </div>
     </div>
 

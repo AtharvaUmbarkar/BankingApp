@@ -78,3 +78,9 @@ export const getCustomerAndAccountDetails = async (id) => {
     const response = await axios.get(`${API_URL}/getCustomerAndAccountDetails/${id}`)
     return response;
 }
+
+export const searchCustomerByUsername = async (query) => {
+    const response = await axios.get(`${API_URL}/searchCustomerByUsername?query=${query}`)
+    return response;
+}
+
