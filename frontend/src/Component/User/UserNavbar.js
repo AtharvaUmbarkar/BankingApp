@@ -15,6 +15,7 @@ const navigation = [
 const UserNavbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
+    const user = (JSON.parse(sessionStorage.getItem('user'))).username
     const { removeUser } = useContext(UserContext)
 
     const handleLogout = () => {
