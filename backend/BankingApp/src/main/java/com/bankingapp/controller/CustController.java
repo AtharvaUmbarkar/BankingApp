@@ -56,7 +56,7 @@ public class CustController {
 //		}
 	}
 	
-	@GetMapping("/fetchAccounts/")
+	@GetMapping("/fetchAccounts")
 	public List<Integer> fetchAccounts(@RequestParam("username") String username) throws ResourceNotFoundException, NoDataFoundException
 	{
 		return custService.fetchAccounts(username);
