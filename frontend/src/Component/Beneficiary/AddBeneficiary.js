@@ -14,7 +14,7 @@ const condition = (authUser) => !authUser // User not logged in -> Redirect to L
 
 export default withAuthorization(condition, LOGIN)(() => {
   const [inputs, setInputs] = useState({});
-  const { username } = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -24,9 +24,9 @@ export default withAuthorization(condition, LOGIN)(() => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await addBeneficiaryToCustomer(inputs, username)
-    if (response) {
-      toast.success("Beneficiary Added!", { duration: 2000 })
+    const response = await addBeneficiaryToCustomer(inputs, user.userName)
+    if(response){
+      toast.success("Beneficiary added!")
       setInputs({})
     }
   }

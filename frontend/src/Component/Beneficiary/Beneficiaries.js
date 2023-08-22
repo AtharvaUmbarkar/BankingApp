@@ -10,18 +10,17 @@ import { LOGIN } from "../../Utilities/routes";
 
 const condition = (authUser) => !authUser // User not logged in -> Redirect to Login
 
-export default withAuthorization(condition, LOGIN)(() => {
-  const [beneficiaries, setBeneficiaries] = useState([])
-  const { username } = useContext(UserContext)
+export default withAuthorization (condition, LOGIN) (() => {
+    const [beneficiaries, setBeneficiaries] = useState([])
+    const { user } = useContext(UserContext)
 
-  useEffect(() => {
-    const updateBeneficiaries = async (username) => {
-      const result = await getAllBeneficiaries(username)
-      setBeneficiaries(result.data)
-      console.log(result.data);
-    }
-    updateBeneficiaries(username);
-  }, [])
+    useEffect(() => {
+        const updateBeneficiaries = async (user) => {
+            const result = await getAllBeneficiaries(user.userName)
+            setBeneficiaries(result.data)
+        }
+        updateBeneficiaries(user);        
+    }, [])
 
   return (
     <>

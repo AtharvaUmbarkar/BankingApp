@@ -7,12 +7,12 @@ import { UserContext } from '../../Utilities/context/userContext'
 
 const Home = () => {
 
-    const { username } = useContext(UserContext)
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
-        if(username) {
+        if(user) {
             setTimeout(() => {
-                toast.success(`Welcome ${username}`)
+                toast.success(`Welcome ${user.userName}`)
             }, 1000)
         }
     })

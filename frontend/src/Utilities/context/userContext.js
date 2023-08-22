@@ -3,36 +3,29 @@ import React, { useEffect, useState } from "react";
 export const UserContext = React.createContext()
 
 export const UserContextProvider = (props) => {
-    const [username, setUsername] = useState(
-        sessionStorage.getItem("user") ?
-            JSON.parse(sessionStorage.getItem("user")).username : undefined
-    )
-
     const [user, setUser] = useState(
         sessionStorage.getItem("user") ?
-            JSON.parse(sessionStorage.getItem("user")).username : undefined
+            JSON.parse(sessionStorage.getItem("user")) : undefined
     )
 
-    const setUsernameInContext = (user) => {
-        sessionStorage.setItem("user", JSON.stringify({ username: user.userName }))
-        setUsername(user.userName)
+    const setUserInContext = (user) => {
+        sessionStorage.setItem("user", JSON.stringify(user))
         setUser(user)
     }
 
     const removeUser = () => {
         setUser(undefined);
-        setUsername(undefined);
         sessionStorage.removeItem('user');
     }
 
     useEffect(() => {
         if (sessionStorage.getItem("user")) {
-            setUsername(JSON.parse(sessionStorage.getItem("user")).username)
+            setUser(JSON.parse(sessionStorage.getItem("user")))
         }
     }, [])
 
     return (
-        <UserContext.Provider value={{ username, setUsernameInContext, user, removeUser }}>
+        <UserContext.Provider value={{ setUserInContext, user, removeUser }}>
             {props.children}
         </UserContext.Provider>
     )

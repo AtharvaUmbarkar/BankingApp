@@ -15,7 +15,7 @@ export default withAuthorization(condition, HOME)(() => {
   const [password, setPassword] = useState("")
   const [admin, setAdmin] = useState(false);
   const navigate = useNavigate()
-  const { setUsernameInContext } = useContext(UserContext)
+  const { setUserInContext } = useContext(UserContext)
 
 
   const handleSubmit = async (e) => {
@@ -24,18 +24,18 @@ export default withAuthorization(condition, HOME)(() => {
       try {
         const response = await loginUser({ username, password }, admin)
         if (response) {
-          if (response.data.userName) {
-            setUsernameInContext(response.data)
-            if (admin) navigate("/")
-            else navigate("/user")
-            toast.loading("Logging you in...", { duration: 1000 })
+          if (response.data.mobileNumber) {
+            setTimeout(() => {
+              setUserInContext(response.data)
+              if (admin) navigate("/")
+              else navigate("/user")
+            }, 1000)
           } else {
             toast.error("Login failed!")
           }
         }
       } catch (error) {
-        toast.error("Login failed!")
-        console.log(error.response.data);
+        toast.error(error.response.data);
       }
     }
   }
