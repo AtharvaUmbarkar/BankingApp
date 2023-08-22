@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { UserContext } from '../../Utilities/context/userContext';
 
 
 const navigation = [
@@ -14,9 +15,10 @@ const navigation = [
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const navigate = useNavigate();
+  const { user, removeUser } = useContext(UserContext)
 
   const handleLogout = () => {
-    sessionStorage.removeItem('user');
+    removeUser()
     navigate('/');
   }
 
@@ -46,19 +48,19 @@ const Navbar = () => {
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
           {(
-            sessionStorage.getItem('user') &&
+            user &&
             <Link to='/user' className="text-sm font-semibold leading-6 text-gray-900">
               Dashboard
             </Link>
           )}
           {navigation.map((item) => (
-            <Link key={item.name} to={item.to} className="text-sm font-semibold leading-6 text-gray-900">
+            <Link key={item.name} to={item.to} className="text-sm hover:bg-gray font-semibold leading-6 text-gray-900">
               {item.name}
             </Link>
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          {(!sessionStorage.getItem('user')) ? <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900">
+          {!user ? <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900">
             Log in <span aria-hidden="true">&rarr;</span>
           </Link>
             :
@@ -104,7 +106,7 @@ const Navbar = () => {
                 ))}
               </div>
               <div className="py-6">
-                {(!sessionStorage.getItem('user')) ? <Link
+                {!user ? <Link
                   to="/login"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >

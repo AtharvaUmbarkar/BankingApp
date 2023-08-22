@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { UserContext } from '../../Utilities/context/userContext';
 
 
 const navigation = [
@@ -14,9 +15,10 @@ const navigation = [
 const UserNavbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
+    const { removeUser } = useContext(UserContext)
 
     const handleLogout = () => {
-        sessionStorage.removeItem('user');
+        removeUser()
         navigate('/');
     }
 

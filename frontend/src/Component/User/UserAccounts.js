@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../Utilities/context/userContext';
 
 
 const UserAccounts = () => {
   const BASE_URL = "http://localhost:8090/fetchAccounts/";
-  const USER_NAME = JSON.parse(sessionStorage.getItem('user'));
+  const { user } = useContext(UserContext)
   const [accountsList, setAccounts] = useState([]);
 
-  const fetchAccounts = () => {
-    if (USER_NAME) {
-      axios.get(BASE_URL + USER_NAME.username).then((response) => {
-        setAccounts(response.data);
-      }).catch(error => {
-        console.log(error);
-      })
-    }
-  }
 
+  console.log(user)
   useEffect(() => {
+    const fetchAccounts = async () => {
+      if (user) {
+        const response  = await axios.get(BASE_URL + user.userName)
+        setAccounts(response.data);
+      }
+    }
     fetchAccounts();
-  }, [USER_NAME]);
+  }, []);
 
   return (
     <div className='w-full flex flex-col items-center'>

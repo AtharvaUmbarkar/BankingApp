@@ -20,17 +20,17 @@ export default withAuthorization (condition, LOGIN)(() => {
     userRemarks: "",
   })
   const [beneficiaries, setBeneficiaries] = useState([])
-  const { username } = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const navigate = useNavigate()
 
 
 
   useEffect(() => {
-      const updateBeneficiaries = async (username) => {
-        const result = await getAllBeneficiaries(username)
+      const updateBeneficiaries = async (user) => {
+        const result = await getAllBeneficiaries(user.userName)
         setBeneficiaries(result.data)
       }
-      updateBeneficiaries(username);      
+      updateBeneficiaries(user);      
   }, [])
 
 
