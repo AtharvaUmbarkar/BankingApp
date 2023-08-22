@@ -64,6 +64,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public @ResponseBody ErrorResponse handleAlreadyExistsException(AlreadyExistsException ex) {
 		return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
 	}
-	
+
+	@ExceptionHandler(value = InvalidTypeException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public @ResponseBody ErrorResponse InvalidTypeException(InvalidTypeException ex) {
+		return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+	}
+
 }
 

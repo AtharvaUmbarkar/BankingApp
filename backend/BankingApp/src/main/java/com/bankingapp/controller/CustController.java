@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.exception.AlreadyExistsException;
+import com.bankingapp.exception.InvalidTypeException;
+import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Customer;
 import com.bankingapp.service.CustService;
 import com.bankingapp.types.ChangePasswordModel;
@@ -39,15 +42,9 @@ public class CustController {
 	}
 	
 	@PostMapping("/Login")
-	public ResponseEntity<Object> validateCustomer(@RequestBody LoginModel u)
+	public Customer validateCustomer(@RequestBody LoginModel u) throws UnauthorizedAccessException, ResourceNotFoundException
 	{
-		Customer cust = custService.validateCustomer(u);
-		if(cust == null) {
-			return new ResponseEntity<>("Invalid Credidentials", HttpStatus.UNAUTHORIZED);
-		}
-		else {
-			return new ResponseEntity<>(cust, HttpStatus.OK);
-		}
+		return custService.validateCustomer(u);
 //		if(response.equals("Invalid user")) {
 //			return new ResponseEntity<>("Invalid User Name", HttpStatus.NOT_FOUND);
 //		}
@@ -59,16 +56,10 @@ public class CustController {
 //		}
 	}
 	
-	@GetMapping("/fetchAccounts/{username}")
-	public ResponseEntity<Object> fetchAccounts(@PathVariable("username") String username)
+	@GetMapping("/fetchAccounts/")
+	public List<Integer> fetchAccounts(@RequestParam("username") String username) throws ResourceNotFoundException, NoDataFoundException
 	{
-		List<Integer> accountList = custService.fetchAccounts(username);
-		if (accountList == null) {
-			return new ResponseEntity<>("Invalid Username", HttpStatus.NOT_FOUND);
-		}
-		else {
-			return new ResponseEntity<>(accountList, HttpStatus.OK);
-		}
+		return custService.fetchAccounts(username);
 	}
 	// To be tested for exception
 	@PutMapping("/netBankingRegistration")
@@ -78,24 +69,19 @@ public class CustController {
 	}
 	
 	@PutMapping("/forgotPassword")
-	public String changePassword(@RequestBody ChangePasswordModel obj, @RequestParam("userName") String userName) {
+	public String changePassword(@RequestBody ChangePasswordModel obj, @RequestParam("userName") String userName) throws ResourceNotFoundException, InvalidTypeException 
+	{
 		return custService.changePassword(obj, userName);
 	}
 	
 	@PutMapping("/forgotUserName")
-	public String changeUserName(@RequestBody ChangeUserNameModel obj) {
+	public String changeUserName(@RequestBody ChangeUserNameModel obj) throws ResourceNotFoundException, InvalidTypeException {
 		return custService.changeUserName(obj);
 	}
 	
 	@GetMapping("/fetchUser")
-	public ResponseEntity<Object> fetchUser(@RequestParam("customerId") int custId){
-		Customer cust = custService.fetchUser(custId);
-		if(cust == null) {
-			return new ResponseEntity<>("Invalid Customer ID", HttpStatus.NOT_FOUND);
-		}
-		else {
-			return new ResponseEntity<>(cust, HttpStatus.OK);
-		}
+	public Customer fetchUser(@RequestParam("customerId") int custId) throws ResourceNotFoundException{
+		return custService.fetchUser(custId);
 	}
 
 }
