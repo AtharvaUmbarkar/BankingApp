@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.service.CustService;
 import com.bankingapp.types.ChangePasswordModel;
@@ -58,9 +59,9 @@ public class CustController {
 	}
 	
 	@GetMapping("/fetchAccounts/{username}")
-	public List<Integer> fetchAccounts(@PathVariable("username") String username)
+	public List<Account> fetchAccounts(@PathVariable("username") String username)
 	{
-		List<Integer> accountList = custService.fetchAccounts(username);
+		List<Account> accountList = custService.fetchAccounts(username);
 		return accountList;
 	}
 	
