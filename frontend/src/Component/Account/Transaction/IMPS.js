@@ -88,6 +88,7 @@ export default withAuthorization (condition, LOGIN)(() => {
           onChange={handleChange}
           className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1 mb-1 w-full"
         >
+          <option className='w-full' value=""></option>
           {beneficiaries.map((b, i) => {
             return <option key={i} className='w-full' value={b.accountNumber} >{b.name + " " + b.accountNumber}</option>
           })}

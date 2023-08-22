@@ -15,7 +15,7 @@ const transactionTypes = [
 const AccountTransaction = () => {
   const navigate = useNavigate();
   const match = useMatch("/account/:accountNumber/transaction/:transactionType")
-  const [type, setType] = useState(match.params.transactionType ? match.params.transactionType : transactionTypes[0]);
+  const [type, setType] = useState(match ? match.params.transactionType : transactionTypes[0]);
   const [beneficiaries, setBeneficiaries] = useState([])
   const userName = JSON.parse(sessionStorage.getItem("user"));
 
@@ -25,7 +25,7 @@ const AccountTransaction = () => {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8090/getAllBeneficiaries", { params: { userName: userName.username } }).then(
+    axios.get("http://localhost:8090/getAllBeneficiaries", { params: { userName: userName.userName } }).then(
       (response) => {
         setBeneficiaries(response.data)
       }
