@@ -1,61 +1,29 @@
-import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
-import withAuthorization from "../../Utilities/context/withAuthorization"
-import { getLatestTransactions, getStatement } from "../../Utilities/api"
-import { LOGIN } from "../../Utilities/routes"
-import DatePicker from "react-datepicker"
-
-import "react-datepicker/dist/react-datepicker.css";
-import { toast } from "react-hot-toast"
+import { useState, useEffect } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { getLatestTransactions } from '../../Utilities/api'
 
 
-const condition = (authUser) => !authUser // User not logged in -> redirect Login
-
-const formatDate = (date) => {
-  if(date){
-    let day = date.getDate()
-    let month = date.getMonth()
-    if(day < 10) day =`0${day}`
-    if(month < 10) month =`0${month + 1}`
-    return `${date.getFullYear()}-${month}-${day}`
-  }
-}
-
-
-export default withAuthorization(condition, LOGIN)(() => {
-
-  const [transactions, setTransactions] = useState([])
-  const [from, setFrom] = useState("")
-  const [to, setTo] = useState("")
-  const { accountNumber } = useParams()
+function AccountDetails() {
+  
+    const [transactions, setTransactions] = useState([])
+    const { accountNumber } = useParams()
 
     useEffect(() => {
-      console.log(formatDate(from), formatDate(to))
-        const updateTransactions = async (accountNumber, from, to) => {
-            const result = await getStatement(accountNumber, from, to)
+        const updateTransactions = async (accountNumber) => {
+            const result = await getLatestTransactions(accountNumber)
             setTransactions(result.data)
         }
-        if(from && to){
-          if(to > from){
-            updateTransactions(accountNumber, formatDate(from), formatDate(to));
-          } else{
-            toast.error("Enter a valid range!")
-          }
-            
-        }
-    }, [from, to])
+        updateTransactions(accountNumber);        
+    }, [])
+
 
 
   return (
     <div className='w-full flex flex-col items-center'>
-    <h2 className="mt-8 text-xl">Statement</h2>
-    <div className="flex gap-4">
-    <DatePicker placeholderText="From" format="yyy-MM-dd"  className="mt-4 px-2 py-1.5 border rounded-md shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" selected={from} onChange={(d) => setFrom(d)}/>
-    <DatePicker placeholderText="To" format="yyy-MM-dd"  className="mt-4 px-2 py-1.5 border rounded-md shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" selected={to} onChange={(d) => setTo(d)}/>
-    </div>
+      <h2 className="mt-8 text-xl">Transaction History</h2>
     <div className='mt-8 w-2/5 px-4'>
     <ul role="list" className="divide-y divide-gray-100">
-      {from && to && (transactions.length ? transactions.map(([transaction, sender, receiver]) => (
+      {transactions.map(([transaction, sender, receiver]) => (
         <li key={transaction.id} className="flex justify-between gap-x-6 py-5">
           <div className="flex min-w-0 gap-x-4">
               {transaction.txnType == "IMPS" || transaction.txnType == "NEFT" || transaction.txnType == "RTGS" ? 
@@ -94,9 +62,11 @@ export default withAuthorization(condition, LOGIN)(() => {
               </p>
           </div>
         </li>
-      ))  : <p className="text-center text-gray-500 font-semibold">No records</p>)}
+      ))}
     </ul>
     </div>
   </div>
   )
-})
+}
+
+export default AccountDetails

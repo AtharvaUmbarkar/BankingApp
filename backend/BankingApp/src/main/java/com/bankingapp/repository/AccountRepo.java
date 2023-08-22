@@ -14,14 +14,16 @@ import com.bankingapp.models.Customer;
 @Repository
 public interface AccountRepo extends JpaRepository<Account, Long> {
 	
-	@Query("select account.accountNumber from Account account where account.customer.customerId=?1")
-	public List<Integer> findByAccountNumber(int custId);
+	@Query("select account from Account account where account.customer.customerId=?1")
+	public List<Account> findByAccountNumber(int custId);
 	
 	@Modifying
 	@Query("update Account account set account.accountBalance = ?1 where account.accountNumber = ?2")
 	public int updateBalance(double balance, long accountNumber);
 	
-//	Optional<Account> findByAccountNum(int accountNumber);
+	@Modifying
+	@Query("update Account account set account.active = ?1 where account.accountNumber = ?2")
+	public int toggleActivation(boolean isActive, long accountNumber);
 
 	
 }

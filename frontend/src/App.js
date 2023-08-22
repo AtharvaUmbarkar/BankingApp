@@ -30,6 +30,11 @@ import { UserContextProvider } from './Utilities/context/userContext';
 import UserAccounts from './Component/User/UserAccounts';
 import AccountTransactionHistory from './Component/Account/AccountTransactionHistory';
 import ForgotPassword from './Component/Home/ForgotPassword';
+import AdminDashboard from './Component/Admin/AdminDashboard';
+import CustomersList from './Component/Admin/CustomersList';
+import Stats from './Component/Admin/Stats';
+import CustomerDetails from './Component/Admin/CustomerDetails';
+import ViewAccountDetails from './Component/Admin/AccountDetails';
 
 function App() {
   return (
@@ -40,6 +45,7 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route index exact path="/" element={<Main />} />
           <Route exact path="login" element={<Login />} />
+          <Route exact path="forgot-password" element={<ForgotPassword />} />
           <Route path='savings-account-registration' element={<SavingsAccountRegistration />} />
           <Route path='online-banking-registration' element={<OnlineBankingRegistration />} />
         </Route>
@@ -68,29 +74,15 @@ function App() {
             <Route path='deposit' element={<Deposit />} />
           </Route>
         </Route>
+        <Route path="/admin" element={<AdminDashboard />}>
+        <Route index element={<Navigate to='stats' />} />
+          <Route path="stats" element={<Stats />} />
+          <Route path="viewCustomers" element={<CustomersList />} />
+          <Route path="viewCustomer/:customerId/:username" element={<CustomerDetails />} />
+          <Route path="viewAccount/:accountNumber" element={<ViewAccountDetails />} />
+        </Route>
           <Route exact path="/logout" element={<Logout />} />
 
-          <Route path="/user" element={<UserDashboard />}>
-            <Route index element={<Navigate to='profile' />} />
-            <Route path='profile' index element={<UserProfile />} />
-            <Route path='account' index element={<UserAccounts />} />
-            <Route path='addBeneficiary' element={<AddBeneficiary />} />
-            <Route path='beneficiaries' element={<Beneficiaries />} />
-          </Route>
-
-          <Route path='/account/:accountNumber' element={<AccountDashboard />}>
-            <Route index element={<Navigate to='details' />} />
-            <Route path='details' element={<AccountDetails />} />
-            <Route path='statement' element={<AccountStatement />} />
-            <Route path='transaction' element={<AccountTransaction />} >
-              <Route index element={<Navigate to='imps' />} />
-              <Route path='imps' element={<IMPS />} />
-              <Route path='neft' element={<NEFT />} />
-              <Route path='rtgs' element={<RTGS />} />
-              <Route path='withdraw' element={<Withdraw />} />
-              <Route path='deposit' element={<Deposit />} />
-            </Route>
-          </Route>
 
         </Routes>
       </BrowserRouter>

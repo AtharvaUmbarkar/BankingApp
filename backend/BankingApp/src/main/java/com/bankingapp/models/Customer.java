@@ -33,7 +33,7 @@ public class Customer {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="customer_generator")
 	@SequenceGenerator(
 			name="customer_generator",
-			sequenceName = "custmer_seq",
+			sequenceName = "customer_seq",
 			initialValue=10000000,
 			allocationSize=1)
 	private int customerId;
