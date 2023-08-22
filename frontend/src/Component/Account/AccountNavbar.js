@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { UserContext } from '../../Utilities/context/userContext';
 
 
 
 const AccountNavbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
-    const user = sessionStorage.getItem('user') ? (JSON.parse(sessionStorage.getItem('user'))).username : undefined;
+    const { user } = useContext(UserContext)
 
     const { accountNumber } = useParams();
     const navigation = [
@@ -63,7 +64,7 @@ const AccountNavbar = () => {
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end flex-row ml-12">
                     {sessionStorage.getItem('user') &&
-                        <div className='py-1 px-3 text-white bg-indigo-700 mr-8 rounded'>{user}</div>
+                        <div className='py-1 px-3 text-white bg-indigo-700 mr-8 rounded'>{user.userName}</div>
                     }
                     <button type='button' onClick={handleLogout} className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
                         Log out
@@ -107,7 +108,7 @@ const AccountNavbar = () => {
                             </div>
                             <div className="py-6">
                                 {sessionStorage.getItem('user') &&
-                                    <div className='py-1 px-3 text-white bg-indigo-700 rounded'>{user}</div>
+                                    <div className='py-1 px-3 text-white bg-indigo-700 rounded'>{user.userName}</div>
                                 }
                                 <button
                                     onClick={handleLogout}

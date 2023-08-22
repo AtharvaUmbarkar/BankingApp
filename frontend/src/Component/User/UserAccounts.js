@@ -9,8 +9,6 @@ const UserAccounts = () => {
   const { user } = useContext(UserContext)
   const [accountsList, setAccounts] = useState([]);
 
-
-  console.log(user)
   useEffect(() => {
     const fetchAccounts = async () => {
       if (user) {
