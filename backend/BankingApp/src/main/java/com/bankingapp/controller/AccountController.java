@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.exception.AlreadyExistsException;
+import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Account;
 import com.bankingapp.service.AccountService;
@@ -37,12 +38,7 @@ public class AccountController {
 	}
 	
 	@GetMapping("/fetchAccount")
-	public ResponseEntity<Object> fetchAccount(@RequestParam("accountNo") long accountNo){
-		Account account = accountService.fetchAccount(accountNo);
-		if(account == null) {
-			return new ResponseEntity<>("Account does not exist", HttpStatus.NOT_FOUND);
-		}else {
-			return new ResponseEntity<>(account, HttpStatus.OK);
-		}
+	public Account fetchAccount(@RequestParam("accountNo") long accountNo) throws NoDataFoundException{
+		return accountService.fetchAccount(accountNo);
 	}
 }

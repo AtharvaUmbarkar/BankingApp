@@ -37,15 +37,9 @@ public class AdminController {
 	
 	
 	@PostMapping("/LoginAdmin")
-	public ResponseEntity<Object> validateCustomer(@RequestBody LoginModel u)
+	public Admin validateAdmin(@RequestBody LoginModel u)
 	{
-		Admin admin = adminService.validateAdmin(u);
-		if(admin == null) {
-			return new ResponseEntity<>("Invalid Credidentials", HttpStatus.UNAUTHORIZED);
-		}
-		else {
-			return new ResponseEntity<>(admin, HttpStatus.OK);
-		}
+		return adminService.validateAdmin(u);
 	}
 	
 	@GetMapping("/fetch/AllCustomers")

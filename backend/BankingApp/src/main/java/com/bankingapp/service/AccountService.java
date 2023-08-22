@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.exception.AlreadyExistsException;
+import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
@@ -60,13 +61,13 @@ public class AccountService {
 				throw new AlreadyExistsException("Please login to create a new account");
 			}
 			else {
-				customer.setCustomerId(existingCust.getCustomerId());
+//				customer.setCustomerId(existingCust.getCustomerId());
 //				customer.set
 				Account account = obj.getAccount();
-				account.setCustomer(customer);
+				account.setCustomer(existingCust);
 				existingCust.getAccounts().add(account);
-				customer.setAccounts(existingCust.getAccounts());
-				Customer new_cust = custRepo.save(customer);
+//				customer.setAccounts(existingCust.getAccounts());
+				Customer new_cust = custRepo.save(existingCust);
 				result= String.format("successfully created account with account number: %d for customer id: %d" ,  new_cust.getAccounts().get(new_cust.getAccounts().size()-1).getAccountNumber(), new_cust.getCustomerId()); 
 			
 			}
@@ -74,13 +75,13 @@ public class AccountService {
 		return result;
 	}
 	
-	public Account fetchAccount(long accountNo) 
+	public Account fetchAccount(long accountNo) throws NoDataFoundException 
 	{
 		Optional<Account> obj = accountRepo.findById(accountNo);
 		if(obj.isPresent())
 			return obj.get();
 		else
-			return null;
+			throw new NoDataFoundException("Account does not exist");
 	}	
 	
 	@Transactional

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.exception.NoDataFoundException;
+import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Admin;
 import com.bankingapp.models.Customer;
@@ -29,7 +31,7 @@ public class AdminService {
 	CustomerRepo custRepo;
 	
 	@Transactional
-	public Admin validateAdmin(LoginModel loginUser)
+	public Admin validateAdmin(LoginModel loginUser) throws ResourceNotFoundException, UnauthorizedAccessException
 	{
 		Admin admin = null;
 		Optional<Admin> objt = adminRepo.findById(loginUser.getUsername());
@@ -39,8 +41,11 @@ public class AdminService {
 			if (loginUser.getPassword().equals(admin.getLoginPassword())) {
 				return admin;
 			}
+			else {
+				throw new UnauthorizedAccessException("Invalid password");
+			}
 		}
-		return null;
+		throw new ResourceNotFoundException("Admin not found");
 	}
 	
 	public List<Customer> allCustomers() throws NoDataFoundException{
