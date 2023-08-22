@@ -15,7 +15,7 @@ const navigation = [
 const UserNavbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
-    const { removeUser } = useContext(UserContext)
+    const { user, removeUser } = useContext(UserContext)
 
     const handleLogout = () => {
         removeUser()
