@@ -23,7 +23,6 @@ export default withAuthorization(condition, HOME)(() => {
     if (username && password) {
       try {
         const response = await loginUser({ username, password }, admin)
-        console.log(response);
         if (response) {
           if (response.data.mobileNumber) {
             setTimeout(() => {
@@ -127,7 +126,7 @@ export default withAuthorization(condition, HOME)(() => {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Don't have an account?{' '}
-          <Link to="/" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+          <Link to="/savings-account-registration" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
             Register here
           </Link>
         </p>

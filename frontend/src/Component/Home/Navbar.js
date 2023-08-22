@@ -7,8 +7,8 @@ import { UserContext } from '../../Utilities/context/userContext';
 
 const navigation = [
   { name: 'Open a Savings Account', to: '/savings-account-registration' },
-  { name: 'Register for Online Banking', to: '/online-banking-registration' },
-  { name: 'About', to: '/' },
+  // { name: 'Register for Online Banking', to: '/online-banking-registration' },
+  // { name: 'About', to: '/' },
 ]
 
 
@@ -47,6 +47,9 @@ const Navbar = () => {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
+          <Link to='/' className="text-sm font-semibold leading-6 text-gray-900">
+            Home
+          </Link>
           {(
             user &&
             <Link to='/user' className="text-sm font-semibold leading-6 text-gray-900">
@@ -58,6 +61,12 @@ const Navbar = () => {
               {item.name}
             </Link>
           ))}
+          {(
+            !sessionStorage.getItem('user') &&
+            <Link to='/online-banking-registration' className="text-sm font-semibold leading-6 text-gray-900">
+              Register for Online Banking
+            </Link>
+          )}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {!user ? <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900">
@@ -95,6 +104,14 @@ const Navbar = () => {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
+                {(sessionStorage.getItem("user")) &&
+                  <Link
+                    to="/user"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Dashboard
+                  </Link>
+                }
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
@@ -104,6 +121,14 @@ const Navbar = () => {
                     {item.name}
                   </Link>
                 ))}
+                {(!sessionStorage.getItem("user")) &&
+                  <Link
+                    to="/online-banking-registration"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Register for Online Banking
+                  </Link>
+                }
               </div>
               <div className="py-6">
                 {!user ? <Link
