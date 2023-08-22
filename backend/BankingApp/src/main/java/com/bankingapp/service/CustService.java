@@ -64,7 +64,7 @@ public class CustService {
 //		return cust;
 	}
 	
-	public List<Integer> fetchAccounts(String username)
+	public List<Account> fetchAccounts(String username)
 	{
 		Optional<Customer> obj = custRepo.findByUserName(username);
 		int custId = (obj.get()).getCustomerId();

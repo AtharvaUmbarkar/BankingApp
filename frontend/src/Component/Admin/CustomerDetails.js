@@ -4,6 +4,7 @@ import { getAllCustomers, getCustomerAccounts, getCustomerDetails } from '../../
 import { PaperClipIcon, UserIcon } from '@heroicons/react/20/solid'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import { Link, useParams } from 'react-router-dom'
+import axios from 'axios'
 
 
 function CustomerDetails() {
@@ -31,12 +32,32 @@ function CustomerDetails() {
           {customer && customer.permAddressLine1}
         </p>
       </div>
-      <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-        {accounts.map(accountNumber => (
-          <article key={accountNumber} className="flex max-w-xl flex-col items-start text-blue-500 justify-between">
-            <Link to={`/admin/viewAccount/${accountNumber}`}>{accountNumber}</Link>
-        </article>
-        ))}
+      <div className="px-4 py-12 mx-auto max-w-xl sm:grid sm:grid-cols-1 sm:px-0">
+            <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <ul role="list" className="divide-y divide-gray-100 rounded-md border border-gray-200">
+              <li className="flex items-center justify-between py-4 pl-4 pr-5 text-lg leading-6">Accounts</li>
+                {
+                  accounts.map((account) => (
+                    <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                      <div className="flex w-0 flex-1 items-center">
+                        <UserIcon className="h-5 w-5 flex-shrink-0 text-indigo-600" aria-hidden="true" />
+                        <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                          <span className="truncate font-medium">{account.accountNumber}</span>
+                        </div>
+                      </div>
+                      <div className="flex gap-x-2 items-center">
+                          <span>
+                          Balance: {account.accountBalance}
+                          </span>
+                          <Link to={`/admin/viewAccount/${account.accountNumber}`} className="font-medium text-indigo-600 hover:text-indigo-500">
+                          <ArrowTopRightOnSquareIcon className="h-5 w-5 flex-shrink-0 text-indigo-600" aria-hidden="true" />
+                        </Link>
+                      </div>
+                    </li>
+                  ))
+                }
+              </ul>
+            </dd>
       </div>
     </div>
   </div>
