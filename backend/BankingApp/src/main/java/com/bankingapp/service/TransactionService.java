@@ -109,14 +109,15 @@ public class TransactionService {
 	
 	
 	@Transactional
-	public String withdraw(TransactionModel transactionModel) throws InsufficientBalanceException
+	public String withdraw(TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException
 	{
 		String result="";
 		long accountNumber = transactionModel.getSenderAccountNumber();
 		
 			Optional<Account> obj = accountRepo.findById(accountNumber);
 			if(!obj.isPresent()) {
-				result="Sender account does not exist";
+//				result="Sender account does not exist";
+				throw new ResourceNotFoundException("Account does not exist");
 			}
 			else {
 				Account acnt = obj.get();
@@ -147,14 +148,15 @@ public class TransactionService {
 	}
 	
 	@Transactional
-	public String deposit(TransactionModel transactionModel)
+	public String deposit(TransactionModel transactionModel) throws ResourceNotFoundException
 	{
 		String result="";
 		long accountNumber = transactionModel.getReceiverAccountNumber();
 		
 			Optional<Account> obj = accountRepo.findById(accountNumber);
 			if(!obj.isPresent()) {
-				result="Receiver account does not exist";
+//				result="Receiver account does not exist";
+				throw new ResourceNotFoundException("Account does not Exist");
 			}
 			else {
 				Account acnt = obj.get();
@@ -226,8 +228,17 @@ public class TransactionService {
 			}
 	}
 	
-	public List<Object[]> getLatestTransactions(long accountNumber){
-		return transRepo.getLatestTransactionForAccount(accountNumber);
+	public List<Object[]> getLatestTransactions(long accountNumber) throws ResourceNotFoundException, NoDataFoundException
+	{
+		Optional<Account> acc = accountRepo.findById(accountNumber);
+		if (!acc.isPresent()) {
+			throw new ResourceNotFoundException("Account not Present");
+		}
+		List<Object[]> latesttxn = transRepo.getLatestTransactionForAccount(accountNumber);
+		if (latesttxn.isEmpty()) {
+			throw new NoDataFoundException("No Recent Transactions");
+		}
+		return latesttxn;
 	}
 	
 	public List<Object[]> getAccountStatement(long accountNumber, Date from, Date to){
