@@ -48,7 +48,7 @@ public class TransactionController
 	}
 	
 	@GetMapping("/getLatestTransactions")
-	public ResponseEntity<List<Object[]>> getLatestTransactions(@RequestParam long accountNumber) throws ResourceNotFoundException, NoDataFoundException
+	public ResponseEntity<List<Object[]>> getLatestTransactions(@RequestParam long accountNumber) throws ResourceNotFoundException
 	{
 		return new ResponseEntity<>(tService.getLatestTransactions(accountNumber), HttpStatus.OK);
 	}

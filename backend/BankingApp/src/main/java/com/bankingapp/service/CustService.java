@@ -76,7 +76,7 @@ public class CustService {
 		throw new ResourceNotFoundException("Customer not Present");
 	}
 	
-	public List<Account> fetchAccounts(String username) throws ResourceNotFoundException, NoDataFoundException
+	public List<Account> fetchAccounts(String username) throws ResourceNotFoundException
 	{
 		Optional<Customer> obj = custRepo.findByUserName(username);
 		if (!obj.isPresent()) {
@@ -84,9 +84,6 @@ public class CustService {
 		}
 		Customer cust = obj.get();
 		List<Account> accounts = cust.getAccounts();
-		if (accounts.isEmpty()) {
-			throw new NoDataFoundException("");
-		}
 		return accounts;
 	}
 	
