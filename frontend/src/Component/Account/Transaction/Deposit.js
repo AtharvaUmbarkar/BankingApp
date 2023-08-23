@@ -24,20 +24,24 @@ const Deposit = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await axios.post(DEPOSIT_URL, JSON.stringify({
-            transaction: {
-                txnAmount: transactionDetails.txnAmount,
-                userRemarks: transactionDetails.userRemarks,
-                txnType: "Deposit",
-            },
-            receiverAccountNumber: transactionDetails.receiverAccountNumber,
-        }), {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
+        try {
+            const res = await axios.post(DEPOSIT_URL, JSON.stringify({
+                transaction: {
+                    txnAmount: transactionDetails.txnAmount,
+                    userRemarks: transactionDetails.userRemarks,
+                    txnType: "Deposit",
+                },
+                receiverAccountNumber: transactionDetails.receiverAccountNumber,
+            }), {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            toast.success(res.data, { duration: 3000 })
+        } catch (error) {
+            toast.error(error.response.data.message, { duration: 3000 })
 
-        toast.loading(response.data, { duration: 3000 })
+        }
 
     }
 

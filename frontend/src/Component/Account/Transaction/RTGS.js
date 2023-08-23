@@ -40,7 +40,7 @@ const RTGS = () => {
       });
       toast.success(response.data, { duration: 3000 })
     } catch (error) {
-      toast.error(error.response.data, { duration: 3000 })
+      toast.error(error.response.data.message, { duration: 3000 })
     }
   }
 
