@@ -41,7 +41,14 @@ public class CustomerDTO {
 	private boolean netBankingEnabled;
 	private Date lastLogin;
 	private String userName;
-//	private String loginPassword;
+	private String token;
+public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	//	private String loginPassword;
 //	private String transactionPassword;
 //	private List<Account> accounts;
 //	private List<Beneficiary> beneficiaries;
