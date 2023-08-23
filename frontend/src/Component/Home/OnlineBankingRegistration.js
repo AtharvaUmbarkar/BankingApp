@@ -66,6 +66,8 @@ const OnlineBankingRegistration = () => {
                 value={inputs.accountNumber || ""}
                 onChange={handleChange}
                 className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                validators={['required', 'minStringLength:5']}
+                errorMessages={['name required', 'field must have a minimum length is 5 characters']}
               />
             </label>
             <label className="text-lg my-2">User Name:
