@@ -46,13 +46,7 @@ public class Account {
 	private Date accountCreationDate =  new Date();
 	private boolean active; //need to be removed
 	private boolean debitCardAvailed;
-	
-	public boolean isDebitCardAvailed() {
-		return debitCardAvailed;
-	}
-	public void setDebitCardAvailed(boolean debitCardAvailed) {
-		this.debitCardAvailed = debitCardAvailed;
-	}
+	private Date lastTransaction;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -74,7 +68,19 @@ public class Account {
 	@OneToMany(mappedBy="account", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Beneficiary> beneficiaries;
 	
-
+	
+	public Date getLastTransaction() {
+		return lastTransaction;
+	}
+	public void setLastTransaction(Date lastTransaction) {
+		this.lastTransaction = lastTransaction;
+	}
+	public boolean isDebitCardAvailed() {
+		return debitCardAvailed;
+	}
+	public void setDebitCardAvailed(boolean debitCardAvailed) {
+		this.debitCardAvailed = debitCardAvailed;
+	}
 	public List<Beneficiary> getBeneficiaries() {
 		return beneficiaries;
 	}

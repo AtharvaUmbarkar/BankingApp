@@ -135,7 +135,8 @@ public class TransactionService {
 						transaction.setSenderAccount(acnt);
 						transaction.setSenderBalance(new_balance);
 						transaction.setTxnStatus("Successful");
-						transRepo.save(transaction);
+						transaction = transRepo.save(transaction);
+						accountRepo.changeLastTxn(transaction.getTxnDate(), acnt.getAccountNumber());
 	//					acnt.setAccountBalance(new_balance);
 						result = "Transaction is successful with transaction id: " + transaction.getTxnId();
 					}
@@ -171,7 +172,8 @@ public class TransactionService {
 					transaction.setReceiverAccount(acnt);
 					transaction.setReceiverBalance(new_balance);
 					transaction.setTxnStatus("Successful");
-					transRepo.save(transaction);
+					transaction = transRepo.save(transaction);
+					accountRepo.changeLastTxn(transaction.getTxnDate(), acnt.getAccountNumber());
 //					acnt.setAccountBalance(new_balance);
 					result = "Transaction is successful with transaction id: " + transaction.getTxnId();
 				}
@@ -210,7 +212,9 @@ public class TransactionService {
 						transaction.setSenderBalance(senderNewBalance);
 						transaction.setReceiverBalance(receiverNewBalance);
 						transaction.setTxnStatus("Successful");
-						transRepo.save(transaction);
+						transaction = transRepo.save(transaction);
+						accountRepo.changeLastTxn(transaction.getTxnDate(), senderAccount.getAccountNumber());
+						accountRepo.changeLastTxn(transaction.getTxnDate(), receiverAccount.getAccountNumber());
 						return ("Transaction is successful with transaction id: " + transaction.getTxnId());	
 					}
 					else {

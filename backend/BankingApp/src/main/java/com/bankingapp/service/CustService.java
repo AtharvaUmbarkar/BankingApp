@@ -207,4 +207,20 @@ public class CustService {
 		throw new ResourceNotFoundException("Customer Does Not Exist");
 		
 	}
+	
+	@Transactional
+	public boolean toggleUser(String userName) throws ResourceNotFoundException {
+		Optional<Customer> obj = custRepo.findByUserName(userName);
+		if(obj.isPresent()) {
+			Customer cust = obj.get(); 
+			int rowsAffected = custRepo.toggleUser(!cust.isUnLocked(), userName);
+			if(rowsAffected > 0)
+				return true;
+			else
+				return false;
+		}
+		else {
+			throw new ResourceNotFoundException("Customer not found");
+		}
+	}
 }
