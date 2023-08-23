@@ -43,6 +43,8 @@ export default withAuthorization(condition, LOGIN)(() => {
         <form onSubmit={handleSubmit}>
           <label className="text-base py-8">Account Number:
             <input
+              required
+              pattern='^[0-9]{10}$'
               type="text"
               name="accountNumber"
               value={inputs.accountNumber || ""}
@@ -52,6 +54,8 @@ export default withAuthorization(condition, LOGIN)(() => {
           </label>
           <label className="text-base py-8">Re-enter Account Number:
             <input
+              required
+              pattern='^[0-9]{10}$'
               type="text"
               name="reenterAccountNumber"
               value={inputs.reenterAccountNumber || ""}
@@ -61,6 +65,9 @@ export default withAuthorization(condition, LOGIN)(() => {
           </label>
           <label className="text-base py-8">Name:
             <input
+              required
+              minLength={3}
+              maxLength={30}
               type="text"
               name="name"
               value={inputs.name || ""}
@@ -70,6 +77,9 @@ export default withAuthorization(condition, LOGIN)(() => {
           </label>
           <label className="text-base py-8">Nickname:
             <input
+              required
+              minLength={3}
+              maxLength={30}
               type="text"
               name="nickname"
               value={inputs.nickname || ""}

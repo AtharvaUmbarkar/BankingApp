@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import { useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-hot-toast';
 
 const passwordTypes = ["Login", "Transactional"]
 
@@ -22,7 +23,7 @@ const ForgotPassword = () => {
     const valid = (inputs.newPassword === inputs.confirmNewPassword)
 
     if (!valid) {
-      window.alert("Entered details are not valid");
+      toast.error("Entered details are not valid", { duration: 3000 });
     }
     else {
       axios.put("http://localhost:8090/forgotPassword",
@@ -36,12 +37,12 @@ const ForgotPassword = () => {
           headers: { "Content-Type": "application/json" }
         }
       ).then((response) => {
-        console.log(response);
-        alert("Password changed successfully");
+        // console.log(response);
+        toast.success("Password changed successfully", { duration: 3000 });
         navigate("/login")
       }, (error) => {
-        console.log("Failure.." + error);
-        alert("Failed to change password")
+        // console.log("Failure.." + error);
+        toast.error("Failed to change password", { duration: 3000 })
       });
     }
   }
@@ -49,7 +50,7 @@ const ForgotPassword = () => {
   return (
     <div className='w-full flex flex-col'>
       <div className="flex flex-col w-2/5 mt-3 self-center">
-        <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-blue-500 pb-2">Internet Banking</h2>
+        <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-2">Internet Banking</h2>
         <form onSubmit={handleSubmit} className=''>
 
           <div className=''>
@@ -59,7 +60,7 @@ const ForgotPassword = () => {
                 name="userName"
                 value={inputs.userName || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 mt-1"
               />
             </label>
 
@@ -67,7 +68,7 @@ const ForgotPassword = () => {
               <select
                 name="passwordType"
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 p-1 mt-1 mb-1 w-full"
+                className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-1 w-full"
               >
                 <option className='w-full' value={""} ></option>
                 {passwordTypes.map((b, i) => {
@@ -82,7 +83,7 @@ const ForgotPassword = () => {
                 name="newPassword"
                 value={inputs.newPassword || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 mt-1"
               />
             </label>
             <label className="my-2">Confirm New Password:
@@ -91,7 +92,7 @@ const ForgotPassword = () => {
                 name="confirmNewPassword"
                 value={inputs.confirmNewPassword || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 mt-1"
               />
             </label>
             <label className="my-2">Enter OTP:
@@ -100,7 +101,7 @@ const ForgotPassword = () => {
                 name="otp"
                 value={inputs.otp || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 mt-1"
               />
             </label>
           </div>

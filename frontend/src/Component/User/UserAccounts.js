@@ -5,14 +5,14 @@ import { UserContext } from '../../Utilities/context/userContext';
 
 
 const UserAccounts = () => {
-  const BASE_URL = "http://localhost:8090/fetchAccounts/";
+  const BASE_URL = "http://localhost:8090/fetchAccounts";
   const { user } = useContext(UserContext)
   const [accountsList, setAccounts] = useState(undefined);
 
   useEffect(() => {
     const fetchAccounts = async () => {
       if (user) {
-        const response  = await axios.get(BASE_URL + user.userName)
+        const response = await axios.get(BASE_URL, { params: { username: user.userName } })
         // console.log(response.data);
         setAccounts(response.data);
       }
