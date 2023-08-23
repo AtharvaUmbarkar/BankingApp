@@ -105,6 +105,7 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Title:
           <input
+            required
             type="text"
             name="title"
             value={personalDetails.title}
@@ -115,6 +116,9 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Firstname:
           <input
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="firstName"
             value={personalDetails.firstName}
@@ -125,6 +129,8 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Middlename:
           <input
+            minLength={3}
+            maxLength={30}
             type="text"
             name="middleName"
             value={personalDetails.middleName}
@@ -135,6 +141,9 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Lastname:
           <input
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="lastName"
             value={personalDetails.lastName}
@@ -145,6 +154,9 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Father's Name:
           <input
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="fatherName"
             value={personalDetails.fatherName}
@@ -155,6 +167,10 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Mobile Number:
           <input
+            required
+            minLength={10}
+            maxLength={10}
+            // pattern='^\\d{10}$'
             type="text"
             name="mobileNumber"
             value={personalDetails.mobileNumber}
@@ -165,7 +181,7 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Email Id:
           <input
-            type="text"
+            type="email"
             name="emailId"
             value={personalDetails.emailId}
             onChange={handlePersonalDetailsChange}
@@ -175,6 +191,8 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Aadhaar Number:
           <input
+            required
+            pattern='^[0-9]{12}$'
             type="text"
             name="aadhaarNumber"
             value={personalDetails.aadhaarNumber}
@@ -185,6 +203,7 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Date of Birth:
           <input
+            required
             type='date'
             name="dateOfBirth"
             value={personalDetails.dateOfBirth}
@@ -199,6 +218,9 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Address Line 1:
           <input
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="tempAddressLine1"
             value={residentialAddress.tempAddressLine1}
@@ -209,6 +231,9 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Address Line 2:
           <input
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="tempAddressLine2"
             value={residentialAddress.tempAddressLine2}
@@ -219,6 +244,8 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Landmark:
           <input
+            minLength={3}
+            maxLength={30}
             type="text"
             name="tempLandmark"
             value={residentialAddress.tempLandmark}
@@ -229,6 +256,9 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">State:
           <input
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="tempState"
             value={residentialAddress.tempState}
@@ -239,6 +269,9 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">City:
           <input
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="tempCity"
             value={residentialAddress.tempCity}
@@ -249,6 +282,9 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Pincode:
           <input
+            required
+            maxLength={6}
+            pattern='^[0-9]{6}$'
             type="text"
             name="tempPincode"
             value={residentialAddress.tempPincode}
@@ -275,6 +311,9 @@ const SavingsAccountRegistration = () => {
         <label className="text-base my-2">Address Line 1:
           <input
             disabled={sameAddress}
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="permAddressLine1"
             value={permanentAddress.permAddressLine1}
@@ -286,6 +325,9 @@ const SavingsAccountRegistration = () => {
         <label className="text-base my-2">Address Line 2:
           <input
             disabled={sameAddress}
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="permAddressLine2"
             value={permanentAddress.permAddressLine2}
@@ -297,6 +339,8 @@ const SavingsAccountRegistration = () => {
         <label className="text-base my-2">Landmark:
           <input
             disabled={sameAddress}
+            minLength={3}
+            maxLength={30}
             type="text"
             name="permLandmark"
             value={permanentAddress.permLandmark}
@@ -319,6 +363,9 @@ const SavingsAccountRegistration = () => {
         <label className="text-base my-2">City:
           <input
             disabled={sameAddress}
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="permCity"
             value={permanentAddress.permCity}
@@ -330,6 +377,9 @@ const SavingsAccountRegistration = () => {
         <label className="text-base my-2">Pincode:
           <input
             disabled={sameAddress}
+            required
+            maxLength={6}
+            pattern='^[0-9]{6}$'
             type="text"
             name="permPincode"
             value={permanentAddress.permPincode}
@@ -345,6 +395,9 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Occupation Type:
           <input
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="occupation"
             value={occupationDetails.occupation}
@@ -355,6 +408,9 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Source of Income:
           <input
+            required
+            minLength={3}
+            maxLength={30}
             type="text"
             name="sourceOfIncome"
             value={occupationDetails.sourceOfIncome}
@@ -365,6 +421,7 @@ const SavingsAccountRegistration = () => {
 
         <label className="text-base my-2">Gross Annual Income:
           <input
+            required
             type="text"
             name="grossAnnualIncome"
             value={occupationDetails.grossAnnualIncome}
