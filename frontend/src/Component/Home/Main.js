@@ -6,7 +6,7 @@ export default function Main() {
   return (
     <div className="relative isolate px-6 pt-14 lg:px-8">
       <div
-        className="absolute inset-x-0 -top-10 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+        className="absolute pointer-events-none inset-x-0 -top-10 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
         aria-hidden="true"
       >
         <div
@@ -20,7 +20,7 @@ export default function Main() {
       {/* <div className="hidden lg:block absolute w-80 -z-10 m-auto top-80 left-80">
         <Savings className="h-80 w-80" />
       </div> */}
-      <div className="hidden lg:block absolute w-60 -z-10 m-auto top-40 right-60">
+      <div className="hidden lg:block absolute w-60 -z-10 m-auto top-[180px] right-52">
         <Finance className="h-60 w-60" />
       </div>
       <div className="mx-auto max-w-2xl py-8">
@@ -52,7 +52,7 @@ export default function Main() {
         </div>
       </div>
       <div
-        className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-40rem)]"
+        className="absolute pointer-events-none inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-36rem)]"
         aria-hidden="true"
       >
         <div

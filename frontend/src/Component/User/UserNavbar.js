@@ -61,8 +61,8 @@ const UserNavbar = () => {
                     ))}
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end flex-row ml-12">
-                    {sessionStorage.getItem('user') &&
-                        <div className='py-1 px-3 text-white bg-indigo-700 mr-8 rounded'>{user.userName}</div>
+                    {user &&
+                        <Link to={"/user"} className='py-1 px-3 text-white bg-indigo-700 mr-8 rounded'>{user.userName}</Link>
                     }
                     <button type='button' onClick={handleLogout} className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
                         Log out
@@ -105,11 +105,8 @@ const UserNavbar = () => {
                                 ))}
                             </div>
                             <div className="py-6">
-                                {sessionStorage.getItem('user') &&
-                                    <div className='py-1 px-3 text-white bg-indigo-700 rounded'>{user.userName}</div>
-                                }
-                                {sessionStorage.getItem('user') &&
-                                    <div className='py-1 px-3 text-white bg-indigo-700 rounded'>{user.userName}</div>
+                                {user &&
+                                    <Link to={"/user"} className='py-1 px-3 text-white bg-indigo-700 rounded'>{user.userName}</Link>
                                 }
                                 <button
                                     onClick={handleLogout}

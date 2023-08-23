@@ -271,6 +271,9 @@ public class TransactionService {
 		else if (to.after(currentdate)) {
 			throw new InvalidTypeException("End date cannot be after today");
 		}
-		return transRepo.getAccountStatement(accountNumber, from, to);
+		Calendar c = Calendar.getInstance();
+		c.setTime(to);
+		c.add(Calendar.DAY_OF_MONTH, 1);
+		return transRepo.getAccountStatement(accountNumber, from, c.getTime());
 	}
 }

@@ -1,30 +1,21 @@
 package com.bankingapp.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.interfaces.AdminServiceInterface;
-import com.bankingapp.models.Account;
 import com.bankingapp.models.Admin;
 import com.bankingapp.models.Customer;
-import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.AdminRepo;
 import com.bankingapp.repository.CustomerRepo;
-import com.bankingapp.types.ForgotPasswordModel;
-import com.bankingapp.types.ChangeUserNameModel;
+import com.bankingapp.repository.TransactionRepo;
 import com.bankingapp.types.LoginModel;
-import com.bankingapp.types.NetBankingModel;
 
 import jakarta.transaction.Transactional;
 
@@ -34,6 +25,8 @@ public class AdminService implements AdminServiceInterface{
 	AdminRepo adminRepo;
 	@Autowired
 	CustomerRepo custRepo;
+	@Autowired
+	TransactionRepo transRepo;
 	
 	@Transactional
 	public Admin validateAdmin(LoginModel loginUser) throws ResourceNotFoundException, UnauthorizedAccessException
@@ -67,4 +60,13 @@ public class AdminService implements AdminServiceInterface{
 		}
 	}
 
+	public Object getTransactionStats() throws NoDataFoundException{
+		Object stats = transRepo.getTransactionStats();
+		if(stats == null) {
+			throw new NoDataFoundException("Data not found");
+		} else {
+			return stats;
+		}
+	}
+	
 }
