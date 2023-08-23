@@ -13,9 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.exception.InsufficientBalanceException;
+import com.bankingapp.exception.InvalidTypeException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Account;
+import com.bankingapp.models.Customer;
 import com.bankingapp.models.Transaction;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.TransactionRepo;
@@ -32,78 +34,78 @@ public class TransactionService {
 	
 	
 	//********** Code added for getting list of transactions of a account
-	public List<Transaction> getAllTransactions(long accountNo) throws ResourceNotFoundException, NoDataFoundException
-	{
-		Optional<Account> obj = accountRepo.findById(accountNo);
-		if(obj.isPresent()) {
-			List<Transaction> statement = obj.get().getDebitTransactions();
-			if (statement.isEmpty())
-			{
-				throw new NoDataFoundException("No Transactions performed");
-			}
-			else {
-				return statement;
-			}
-		}
-		else
-		{
-			throw new ResourceNotFoundException("Account Not Present");
-		}
-	}
+//	public List<Transaction> getAllTransactions(long accountNo) throws ResourceNotFoundException, NoDataFoundException
+//	{
+//		Optional<Account> obj = accountRepo.findById(accountNo);
+//		if(obj.isPresent()) {
+//			List<Transaction> statement = obj.get().getDebitTransactions();
+//			if (statement.isEmpty())
+//			{
+//				throw new NoDataFoundException("No Transactions performed");
+//			}
+//			else {
+//				return statement;
+//			}
+//		}
+//		else
+//		{
+//			throw new ResourceNotFoundException("Account Not Present");
+//		}
+//	}
 	
 	
 	
-	public List<Transaction> getStatementTransactions(long accountNo, String fromDt, String toDt) throws ResourceNotFoundException, NoDataFoundException
-	{
-		Optional<Account> obj = accountRepo.findById(accountNo);
-		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-		if(obj.isPresent()) {
-			
-			List<Transaction> txns = new ArrayList<Transaction>();
-			
-			for(Transaction t:obj.get().getDebitTransactions())
-			{
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(t.getTxnDate());
-				String month = "";
-				if((cal.get(Calendar.MONTH)+1) < 10)
-				{
-					month = "0"+(cal.get(Calendar.MONTH)+1);
-				}
-				else
-				{
-					month = ""+(cal.get(Calendar.MONTH)+1);
-				}
-				String txnDt = ""+cal.get(Calendar.YEAR)+"-"+month+"-"+cal.get(Calendar.DAY_OF_MONTH);
-				System.out.println("DT : "+txnDt);
-				if(fromDt.equals(toDt)) {
-					//System.out.println("Dates are same : "+fromDt);
-					
-					//System.out.println("Transaction date : "+txnDt);
-					if(txnDt.equals(fromDt)) {
-						txns.add(t);
-					}
-				}
-				//else if(t.getTxnDate().compareTo(format.parse(fromDt))>0 && t.getTxnDate().compareTo(format.parse(toDt))>0)
-				else if(txnDt.compareTo(fromDt)>=0 && txnDt.compareTo(toDt)<=0)
-				{
-					System.out.println("Transaction date : "+t.getTxnDate()+" from : "+fromDt);
-					txns.add(t);
-				}
-			}
-			if (txns.isEmpty())
-			{
-				throw new NoDataFoundException("No transactions in the specified period");
-			}
-			return txns;
-		}
-		else
-		{
-			throw new ResourceNotFoundException("Account not Present");
-		}
-	}
-	
-	//*******************************
+//	public List<Transaction> getStatementTransactions(long accountNo, String fromDt, String toDt) throws ResourceNotFoundException, NoDataFoundException
+//	{
+//		Optional<Account> obj = accountRepo.findById(accountNo);
+//		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+//		if(obj.isPresent()) {
+//			
+//			List<Transaction> txns = new ArrayList<Transaction>();
+//			
+//			for(Transaction t:obj.get().getDebitTransactions())
+//			{
+//				Calendar cal = Calendar.getInstance();
+//				cal.setTime(t.getTxnDate());
+//				String month = "";
+//				if((cal.get(Calendar.MONTH)+1) < 10)
+//				{
+//					month = "0"+(cal.get(Calendar.MONTH)+1);
+//				}
+//				else
+//				{
+//					month = ""+(cal.get(Calendar.MONTH)+1);
+//				}
+//				String txnDt = ""+cal.get(Calendar.YEAR)+"-"+month+"-"+cal.get(Calendar.DAY_OF_MONTH);
+//				System.out.println("DT : "+txnDt);
+//				if(fromDt.equals(toDt)) {
+//					//System.out.println("Dates are same : "+fromDt);
+//					
+//					//System.out.println("Transaction date : "+txnDt);
+//					if(txnDt.equals(fromDt)) {
+//						txns.add(t);
+//					}
+//				}
+//				//else if(t.getTxnDate().compareTo(format.parse(fromDt))>0 && t.getTxnDate().compareTo(format.parse(toDt))>0)
+//				else if(txnDt.compareTo(fromDt)>=0 && txnDt.compareTo(toDt)<=0)
+//				{
+//					System.out.println("Transaction date : "+t.getTxnDate()+" from : "+fromDt);
+//					txns.add(t);
+//				}
+//			}
+//			if (txns.isEmpty())
+//			{
+//				throw new NoDataFoundException("No transactions in the specified period");
+//			}
+//			return txns;
+//		}
+//		else
+//		{
+//			throw new ResourceNotFoundException("Account not Present");
+//		}
+//	}
+//	
+//	//*******************************
 	
 	
 	
@@ -241,7 +243,21 @@ public class TransactionService {
 		return latesttxn;
 	}
 	
-	public List<Object[]> getAccountStatement(long accountNumber, Date from, Date to){
+	public List<Object[]> getAccountStatement(long accountNumber, Date from, Date to) throws ResourceNotFoundException, InvalidTypeException{
+		
+		Optional<Account> acc = accountRepo.findById(accountNumber);
+		if (!acc.isPresent()) {
+			throw new ResourceNotFoundException("Account not Present");
+		}
+		
+		Date creationDate = acc.get().getAccountCreationDate();
+		Date currentdate = new Date();
+		if (from.before(creationDate)) {
+			throw new InvalidTypeException("Start date cannot be before the account creation date");
+		}
+		else if (to.after(currentdate)) {
+			throw new InvalidTypeException("End date cannot be after today");
+		}
 		return transRepo.getAccountStatement(accountNumber, from, to);
 	}
 }

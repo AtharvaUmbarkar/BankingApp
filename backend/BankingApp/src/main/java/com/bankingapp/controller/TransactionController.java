@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.exception.InsufficientBalanceException;
+import com.bankingapp.exception.InvalidTypeException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Transaction;
@@ -53,20 +54,21 @@ public class TransactionController
 	}
 	
 	@GetMapping("/getAccountStatement")
-	public ResponseEntity<List<Object[]>> getAccountStatement(@RequestParam long accountNumber, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date to){
-		return new ResponseEntity<>(tService.getAccountStatement(accountNumber, from, to), HttpStatus.OK);
-	}
-	
-	
-	@GetMapping("/getAllTransactions")
-	public List<Transaction> getAllTransactions(@RequestParam long accountNo) throws NoDataFoundException, ResourceNotFoundException
+	public List<Object[]> getAccountStatement(@RequestParam long accountNumber, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date to) throws ResourceNotFoundException, InvalidTypeException
 	{
-		return tService.getAllTransactions(accountNo);
+		return tService.getAccountStatement(accountNumber, from, to);
 	}
-	// To be tested
-	@GetMapping("/getStatementTransactions") // What is the difference between this method and get account statement method?
-	public List<Transaction> getStatementTransactions(@RequestParam long accountNo, @RequestParam String fromDt, @RequestParam String toDt) throws NoDataFoundException, ResourceNotFoundException
-	{
-		return tService.getStatementTransactions(accountNo,fromDt,toDt);
-	}
+//	
+//	
+//	@GetMapping("/getAllTransactions")
+//	public List<Transaction> getAllTransactions(@RequestParam long accountNo) throws NoDataFoundException, ResourceNotFoundException
+//	{
+//		return tService.getAllTransactions(accountNo);
+//	}
+//	// To be tested
+//	@GetMapping("/getStatementTransactions") // What is the difference between this method and get account statement method?
+//	public List<Transaction> getStatementTransactions(@RequestParam long accountNo, @RequestParam String fromDt, @RequestParam String toDt) throws NoDataFoundException, ResourceNotFoundException
+//	{
+//		return tService.getStatementTransactions(accountNo,fromDt,toDt);
+//	}
 }
