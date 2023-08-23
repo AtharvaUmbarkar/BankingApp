@@ -7,7 +7,7 @@ import { UserContext } from '../../Utilities/context/userContext';
 const UserAccounts = () => {
   const BASE_URL = "http://localhost:8090/fetchAccounts/";
   const { user } = useContext(UserContext)
-  const [accountsList, setAccounts] = useState([]);
+  const [accountsList, setAccounts] = useState(undefined);
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -23,11 +23,13 @@ const UserAccounts = () => {
   return (
     <div className='w-full flex flex-col items-center'>
       <div className='w-1/4 my-8'>
-        {accountsList.map(({accountNumber}, i) => {
+        {accountsList && accountsList.map((account, i) => {
           return (
             <div key={i} className='w-full p-4 my-2 bg-slate-100 shadow-md flex flex-col rounded'>
-              <p><span className='font-semibold'>Account Number: </span><span>{accountNumber}</span></p>
-              <Link to={'/account/' + accountNumber} className='self-end bg-indigo-700 text-white py-1 px-2 rounded mt-8'>Enter Account</Link>
+              <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Number: </span><span>{account.accountNumber}</span></p>
+              <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Type: </span><span>{account.accountType}</span></p>
+              <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Balance: </span><span>{account.accountBalance}</span></p>
+              <Link to={'/account/' + account.accountNumber} className='self-end bg-indigo-700 text-white py-1 px-2 rounded mt-8'>Enter Account</Link>
             </div>
           )
         })}

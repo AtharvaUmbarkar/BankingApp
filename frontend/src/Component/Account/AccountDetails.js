@@ -18,7 +18,7 @@ const AccountDetails = () => {
       axios.get(BASE_URL,
         { params: { accountNo: accountNumber } }).then((response) => {
           setAccountDetails(response.data)
-          console.log(response.data);
+          // console.log(response.data);
         }).catch(error => {
           toast.error(error)
         })
