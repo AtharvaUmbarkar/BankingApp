@@ -16,6 +16,7 @@ import com.bankingapp.exception.InsufficientBalanceException;
 import com.bankingapp.exception.InvalidTypeException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.models.Transaction;
@@ -111,7 +112,7 @@ public class TransactionService {
 	
 	
 	@Transactional
-	public String withdraw(TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException
+	public String withdraw(TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException, UnauthorizedAccessException
 	{
 		String result="";
 		long accountNumber = transactionModel.getSenderAccountNumber();
@@ -123,6 +124,9 @@ public class TransactionService {
 			}
 			else {
 				Account acnt = obj.get();
+				if(!acnt.isActive()) {
+					throw new UnauthorizedAccessException("Account is Deactivated");
+				}
 				Transaction transaction = transactionModel.getTransaction();
 				//acnt.setAccountBalance(100000);
 				double new_balance = acnt.getAccountBalance() - transaction.getTxnAmount();
@@ -151,7 +155,7 @@ public class TransactionService {
 	}
 	
 	@Transactional
-	public String deposit(TransactionModel transactionModel) throws ResourceNotFoundException
+	public String deposit(TransactionModel transactionModel) throws ResourceNotFoundException, UnauthorizedAccessException
 	{
 		String result="";
 		long accountNumber = transactionModel.getReceiverAccountNumber();
@@ -163,6 +167,9 @@ public class TransactionService {
 			}
 			else {
 				Account acnt = obj.get();
+				if(!acnt.isActive()) {
+					throw new UnauthorizedAccessException("Account is Deactivated");
+				}
 				Transaction transaction = transactionModel.getTransaction();
 				//acnt.setAccountBalance(100000);
 				double new_balance = acnt.getAccountBalance() + transaction.getTxnAmount();
@@ -188,38 +195,44 @@ public class TransactionService {
 	}
 	
 	@Transactional 
-	public String fundTransfer(TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException
+	public String fundTransfer(TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException, UnauthorizedAccessException
 	{
 			Optional<Account> obj1 = accountRepo.findById(transactionModel.getSenderAccountNumber());
 			Optional<Account> obj2 = accountRepo.findById(transactionModel.getReceiverAccountNumber());
 			if(obj1.isPresent() && obj2.isPresent()) {
 				Account senderAccount = obj1.get();
 				Account receiverAccount = obj2.get();
-				Transaction transaction = transactionModel.getTransaction();
-				//acnt.setAccountBalance(100000);
-				double senderNewBalance = senderAccount.getAccountBalance() - transaction.getTxnAmount();
-				double receiverNewBalance = receiverAccount.getAccountBalance() + transaction.getTxnAmount();
-				if(senderNewBalance < 0.00d) {
-//					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance");
-					throw new InsufficientBalanceException("Insufficient Balance");
-				}
-				else {
-					int rowsAffected1 = accountRepo.updateBalance(senderNewBalance, senderAccount.getAccountNumber());
-					int rowsAffected2 = accountRepo.updateBalance(receiverNewBalance, receiverAccount.getAccountNumber());
-					if(rowsAffected1>0 && rowsAffected2>0) {
-						transaction.setSenderAccount(senderAccount);
-						transaction.setReceiverAccount(receiverAccount);
-						transaction.setSenderBalance(senderNewBalance);
-						transaction.setReceiverBalance(receiverNewBalance);
-						transaction.setTxnStatus("Successful");
-						transaction = transRepo.save(transaction);
-						accountRepo.changeLastTxn(transaction.getTxnDate(), senderAccount.getAccountNumber());
-						accountRepo.changeLastTxn(transaction.getTxnDate(), receiverAccount.getAccountNumber());
-						return ("Transaction is successful with transaction id: " + transaction.getTxnId());	
+				if(senderAccount.isActive() && receiverAccount.isActive()) {
+					
+					Transaction transaction = transactionModel.getTransaction();
+					//acnt.setAccountBalance(100000);
+					double senderNewBalance = senderAccount.getAccountBalance() - transaction.getTxnAmount();
+					double receiverNewBalance = receiverAccount.getAccountBalance() + transaction.getTxnAmount();
+					if(senderNewBalance < 0.00d) {
+	//					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance");
+						throw new InsufficientBalanceException("Insufficient Balance");
 					}
 					else {
-						return ("Unable to process the request!");
+						int rowsAffected1 = accountRepo.updateBalance(senderNewBalance, senderAccount.getAccountNumber());
+						int rowsAffected2 = accountRepo.updateBalance(receiverNewBalance, receiverAccount.getAccountNumber());
+						if(rowsAffected1>0 && rowsAffected2>0) {
+							transaction.setSenderAccount(senderAccount);
+							transaction.setReceiverAccount(receiverAccount);
+							transaction.setSenderBalance(senderNewBalance);
+							transaction.setReceiverBalance(receiverNewBalance);
+							transaction.setTxnStatus("Successful");
+							transaction = transRepo.save(transaction);
+							accountRepo.changeLastTxn(transaction.getTxnDate(), senderAccount.getAccountNumber());
+							accountRepo.changeLastTxn(transaction.getTxnDate(), receiverAccount.getAccountNumber());
+							return ("Transaction is successful with transaction id: " + transaction.getTxnId());	
+						}
+						else {
+							return ("Unable to process the request!");
+						}
 					}
+				}
+				else {
+					throw new UnauthorizedAccessException("Sender or receiver account is not active");
 				}
 			}
 			else {

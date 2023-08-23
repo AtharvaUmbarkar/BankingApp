@@ -96,14 +96,14 @@ public class AccountService implements AccountServiceInterface {
 			if(acnt.isActive()) {
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(acnt.getLastTransaction());
-				cal.add(Calendar.DATE, 365);
+				cal.add(Calendar.DATE, 730);
 				Date current = new Date();
 				if(current.after(cal.getTime())) {
 					accountRepo.toggleActivation(false, acntNo);
 					return true;
 				}
 				else {
-					throw new UnauthorizedAccessException("Customer have a transaction in last one year");
+					throw new UnauthorizedAccessException("Customer have a transaction in last two years");
 				}
 			}
 			else {
