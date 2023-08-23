@@ -57,7 +57,7 @@ public class AdminController {
 	}
 	
 	@PutMapping("toggle/Activation")
-	public boolean toggleActivation(@RequestParam("acntNo") long acntNo) throws ResourceNotFoundException {
+	public boolean toggleActivation(@RequestParam("acntNo") long acntNo) throws ResourceNotFoundException, UnauthorizedAccessException {
 		return acntService.toggleActivation(acntNo);
 	}
 	

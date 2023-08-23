@@ -1,6 +1,8 @@
 package com.bankingapp.service;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.interfaces.AccountServiceInterface;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
@@ -86,15 +89,28 @@ public class AccountService implements AccountServiceInterface {
 	}	
 	
 	@Transactional
-	public boolean toggleActivation(long acntNo) throws ResourceNotFoundException {
+	public boolean toggleActivation(long acntNo) throws ResourceNotFoundException, UnauthorizedAccessException {
 		Optional<Account> obj = accountRepo.findById(acntNo);
 		if(obj.isPresent()) {
-			Account acnt = obj.get(); 
-			int rowsAffected = accountRepo.toggleActivation(!acnt.isActive(), acntNo);
-			if(rowsAffected > 0)
+			Account acnt = obj.get();
+			if(acnt.isActive()) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(acnt.getLastTransaction());
+				cal.add(Calendar.DATE, 365);
+				Date current = new Date();
+				if(current.after(cal.getTime())) {
+					accountRepo.toggleActivation(false, acntNo);
+					return true;
+				}
+				else {
+					throw new UnauthorizedAccessException("Customer have a transaction in last one year");
+				}
+			}
+			else {
+				accountRepo.toggleActivation(true, acntNo);
 				return true;
-			else
-				return false;
+			}
+			
 		}
 		else {
 			throw new ResourceNotFoundException("Invalid Account Number");
