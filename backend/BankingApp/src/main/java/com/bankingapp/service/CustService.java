@@ -17,6 +17,7 @@ import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.CustomerRepo;
+import com.bankingapp.types.ForgotPasswordModel;
 import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
@@ -121,20 +122,52 @@ public class CustService {
 	}
 	
 	@Transactional
-	public String changePassword(ChangePasswordModel obj, String userName) throws ResourceNotFoundException, InvalidTypeException 
+	public String forgotPassword(ChangePasswordModel obj ) throws ResourceNotFoundException, InvalidTypeException 
 	{
+		String userName = obj.getUserName();
 		Optional<Customer> optCust= custRepo.findByUserName(userName);
 		if(optCust.isPresent()) {
-			int rowsAffected;
 			if(obj.getPasswordType().equals("Login")) {
-				rowsAffected = custRepo.changeLoginPassword(obj.getPassword(), userName);
+				custRepo.changeLoginPassword(obj.getNewPassword(), userName);
 			}
 			else if(obj.getPasswordType().equals("Transactional")){
-				rowsAffected = custRepo.changeTransactionPassword(obj.getPassword(), userName);
+				custRepo.changeTransactionPassword(obj.getNewPassword(), userName);
 			}
 			else {
 //				return result = "Not a valid password type";
 				throw new InvalidTypeException("Invalid Password type");
+			}
+//			if(rowsAffected > 0) {
+//				result = "Successfully changed the Password";
+//			}
+//			else {
+//				result = "Failed to change the password";
+//			}
+		}
+		else {
+			throw new ResourceNotFoundException("Customer does not exist");
+//			result = "Customer does not exist";
+		}
+		return "Success";
+	}
+	
+	@Transactional
+	public String changePassword(ChangePasswordModel obj) throws ResourceNotFoundException, InvalidTypeException 
+	{
+		String userName = obj.getUserName();
+		Optional<Customer> optCust= custRepo.findByUserName(userName);
+		if(optCust.isPresent()) {
+			Customer cust = optCust.get();
+			String curPassword = obj.getCurrentPassword();
+			if(obj.getPasswordType().equals("Login") && cust.getLoginPassword().equals(curPassword)) {
+				custRepo.changeLoginPassword(obj.getNewPassword(), userName);
+			}
+			else if(obj.getPasswordType().equals("Transactional") && cust.getTransactionPassword().equals(curPassword)){
+				custRepo.changeTransactionPassword(obj.getNewPassword(), userName);
+			}
+			else {
+//				return result = "Not a valid password type";
+				throw new InvalidTypeException("Invalid Passwrd Type or passwords doesn't match");
 			}
 //			if(rowsAffected > 0) {
 //				result = "Successfully changed the Password";

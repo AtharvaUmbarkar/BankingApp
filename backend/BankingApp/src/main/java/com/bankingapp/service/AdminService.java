@@ -17,7 +17,7 @@ import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.AdminRepo;
 import com.bankingapp.repository.CustomerRepo;
-import com.bankingapp.types.ChangePasswordModel;
+import com.bankingapp.types.ForgotPasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;

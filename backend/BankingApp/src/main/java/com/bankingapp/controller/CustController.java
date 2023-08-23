@@ -26,6 +26,7 @@ import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Customer;
 import com.bankingapp.service.CustService;
+import com.bankingapp.types.ForgotPasswordModel;
 import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
@@ -68,9 +69,15 @@ public class CustController {
 	}
 	
 	@PutMapping("/forgotPassword")
-	public String changePassword(@RequestBody ChangePasswordModel obj, @RequestParam("userName") String userName) throws ResourceNotFoundException, InvalidTypeException 
+	public String forgotPassword(@RequestBody ChangePasswordModel obj) throws ResourceNotFoundException, InvalidTypeException 
 	{
-		return custService.changePassword(obj, userName);
+		return custService.forgotPassword(obj);
+	}
+	
+	@PutMapping("/changePassword")
+	public String changePassword(@RequestBody ChangePasswordModel obj) throws ResourceNotFoundException, InvalidTypeException 
+	{
+		return custService.changePassword(obj);
 	}
 	
 	@PutMapping("/forgotUserName")
