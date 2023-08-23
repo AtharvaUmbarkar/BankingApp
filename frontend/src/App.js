@@ -46,9 +46,11 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route index exact path="/" element={<Main />} />
           <Route exact path="login" element={<Login />} />
+
           <Route exact path="forgot-password" element={<ForgotPassword />} />
           <Route path='savings-account-registration' element={<SavingsAccountRegistration />} />
           <Route path='online-banking-registration' element={<OnlineBankingRegistration />} />
+
         </Route>
 
         <Route exact path="/logout" element={<Logout />} />

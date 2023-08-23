@@ -2,6 +2,8 @@ import { useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
 
+
+
 function Registration() {
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate()
@@ -58,6 +60,7 @@ function Registration() {
                 value={inputs.customer_name || ""}
                 onChange={handleChange}
                 className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                
               />
             </label>
           </div>

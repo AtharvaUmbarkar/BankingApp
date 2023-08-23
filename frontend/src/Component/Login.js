@@ -9,6 +9,7 @@ import { HOME } from "../Utilities/routes";
 
 
 
+
 const condition = (authUser) => authUser
 export default withAuthorization(condition, HOME)(() => {
   const [username, setUsername] = useState("")
@@ -16,7 +17,6 @@ export default withAuthorization(condition, HOME)(() => {
   const [admin, setAdmin] = useState(false);
   const navigate = useNavigate()
   const { setUserInContext } = useContext(UserContext)
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,6 +74,7 @@ export default withAuthorization(condition, HOME)(() => {
                 className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                
               />
             </div>
           </div>
