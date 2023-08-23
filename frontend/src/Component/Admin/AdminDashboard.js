@@ -4,7 +4,7 @@ import AdminNavbar from './AdminNavbar'
 const pathMap = {
   "stats": "Dashboard",
   "viewCustomers": "Customers",
-  "customerRegistration": "Register a customer"
+  "openAccount": "Open Account"
 }
 
 export default function AdminDashboard() {

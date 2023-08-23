@@ -35,7 +35,7 @@ import CustomersList from './Component/Admin/CustomersList';
 import Stats from './Component/Admin/Stats';
 import CustomerDetails from './Component/Admin/CustomerDetails';
 import ViewAccountDetails from './Component/Admin/AccountDetails';
-import CustomerRegistration from './Component/Admin/CustomerRegistration';
+import OpenAccount from './Component/Admin/OpenAccount';
 
 function App() {
   return (
@@ -78,10 +78,10 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />}>
         <Route index element={<Navigate to='stats' />} />
           <Route path="stats" element={<Stats />} />
+          <Route path="openAccount" element={<OpenAccount />} />
           <Route path="viewCustomers" element={<CustomersList />} />
           <Route path="viewCustomer/:customerId/:username" element={<CustomerDetails />} />
-          <Route path="viewAccount/:accountNumber" element={<CustomerRegistration />} />
-          <Route path="customerRegistration" element={<CustomerRegistration />} />
+          <Route path="viewAccount/:accountNumber" element={<ViewAccountDetails />} />
         </Route>
           <Route exact path="/logout" element={<Logout />} />
 

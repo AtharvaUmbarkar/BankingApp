@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const navItems = [
     { name: 'Dashboard', to: "/admin"},
     { name: 'Customers', to: '/admin/viewCustomers'},
-    { name: 'Register a customer', to: '/admin/customerRegistration'},
+    { name: 'Open Account', to: '/admin/openAccount'},
 ]
 
 function classNames(...classes) {
