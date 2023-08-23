@@ -44,6 +44,7 @@ public class Customer {
 	
 	@Column(name="first_name", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
+//	@Pattern(regexp="^[A-Z][a-z]+$")
 	private String firstName;
 	
 	@Column(name="middle_name")
@@ -127,9 +128,9 @@ public class Customer {
 	@Value("${some.key:false}")
 	private boolean netBankingEnabled;
 	
-	@Column(name="last_login")
+	@Column(name="last_login") //last login attempt
 	private Date lastLogin;
-	
+
 	@Column(name="user_name", unique=true)
 	@Pattern(regexp="^[A-Za-z0-9]{8,}$", message="must contain only digits and alphabets and should be of length 8")
 	private String userName;
@@ -142,6 +143,12 @@ public class Customer {
 	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String transactionPassword;
 	
+	@Value("${some.key:0}")
+	private int noFailedAttemps;
+	
+	@Value("${some.key:true}")
+	private boolean unLocked;
+
 	@JsonManagedReference
 	@JsonIgnore
 	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
@@ -158,6 +165,19 @@ public class Customer {
 	@JoinColumn(name="customer_id")
 	private List<Transaction> transactions;
 	
+	
+	public int getNoFailedAttemps() {
+		return noFailedAttemps;
+	}
+	public void setNoFailedAttemps(int noFailedAttemps) {
+		this.noFailedAttemps = noFailedAttemps;
+	}
+	public boolean isUnLocked() {
+		return unLocked;
+	}
+	public void setUnLocked(boolean unLocked) {
+		this.unLocked = unLocked;
+	}
 	public List<Account> getAccounts() {
 		return this.accounts;
 	}

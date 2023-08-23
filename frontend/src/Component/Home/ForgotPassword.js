@@ -27,14 +27,13 @@ const ForgotPassword = () => {
     else {
       axios.put("http://localhost:8090/forgotPassword",
         {
-          // userName: inputs.userName,
+          userName: inputs.userName,
           passwordType: inputs.passwordType,
-          password: inputs.newPassword,
+          newPassword: inputs.newPassword,
           otp: inputs.otp,
         },
         {
-          headers: { "Content-Type": "application/json" },
-          params: { userName: inputs.userName }
+          headers: { "Content-Type": "application/json" }
         }
       ).then((response) => {
         console.log(response);

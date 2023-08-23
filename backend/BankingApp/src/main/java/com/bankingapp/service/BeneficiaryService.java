@@ -7,6 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bankingapp.exception.AlreadyExistsException;
+import com.bankingapp.exception.NoDataFoundException;
+import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.interfaces.BeneficiaryServiceInterface;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Beneficiary;
 import com.bankingapp.models.Customer;
@@ -16,32 +20,41 @@ import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.types.AddBeneficiaryModel;
 
 @Service
-public class BeneficiaryService {
+public class BeneficiaryService implements BeneficiaryServiceInterface{
 	@Autowired
 	BeneficiaryRepo benRepo;
 	@Autowired
 	CustomerRepo custRepo;
 	@Autowired
 	AccountRepo acntRepo;
-	public Beneficiary saveBeneficiary(Beneficiary ben, String userName) {
-		Optional<Customer> obj = custRepo.findByUserName(userName);
-		if(obj.isPresent() && acntRepo.findById(ben.getAccountNumber()).isPresent()) { //also check if same user alter
-			ben.setCustomer(obj.get());
-			return benRepo.save(ben);
+	public Beneficiary saveBeneficiary(AddBeneficiaryModel benModel) throws ResourceNotFoundException, AlreadyExistsException {
+		Optional<Customer> custObj = custRepo.findByUserName(benModel.getUserName());
+		Optional<Account> acntObj = acntRepo.findById(benModel.getAccountNumber());
+		if(custObj.isPresent() && acntObj.isPresent()) { //also check if same user alter
+			Customer cust = custObj.get();
+			if(cust.getBeneficiaries().stream().anyMatch(ben -> (ben.getAccount().getAccountNumber()==(benModel.getAccountNumber()))))
+				throw new AlreadyExistsException("Beneficary with given account number already exist");
+			Beneficiary ben = new Beneficiary();
+			ben.setName(benModel.getName());
+			ben.setNickname(benModel.getNickname());
+			ben.setAccount(acntObj.get());
+			ben.setCustomer(custObj.get());
+			benRepo.save(ben);
+			return ben;
 		}
 		else {
-			return null;
+			throw new ResourceNotFoundException("customer or account does not exist");
 		}
 		
 	}
 	
-	public List<Beneficiary> getAllBeneficiaries(String userName){
+	public List<Beneficiary> getAllBeneficiaries(String userName) throws ResourceNotFoundException{
 		Optional<Customer> obj = custRepo.findByUserName(userName);
 		if(obj.isPresent()) {
 			return obj.get().getBeneficiaries();
 		}
 		else {
-			return List.of();
+			throw new ResourceNotFoundException("Customer does not exist");
 		}
 		
 	}
