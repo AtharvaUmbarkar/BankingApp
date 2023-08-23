@@ -76,13 +76,13 @@ public class AccountService implements AccountServiceInterface {
 		return result;
 	}
 	
-	public Account fetchAccount(long accountNo) throws NoDataFoundException 
+	public Account fetchAccount(long accountNo) throws ResourceNotFoundException 
 	{
 		Optional<Account> obj = accountRepo.findById(accountNo);
 		if(obj.isPresent())
 			return obj.get();
 		else
-			throw new NoDataFoundException("Account does not exist");
+			throw new ResourceNotFoundException("Account does not exist");
 	}	
 	
 	@Transactional

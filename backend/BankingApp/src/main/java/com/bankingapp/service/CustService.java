@@ -1,5 +1,6 @@
 package com.bankingapp.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.CustomerRepo;
+import com.bankingapp.types.ForgotPasswordModel;
 import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
@@ -38,18 +40,37 @@ public class CustService {
 	@Transactional
 	public Customer validateCustomer(LoginModel loginUser) throws UnauthorizedAccessException, ResourceNotFoundException
 	{
-		String result = "";
 		Customer cust = null;
-		Optional<Customer> objt = custRepo.findByUserName(loginUser.getUsername());
+		String userName = loginUser.getUsername();
+		Optional<Customer> objt = custRepo.findByUserName(userName);
 		if (objt.isPresent())
 		{
 			cust = objt.get();
+			if(!cust.isUnLocked()) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(cust.getLastLogin());
+				cal.add(Calendar.DATE, 1);
+				Date current = new Date();
+				if(cal.getTime().after(current)) {
+					throw new UnauthorizedAccessException("Exceeded 3 login attemps, please change your password to login");
+				}
+			}
 			if (loginUser.getPassword().equals(cust.getLoginPassword())) {
-				custRepo.changeLastLogin(new Date(),loginUser.getUsername());
+				custRepo.changeLastLogin(new Date(),0,true,userName); //also set 0 failed attempts
 				return cust;
 			}
 			else {
-				throw new UnauthorizedAccessException("Invalid Credentials");
+				int noAttempts = cust.getNoFailedAttemps()+1;
+				if(noAttempts>2) {
+					//update time, attempts, unLocked
+					custRepo.changeLastLogin(new Date(),0,false,userName);
+					throw new UnauthorizedAccessException("Invalid Credentials, your account have be locked for 1 day");
+				}
+				else {
+					//update time and attempts, unlocked
+					custRepo.changeLastLogin(new Date(),noAttempts,true,userName);
+					throw new UnauthorizedAccessException(String.format("Invalid Credentials, %d more attempts remaining", 3-noAttempts));
+ 				}
 			}
 		}
 		throw new ResourceNotFoundException("Customer not Present");
@@ -101,17 +122,16 @@ public class CustService {
 	}
 	
 	@Transactional
-	public String changePassword(ChangePasswordModel obj, String userName) throws ResourceNotFoundException, InvalidTypeException 
+	public String forgotPassword(ChangePasswordModel obj ) throws ResourceNotFoundException, InvalidTypeException 
 	{
-		String result="";
+		String userName = obj.getUserName();
 		Optional<Customer> optCust= custRepo.findByUserName(userName);
 		if(optCust.isPresent()) {
-			int rowsAffected;
 			if(obj.getPasswordType().equals("Login")) {
-				rowsAffected = custRepo.changeLoginPassword(obj.getPassword(), userName);
+				custRepo.changeLoginPassword(obj.getNewPassword(), userName);
 			}
 			else if(obj.getPasswordType().equals("Transactional")){
-				rowsAffected = custRepo.changeTransactionPassword(obj.getPassword(), userName);
+				custRepo.changeTransactionPassword(obj.getNewPassword(), userName);
 			}
 			else {
 //				return result = "Not a valid password type";
@@ -128,7 +148,39 @@ public class CustService {
 			throw new ResourceNotFoundException("Customer does not exist");
 //			result = "Customer does not exist";
 		}
-		return result;
+		return "Success";
+	}
+	
+	@Transactional
+	public String changePassword(ChangePasswordModel obj) throws ResourceNotFoundException, InvalidTypeException 
+	{
+		String userName = obj.getUserName();
+		Optional<Customer> optCust= custRepo.findByUserName(userName);
+		if(optCust.isPresent()) {
+			Customer cust = optCust.get();
+			String curPassword = obj.getCurrentPassword();
+			if(obj.getPasswordType().equals("Login") && cust.getLoginPassword().equals(curPassword)) {
+				custRepo.changeLoginPassword(obj.getNewPassword(), userName);
+			}
+			else if(obj.getPasswordType().equals("Transactional") && cust.getTransactionPassword().equals(curPassword)){
+				custRepo.changeTransactionPassword(obj.getNewPassword(), userName);
+			}
+			else {
+//				return result = "Not a valid password type";
+				throw new InvalidTypeException("Invalid Passwrd Type or passwords doesn't match");
+			}
+//			if(rowsAffected > 0) {
+//				result = "Successfully changed the Password";
+//			}
+//			else {
+//				result = "Failed to change the password";
+//			}
+		}
+		else {
+			throw new ResourceNotFoundException("Customer does not exist");
+//			result = "Customer does not exist";
+		}
+		return "Success";
 	}
 	
 	@Transactional

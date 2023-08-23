@@ -17,7 +17,7 @@ import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.AdminRepo;
 import com.bankingapp.repository.CustomerRepo;
-import com.bankingapp.types.ChangePasswordModel;
+import com.bankingapp.types.ForgotPasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
@@ -49,14 +49,8 @@ public class AdminService implements AdminServiceInterface{
 		throw new ResourceNotFoundException("Admin not found");
 	}
 	
-	public List<Customer> allCustomers() throws NoDataFoundException{
-		List<Customer> allCust =  custRepo.findAll();
-		if(allCust.isEmpty()) {
-			throw new NoDataFoundException("No customers found");
-		}
-		else {
-			return allCust;
-		}
+	public List<Customer> allCustomers(){
+		return  custRepo.findAll();
 	}
 
 }

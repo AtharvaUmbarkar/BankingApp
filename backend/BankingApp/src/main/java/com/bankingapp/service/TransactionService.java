@@ -230,17 +230,13 @@ public class TransactionService {
 			}
 	}
 	
-	public List<Object[]> getLatestTransactions(long accountNumber) throws ResourceNotFoundException, NoDataFoundException
+	public List<Object[]> getLatestTransactions(long accountNumber) throws ResourceNotFoundException
 	{
 		Optional<Account> acc = accountRepo.findById(accountNumber);
 		if (!acc.isPresent()) {
 			throw new ResourceNotFoundException("Account not Present");
 		}
-		List<Object[]> latesttxn = transRepo.getLatestTransactionForAccount(accountNumber);
-		if (latesttxn.isEmpty()) {
-			throw new NoDataFoundException("No Recent Transactions");
-		}
-		return latesttxn;
+		return transRepo.getLatestTransactionForAccount(accountNumber);
 	}
 	
 	public List<Object[]> getAccountStatement(long accountNumber, Date from, Date to) throws ResourceNotFoundException, InvalidTypeException{
