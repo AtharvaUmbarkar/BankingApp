@@ -1,5 +1,6 @@
 package com.bankingapp.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,5 +26,7 @@ public interface AccountRepo extends JpaRepository<Account, Long> {
 	@Query("update Account account set account.active = ?1 where account.accountNumber = ?2")
 	public int toggleActivation(boolean isActive, long accountNumber);
 
-	
+	@Modifying
+	@Query("update Account account set account.lastTransaction = ?1 where account.accountNumber = ?2")
+	public int changeLastTxn(Date date , long accountNumber);
 }

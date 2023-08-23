@@ -9,7 +9,7 @@ import { UserContext } from '../../Utilities/context/userContext';
 const AccountNavbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
-    const { user } = useContext(UserContext)
+    const { user, removeUser } = useContext(UserContext)
 
     const { accountNumber } = useParams();
     const navigation = [
@@ -20,7 +20,7 @@ const AccountNavbar = () => {
     ]
 
     const handleLogout = () => {
-        sessionStorage.removeItem('user');
+        removeUser();
         navigate('/');
     }
 

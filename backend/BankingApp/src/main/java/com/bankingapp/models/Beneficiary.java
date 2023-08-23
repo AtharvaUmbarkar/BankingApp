@@ -37,18 +37,11 @@ public class Beneficiary {
 	@JoinColumn(name="customerId")
 	private Customer customer;
 
-//	@JsonBackReference
-//	@ManyToOne
-//	@JoinColumn(name="accountNumber")
-	private long accountNumber;
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name="accountNumber")
+	private Account account;
 
-	public long getAccountNumber() {
-		return accountNumber;
-	}
-
-	public void setAccountNumber(long accountNumber) {
-		this.accountNumber = accountNumber;
-	}
 	
 	@JsonIgnore
 	public Customer getCustomer() {
@@ -67,13 +60,14 @@ public class Beneficiary {
 		this.id = id;
 	}
 
-//	public Account getAccount() {
-//		return account;
-//	}
-//
-//	public void setAccount(Account account) {
-//		this.account = account;
-//	}
+	@JsonIgnore
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
 
 	public String getName() {
 		return name;

@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 
 const CUSTOMER_DATA_URL = "http://localhost:8090/createFirstAccount";
 
-const SavingsAccountRegistration = () => {
+const OpenAccount = () => {
   const navigate = useNavigate()
   const [personalDetails, setPersonalDetails] = useState({
     title: "",
@@ -88,8 +88,7 @@ const SavingsAccountRegistration = () => {
     axios.post(CUSTOMER_DATA_URL, accountDetails
     ).then((response) => {
       console.log(response);
-      toast.success("Welcome " + personalDetails.firstName, { duration: 3000 });
-      navigate("/online-banking-registration")
+      toast.success("Account created successfully!",{ duration: 3000 });
     }, (error) => {
       console.log(error);
       toast.error("Account Creation Failed", { duration: 2000 });
@@ -474,4 +473,4 @@ const SavingsAccountRegistration = () => {
   )
 }
 
-export default SavingsAccountRegistration
+export default OpenAccount

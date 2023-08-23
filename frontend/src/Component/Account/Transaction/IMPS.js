@@ -64,7 +64,7 @@ export default withAuthorization (condition, LOGIN)(() => {
         })
       }
     } catch(e){
-      toast.error(e.response.data)
+      toast.error(e.response.data.message)
     }
   }
 

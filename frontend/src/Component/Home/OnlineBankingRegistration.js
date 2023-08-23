@@ -54,78 +54,93 @@ const OnlineBankingRegistration = () => {
   return (
     <div className='w-full flex flex-col'>
       <div className="flex flex-col w-2/5 mt-3 self-center">
-        <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-blue-500 pb-2">Internet Banking</h2>
+        <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-2">Internet Banking</h2>
         <form onSubmit={handleSubmit} className=''>
 
           <div className=''>
 
-            <label className="text-lg my-2">Account Number:
+            <label className="text-base my-2">Account Number:
               <input
+                required
+                pattern='^[0-9]{10}$'
                 type="text"
                 name="accountNumber"
                 value={inputs.accountNumber || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
-                validators={['required', 'minStringLength:5']}
-                errorMessages={['name required', 'field must have a minimum length is 5 characters']}
+                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
               />
             </label>
-            <label className="text-lg my-2">User Name:
+            <label className="text-base my-2">User Name:
               <input
+                required
+                minLength={3}
+                maxLength={30}
                 type="text"
                 name="userName"
                 value={inputs.userName || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
               />
             </label>
-            <label className="text-lg my-2">Set Login Password:
+            <label className="text-base my-2">Set Login Password:
               <input
+                required
+                minLength={8}
+                maxLength={30}
                 type="password"
                 name="loginPassword"
                 value={inputs.loginPassword || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
               />
             </label>
-            <label className="text-lg my-2">Confirm Login Password:
+            <label className="text-base my-2">Confirm Login Password:
               <input
+                required
+                minLength={8}
+                maxLength={30}
                 type="password"
                 name="confirmLoginPassword"
                 value={inputs.confirmLoginPassword || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
               />
             </label>
-            <label className="text-lg my-2">Set Transaction Password:
+            <label className="text-base my-2">Set Transaction Password:
               <input
+                required
+                minLength={8}
+                maxLength={30}
                 type="password"
                 name="transactionPassword"
                 value={inputs.transactionPassword || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
               />
             </label>
-            <label className="text-lg my-2">Confirm Transaction Password:
+            <label className="text-base my-2">Confirm Transaction Password:
               <input
                 type="password"
                 name="confirmTransactionPassword"
                 value={inputs.confirmTransactionPassword || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
               />
             </label>
-            <label className="text-lg my-2">Enter OTP:
+            <label className="text-base my-2">Enter OTP:
               <input
+                required
+                minLength={8}
+                maxLength={30}
                 type="otp"
                 name="otp"
                 value={inputs.otp || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-blue-500 text-lg p-1 mt-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
               />
             </label>
           </div>
-          <input type="submit" value="Submit" className="self-center p-2 uppercase bg-blue-800 text-white my-4" />
+          <input type="submit" value="Submit" className="self-center p-2 uppercase bg-indigo-700 text-white my-4" />
         </form>
       </div>
     </div>

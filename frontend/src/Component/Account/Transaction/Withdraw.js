@@ -24,21 +24,26 @@ const Withdraw = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const res = await axios.post(WITHDRAW_URL, JSON.stringify(
-            {
-                "transaction": {
-                    "txnType": "Withdraw",
-                    "txnAmount": transactionDetails.txnAmount,
-                    "userRemarks": transactionDetails.userRemarks
-                },
-                "senderAccountNumber": transactionDetails.senderAccountNumber
-            }
-        ), {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        toast.loading(res.data)
+        try {
+            const res = await axios.post(WITHDRAW_URL, JSON.stringify(
+                {
+                    "transaction": {
+                        "txnType": "Withdraw",
+                        "txnAmount": transactionDetails.txnAmount,
+                        "userRemarks": transactionDetails.userRemarks
+                    },
+                    "senderAccountNumber": transactionDetails.senderAccountNumber
+                }
+            ), {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            toast.success(res.data, { duration: 3000 })
+        } catch (error) {
+            toast.error(error.response.data.message, { duration: 3000 })
+
+        }
     }
 
     return (

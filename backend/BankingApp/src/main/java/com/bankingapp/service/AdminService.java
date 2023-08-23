@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bankingapp.exception.NoDataFoundException;
+import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
+import com.bankingapp.interfaces.AdminServiceInterface;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Admin;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.AdminRepo;
 import com.bankingapp.repository.CustomerRepo;
-import com.bankingapp.types.ChangePasswordModel;
+import com.bankingapp.types.ForgotPasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
@@ -26,14 +29,14 @@ import com.bankingapp.types.NetBankingModel;
 import jakarta.transaction.Transactional;
 
 @Service
-public class AdminService {
+public class AdminService implements AdminServiceInterface{
 	@Autowired
 	AdminRepo adminRepo;
 	@Autowired
 	CustomerRepo custRepo;
 	
 	@Transactional
-	public Admin validateAdmin(LoginModel loginUser)
+	public Admin validateAdmin(LoginModel loginUser) throws ResourceNotFoundException, UnauthorizedAccessException
 	{
 		Admin admin = null;
 		Optional<Admin> objt = adminRepo.findById(loginUser.getUsername());
@@ -43,18 +46,15 @@ public class AdminService {
 			if (loginUser.getPassword().equals(admin.getLoginPassword())) {
 				return admin;
 			}
+			else {
+				throw new UnauthorizedAccessException("Invalid password");
+			}
 		}
-		return null;
+		throw new ResourceNotFoundException("Admin not found");
 	}
 	
-	public List<Customer> allCustomers() throws NoDataFoundException{
-		List<Customer> allCust =  custRepo.findAll();
-		if(allCust.isEmpty()) {
-			throw new NoDataFoundException("No customers found");
-		}
-		else {
-			return allCust;
-		}
+	public List<Customer> allCustomers(){
+		return  custRepo.findAll();
 	}
 	
 	public List<Customer> searchCustomersByUsername(String query) throws NoDataFoundException{

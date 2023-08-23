@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.exception.InsufficientBalanceException;
+import com.bankingapp.exception.InvalidTypeException;
+import com.bankingapp.exception.NoDataFoundException;
+import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Transaction;
 import com.bankingapp.service.TransactionService;
 import com.bankingapp.types.TransactionModel;
@@ -27,41 +31,45 @@ public class TransactionController
 	@Autowired
 	TransactionService tService;
 	@PostMapping("/save/withdraw")
-	public String withdraw(@RequestBody TransactionModel transactionModel) throws InsufficientBalanceException
+	public String withdraw(@RequestBody TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException, UnauthorizedAccessException
 	{
 		return tService.withdraw(transactionModel);
 	}
 	
 	@PostMapping("/save/deposit")
-	public String deposit(@RequestBody TransactionModel transactionModel)
+	public String deposit(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException, UnauthorizedAccessException
 	{
 		return tService.deposit(transactionModel);
 	}
-	
+	// To be tested
 	@PostMapping("/save/fundTransfer")
-	public ResponseEntity<String> fundTransfer(@RequestBody TransactionModel transactionModel)
+	public String fundTransfer(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException, UnauthorizedAccessException
 	{
 		return tService.fundTransfer(transactionModel);
 	}
 	
 	@GetMapping("/getLatestTransactions")
-	public ResponseEntity<List<Object[]>> getLatestTransactions(@RequestParam long accountNumber){
+	public ResponseEntity<List<Object[]>> getLatestTransactions(@RequestParam long accountNumber) throws ResourceNotFoundException
+	{
 		return new ResponseEntity<>(tService.getLatestTransactions(accountNumber), HttpStatus.OK);
 	}
 	
 	@GetMapping("/getAccountStatement")
-	public ResponseEntity<List<Object[]>> getAccountStatement(@RequestParam long accountNumber, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date to){
-		return new ResponseEntity<>(tService.getAccountStatement(accountNumber, from, to), HttpStatus.OK);
+	public List<Object[]> getAccountStatement(@RequestParam long accountNumber, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date to) throws ResourceNotFoundException, InvalidTypeException
+	{
+		return tService.getAccountStatement(accountNumber, from, to);
 	}
-	
-	
-	@GetMapping("/getAllTransactions")
-	public List<Transaction> getAllTransactions(@RequestParam long accountNo){
-		return tService.getAllTransactions(accountNo);
-	}
-	
-	@GetMapping("/getStatementTransactions")
-	public List<Transaction> getStatementTransactions(@RequestParam long accountNo, @RequestParam String fromDt, @RequestParam String toDt){
-		return tService.getStatementTransactions(accountNo,fromDt,toDt);
-	}
+//	
+//	
+//	@GetMapping("/getAllTransactions")
+//	public List<Transaction> getAllTransactions(@RequestParam long accountNo) throws NoDataFoundException, ResourceNotFoundException
+//	{
+//		return tService.getAllTransactions(accountNo);
+//	}
+//	// To be tested
+//	@GetMapping("/getStatementTransactions") // What is the difference between this method and get account statement method?
+//	public List<Transaction> getStatementTransactions(@RequestParam long accountNo, @RequestParam String fromDt, @RequestParam String toDt) throws NoDataFoundException, ResourceNotFoundException
+//	{
+//		return tService.getStatementTransactions(accountNo,fromDt,toDt);
+//	}
 }

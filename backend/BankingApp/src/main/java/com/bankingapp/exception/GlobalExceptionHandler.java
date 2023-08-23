@@ -41,7 +41,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
 	}
 	
-	@ExceptionHandler(value = ResourceNotFoundException .class)
+	@ExceptionHandler(value = ResourceNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public @ResponseBody ErrorResponse handleResourceNotFoundException(ResourceNotFoundException ex) {
 		return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
@@ -52,5 +52,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public @ResponseBody ErrorResponse handleInsufficientBalanceException(InsufficientBalanceException ex) {
 		return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
 	}
+	
+	@ExceptionHandler(value = UnauthorizedAccessException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public @ResponseBody ErrorResponse handleUnauthorizedAccessException(UnauthorizedAccessException ex) {
+		return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+	}
+
+	@ExceptionHandler(value = AlreadyExistsException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public @ResponseBody ErrorResponse handleAlreadyExistsException(AlreadyExistsException ex) {
+		return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+	}
+
+	@ExceptionHandler(value = InvalidTypeException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public @ResponseBody ErrorResponse InvalidTypeException(InvalidTypeException ex) {
+		return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+	}
+
 }
 
