@@ -1,23 +1,26 @@
 package com.bankingapp.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.InvalidTypeException;
-import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.CustomerRepo;
-import com.bankingapp.types.ForgotPasswordModel;
 import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
@@ -26,11 +29,26 @@ import com.bankingapp.types.NetBankingModel;
 import jakarta.transaction.Transactional;
 
 @Service
-public class CustService {
+public class CustService implements UserDetailsService {
 	@Autowired
 	CustomerRepo custRepo;
 	@Autowired
 	AccountRepo accRepo;
+	@Autowired
+	private PasswordEncoder bcryptEncoder;
+	
+	@Override
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+		Customer cust = custRepo.findByUserName(userName).get();
+		if(cust!=null) {
+			return new org.springframework.security.core.userdetails.User(cust.getUserName(), cust.getLoginPassword(), new ArrayList());
+		}
+		else {
+			throw new UsernameNotFoundException("User name not found");
+		}
+	}
+	
+	//no longer needed
 	public Customer saveCustomer(Customer cust)
 	{
 		Customer obj=custRepo.save(cust);
@@ -106,7 +124,7 @@ public class CustService {
 			}
 			else
 			{
-				custRepo.setUserName(nb.getUserName(), nb.getLoginPassword(), nb.getTransactionPassword(), cust.getCustomerId());
+				custRepo.setUserName(nb.getUserName(), bcryptEncoder.encode(nb.getLoginPassword()), bcryptEncoder.encode(nb.getTransactionPassword()), cust.getCustomerId());
 				result = "successfully registered for net banking";
 			}
 		}
