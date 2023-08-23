@@ -13,7 +13,7 @@ const UserAccounts = () => {
     const fetchAccounts = async () => {
       if (user) {
         const response  = await axios.get(BASE_URL + user.userName)
-        console.log(response.data);
+        // console.log(response.data);
         setAccounts(response.data);
       }
     }

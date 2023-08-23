@@ -24,10 +24,15 @@ export default withAuthorization(condition, LOGIN)(() => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await addBeneficiaryToCustomer(inputs, user.userName)
-    if(response){
-      toast.success("Beneficiary added!")
-      setInputs({})
+    try {
+      const response = await addBeneficiaryToCustomer(inputs, user.userName)
+      if (response) {
+        toast.success("Beneficiary added!")
+        setInputs({})
+      }
+
+    } catch (error) {
+      toast.error(error.response.data, { duration: 3000 })
     }
   }
 

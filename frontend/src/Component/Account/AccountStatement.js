@@ -34,7 +34,7 @@ export default withAuthorization(condition, LOGIN)(() => {
     const updateTransactions = async (accountNumber, from, to) => {
       const result = await getStatement(accountNumber, from, to)
       setTransactions(result.data)
-      console.log(result.data);
+      // console.log(result.data);
     }
     if (from && to) {
       if (to > from) {
@@ -56,8 +56,8 @@ export default withAuthorization(condition, LOGIN)(() => {
       </div>
       <div className='mt-8 w-2/5 px-4'>
         <ul role="list" className="divide-y-2 divide-gray-300">
-          {from && to && (transactions.length ? transactions.map(([transaction, sender, receiver]) => (
-            <li key={transaction.id} className="flex justify-between gap-x-6 py-5">
+          {(from && to && transactions.length) ? transactions.map(([transaction, sender, receiver], i) => (
+            <li key={i} className="flex justify-between gap-x-6 py-5">
               <div className="flex min-w-0 gap-x-4">
                 {transaction.txnType == "IMPS" || transaction.txnType == "NEFT" || transaction.txnType == "RTGS" ?
                   <div className="shrink-0 sm:flex sm:flex-col sm:items-start">
@@ -97,7 +97,7 @@ export default withAuthorization(condition, LOGIN)(() => {
                 </p>
               </div>
             </li>
-          )) : <p className="text-center text-gray-500 font-semibold">No records</p>)}
+          )) : <p className="text-center text-gray-500 font-semibold">No records</p>}
         </ul>
       </div>
     </div>
