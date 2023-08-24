@@ -15,6 +15,7 @@ export default withAuthorization(condition, LOGIN)(() => {
   const [transactionDetails, setTransactionDetails] = useState({
     senderAccount: accountNumber,
     receiverAccount: "",
+    transactionPassword: "",
     txnAmount: 0,
     // txnDate: new Date(),
     userRemarks: "",
@@ -51,7 +52,8 @@ export default withAuthorization(condition, LOGIN)(() => {
           remarks: transactionDetails.userRemarks
         },
         senderAccountNumber: accountNumber,
-        receiverAccountNumber: transactionDetails.receiverAccount
+        receiverAccountNumber: transactionDetails.receiverAccount,
+        transactionPassword: transactionDetails.transactionPassword
       })
       if (response) {
         toast.success(response.data)
@@ -128,6 +130,18 @@ export default withAuthorization(condition, LOGIN)(() => {
           value={transactionDetails.userRemarks}
           onChange={handleChange}
           className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1"
+        />
+      </label>
+
+      <label className=" my-2">Transaction Password:
+        <input
+          required
+          minLength={8}
+          type="password"
+          name="transactionPassword"
+          value={transactionDetails.transactionPassword}
+          onChange={handleChange}
+          className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3 w-full"
         />
       </label>
 

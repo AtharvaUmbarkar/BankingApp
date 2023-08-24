@@ -11,6 +11,7 @@ const Withdraw = () => {
 
     const [transactionDetails, setTransactionDetails] = useState({
         senderAccountNumber: accountNumber,
+        transactionPassword: "",
         txnAmount: 0,
         userRemarks: "",
     })
@@ -32,7 +33,8 @@ const Withdraw = () => {
                         "txnAmount": transactionDetails.txnAmount,
                         "userRemarks": transactionDetails.userRemarks
                     },
-                    "senderAccountNumber": transactionDetails.senderAccountNumber
+                    "senderAccountNumber": transactionDetails.senderAccountNumber,
+                    transactionPassword: transactionDetails.transactionPassword
                 }
             ), {
                 headers: {
@@ -81,6 +83,18 @@ const Withdraw = () => {
                     value={transactionDetails.userRemarks}
                     onChange={handleChange}
                     className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+                />
+            </label>
+
+            <label className="w-full my-2">Transaction Password:
+                <input
+                    required
+                    minLength={8}
+                    type="password"
+                    name="transactionPassword"
+                    value={transactionDetails.transactionPassword}
+                    onChange={handleChange}
+                    className="border w-full border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
                 />
             </label>
 
