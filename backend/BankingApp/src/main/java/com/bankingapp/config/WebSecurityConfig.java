@@ -13,12 +13,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
 
+	
+	
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	@Autowired
@@ -52,7 +55,8 @@ public class WebSecurityConfig {
 		// We don't need CSRF for this example
 		httpSecurity.csrf((csrf) -> csrf.disable())
 				// dont authenticate this particular request
-				.authorizeHttpRequests((authz) -> authz
+		.cors().and()
+		.authorizeHttpRequests((authz) -> authz
 						.requestMatchers("/Login", "/netBankingRegistration", "/createFirstAccount").permitAll().
 				// all other requests need to be authenticated
 						anyRequest().authenticated())
