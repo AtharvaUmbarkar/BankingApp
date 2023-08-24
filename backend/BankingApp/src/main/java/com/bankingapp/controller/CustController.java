@@ -141,13 +141,13 @@ public class CustController {
 		}catch(DisabledException e) {
 			throw new Exception("USER_DISABLED",e);
 		}catch(BadCredentialsException e) {
-			if(e.getMessage().contains("password")){
+			if(e.getMessage().contains("Password")){
 				custRepo.changeLastLogin(new Date(),custRepo.findByUserName(userName).get().getNoFailedAttemps()+1,true,userName);
 			}
 			throw new UnauthorizedAccessException(e.getMessage());
 		}catch(LockedException e) {
 			if(e.getMessage().contentEquals("3 attempts failed, your account have be locked for 1 day")) {
-				custRepo.changeLastLogin(new Date(),0,true,userName);
+				custRepo.changeLastLogin(new Date(),0,false,userName);
 			}
 			throw new UnauthorizedAccessException(e.getMessage());
 		}
