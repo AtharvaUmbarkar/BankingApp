@@ -5,35 +5,36 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bankingapp.config.JwtTokenUtil;
 import com.bankingapp.dto.AdminDTO;
 import com.bankingapp.dto.CustomerDTO;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
-import com.bankingapp.models.Account;
-import com.bankingapp.models.Admin;
 import com.bankingapp.models.Customer;
+import com.bankingapp.repository.AdminRepo;
 import com.bankingapp.service.AccountService;
 import com.bankingapp.service.AdminService;
 import com.bankingapp.service.CustService;
-import com.bankingapp.types.ForgotPasswordModel;
-import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
-import com.bankingapp.types.NetBankingModel;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
+@RequestMapping("/admin/")
 public class AdminController {
 	@Autowired
 	AdminService adminService;
@@ -43,15 +44,28 @@ public class AdminController {
 	CustService custService;
 	@Autowired
 	ModelMapper modelMapper;
+	@Autowired
+	AuthenticationManager authenticationManager;
+	@Autowired
+	JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	AdminRepo adminRepo;
 	
-	
-	@PostMapping("/LoginAdmin")
-	public AdminDTO validateAdmin(@RequestBody LoginModel u) throws ResourceNotFoundException, UnauthorizedAccessException
+
+	@PostMapping("LoginAdmin")
+	public AdminDTO validateAdmin(@RequestBody LoginModel u) throws Exception
 	{
-		return modelMapper.map(adminService.validateAdmin(u),AdminDTO.class);
+		System.out.println("reached here");
+//		authenticate(u.getUsername(), u.getPassword());
+		final UserDetails userDetails = adminService.loadUserByUsername(u.getUsername());
+		final String token = jwtTokenUtil.generateToken(userDetails);
+		System.out.println(token);
+		 AdminDTO adminDTO =  modelMapper.map(adminRepo.findByUserName(u.getUsername()),AdminDTO.class);
+		 adminDTO.setToken(token);
+		 return adminDTO;
 	}
 	
-	@GetMapping("/fetch/AllCustomers")
+	@GetMapping("fetch/AllCustomers")
 	public List<CustomerDTO> allCustomers() throws NoDataFoundException{
 		return adminService.allCustomers().stream().map(cust -> modelMapper.map(cust, CustomerDTO.class)).collect(Collectors.toList());
 	}
@@ -66,14 +80,24 @@ public class AdminController {
 		return custService.toggleUser(userName);
 	}
 
-	@GetMapping("/searchCustomerByUsername")
+	@GetMapping("searchCustomerByUsername")
 	public List<Customer> searchCustomersByUsername(@RequestParam("query") String query) throws NoDataFoundException{
 		return adminService.searchCustomersByUsername(query);
 	}
 	
-	@GetMapping("/getTransactionStats")
+	@GetMapping("getTransactionStats")
 	public Object getTransactionStats() throws NoDataFoundException{
 		return adminService.getTransactionStats();
+	}
+	
+	public void authenticate(String userName, String password) throws Exception {
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+		}catch(DisabledException e) {
+			throw new Exception("USER_DISABLED",e);
+		}catch(BadCredentialsException e) {
+			throw new Exception("INVALID_CREDENTIALS", e);
+		}
 	}
 	
 }

@@ -12,7 +12,7 @@ export const loginUser = async (userCredentials, admin) => {
         return response;
     }
     else {
-        const response = await axios.post(`${API_URL}/LoginAdmin`, JSON.stringify(userCredentials), {
+        const response = await axios.post(`${API_URL}/admin/LoginAdmin`, JSON.stringify(userCredentials), {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -55,7 +55,9 @@ export const getStatement = async (accountNumber, from, to) => {
 }
 
 export const getAllCustomers = async () => {
-    const response = await axios.get(`${API_URL}/fetch/AllCustomers`)
+    const response = await axios.get(`${API_URL}/admin/fetch/AllCustomers`, {
+        headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}
+    })
     return response;
 }
 
@@ -70,7 +72,7 @@ export const getCustomerAccounts = async (username) => {
 }
 
 export const toggleActivation = async (actNo) => {
-    const response = await axios.put(`${API_URL}/toggle/Activation?acntNo=${actNo}`)
+    const response = await axios.put(`${API_URL}/admin/toggle/Activation?acntNo=${actNo}`)
     return response
 }
 
@@ -80,11 +82,13 @@ export const getCustomerAndAccountDetails = async (id) => {
 }
 
 export const searchCustomerByUsername = async (query) => {
-    const response = await axios.get(`${API_URL}/searchCustomerByUsername?query=${query}`)
+    const response = await axios.get(`${API_URL}/admin/searchCustomerByUsername?query=${query}`)
     return response;
 }
 
 export const getTransactionStats = async (query) => {
-    const response = await axios.get(`${API_URL}/getTransactionStats`)
+    const response = await axios.get(`${API_URL}/admin/getTransactionStats`, {
+        headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}
+    })
     return response;
 }

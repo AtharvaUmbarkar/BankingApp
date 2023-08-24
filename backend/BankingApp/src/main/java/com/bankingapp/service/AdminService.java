@@ -1,9 +1,13 @@
 package com.bankingapp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.exception.NoDataFoundException;
@@ -20,13 +24,26 @@ import com.bankingapp.types.LoginModel;
 import jakarta.transaction.Transactional;
 
 @Service
-public class AdminService implements AdminServiceInterface{
+public class AdminService implements AdminServiceInterface, UserDetailsService {
 	@Autowired
 	AdminRepo adminRepo;
 	@Autowired
 	CustomerRepo custRepo;
 	@Autowired
 	TransactionRepo transRepo;
+	
+	@Override
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+		Admin admin = adminRepo.findByUserName(userName).get();
+		if(admin!=null) {
+			return new org.springframework.security.core.userdetails.User(admin.getUserName(), admin.getLoginPassword(), new ArrayList());
+		}
+		else {
+			throw new UsernameNotFoundException("User name not found");
+		}
+	}
+	
+	
 	
 	@Transactional
 	public Admin validateAdmin(LoginModel loginUser) throws ResourceNotFoundException, UnauthorizedAccessException

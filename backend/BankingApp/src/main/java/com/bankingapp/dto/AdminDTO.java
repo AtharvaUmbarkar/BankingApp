@@ -5,23 +5,30 @@ package com.bankingapp.dto;
 public class AdminDTO {
 	
 	private String userName;
-	private String loginPassword;	
+//	private String loginPassword;	
 	private String title;
 	private String name;
 	private String mobileNumber;
 	private String emailId;
+	private String token;
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
 	public String getUserName() {
 		return userName;
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public String getLoginPassword() {
-		return loginPassword;
-	}
-	public void setLoginPassword(String loginPassword) {
-		this.loginPassword = loginPassword;
-	}
+//	public String getLoginPassword() {
+//		return loginPassword;
+//	}
+//	public void setLoginPassword(String loginPassword) {
+//		this.loginPassword = loginPassword;
+//	}
 	public String getTitle() {
 		return title;
 	}
