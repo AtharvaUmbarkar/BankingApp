@@ -27,8 +27,8 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 	CustomerRepo custRepo;
 	@Autowired
 	AccountRepo acntRepo;
-	public Beneficiary saveBeneficiary(AddBeneficiaryModel benModel) throws ResourceNotFoundException, AlreadyExistsException {
-		Optional<Customer> custObj = custRepo.findByUserName(benModel.getUserName());
+	public Beneficiary saveBeneficiary(AddBeneficiaryModel benModel, String userName) throws ResourceNotFoundException, AlreadyExistsException {
+		Optional<Customer> custObj = custRepo.findByUserName(userName);
 		Optional<Account> acntObj = acntRepo.findById(benModel.getAccountNumber());
 		if(custObj.isPresent() && acntObj.isPresent()) { //also check if same user alter
 			Customer cust = custObj.get();
@@ -57,5 +57,25 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 			throw new ResourceNotFoundException("Customer does not exist");
 		}
 		
+	}
+	
+	public String deleteBeneficiary(int Id) throws ResourceNotFoundException {
+		Optional<Beneficiary> beneobj = benRepo.findById(Id);
+		String result = "";
+		if (!beneobj.isPresent()) {
+			throw new ResourceNotFoundException("Beneficiary not Present");
+		}
+		else {
+			benRepo.deleteBeneficiary(Id);
+			return "Beneficiary with Id :" + Id + "deleted";
+		}
+		
+	}
+
+	@Override
+	public Beneficiary saveBeneficiary(AddBeneficiaryModel benModel)
+			throws ResourceNotFoundException, AlreadyExistsException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -87,7 +87,7 @@ const SavingsAccountRegistration = () => {
 
     axios.post(CUSTOMER_DATA_URL, accountDetails
     ).then((response) => {
-      console.log(response);
+      // console.log(response);
       toast.success("Welcome " + personalDetails.firstName, { duration: 3000 });
       navigate("/online-banking-registration")
     }, (error) => {

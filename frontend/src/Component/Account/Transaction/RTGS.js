@@ -9,6 +9,7 @@ const RTGS = () => {
   const [transactionDetails, setTransactionDetails] = useState({
     senderAccount: accountNumber,
     receiverAccount: "",
+    transactionPassword: "",
     txnAmount: 0,
     // txnDate: new Date(),
     userRemarks: "",
@@ -35,8 +36,12 @@ const RTGS = () => {
         },
         "receiverAccountNumber": transactionDetails.receiverAccount,
         "senderAccountNumber": transactionDetails.senderAccount,
+        transactionPassword: transactionDetails.transactionPassword,
       }, {
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+        }
       });
       toast.success(response.data, { duration: 3000 })
     } catch (error) {
@@ -60,6 +65,7 @@ const RTGS = () => {
 
       <label className="w-full">Receiver Account Number:
         <select
+          required
           name="receiverAccount"
           onChange={handleChange}
           className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1 mb-1 w-full"
@@ -75,6 +81,9 @@ const RTGS = () => {
 
       <label className="w-full my-2">Amount
         <input
+          required
+          min={10000}
+          max={1000000}
           type="number"
           name="txnAmount"
           value={transactionDetails.txnAmount}
@@ -103,7 +112,19 @@ const RTGS = () => {
         />
       </label>
 
-      <button type='submit' className='p-2 my-4 w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>SUBMIT</button>
+      <label className="w-full my-2">Transaction Password:
+        <input
+          required
+          minLength={8}
+          type="password"
+          name="transactionPassword"
+          value={transactionDetails.transactionPassword}
+          onChange={handleChange}
+          className="border w-full border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+        />
+      </label>
+
+      <button type='submit' className='p-2 w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>SUBMIT</button>
     </form>
   )
 }

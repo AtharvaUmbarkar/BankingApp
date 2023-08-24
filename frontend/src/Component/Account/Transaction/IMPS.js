@@ -9,12 +9,13 @@ import { toast } from 'react-hot-toast';
 
 const condition = (authUser) => !authUser
 
-export default withAuthorization (condition, LOGIN)(() => {
-  
+export default withAuthorization(condition, LOGIN)(() => {
+
   const { accountNumber } = useParams()
   const [transactionDetails, setTransactionDetails] = useState({
     senderAccount: accountNumber,
     receiverAccount: "",
+    transactionPassword: "",
     txnAmount: 0,
     // txnDate: new Date(),
     userRemarks: "",
@@ -26,11 +27,11 @@ export default withAuthorization (condition, LOGIN)(() => {
 
 
   useEffect(() => {
-      const updateBeneficiaries = async (user) => {
-        const result = await getAllBeneficiaries(user.userName)
-        setBeneficiaries(result.data)
-      }
-      updateBeneficiaries(user);      
+    const updateBeneficiaries = async (user) => {
+      const result = await getAllBeneficiaries(user.userName)
+      setBeneficiaries(result.data)
+    }
+    updateBeneficiaries(user);
   }, [])
 
 
@@ -43,7 +44,7 @@ export default withAuthorization (condition, LOGIN)(() => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       const response = await makeFundTransfer({
         transaction: {
           txnType: "IMPS",
@@ -51,9 +52,10 @@ export default withAuthorization (condition, LOGIN)(() => {
           remarks: transactionDetails.userRemarks
         },
         senderAccountNumber: accountNumber,
-        receiverAccountNumber: transactionDetails.receiverAccount
+        receiverAccountNumber: transactionDetails.receiverAccount,
+        transactionPassword: transactionDetails.transactionPassword
       })
-      if(response){
+      if (response) {
         toast.success(response.data)
         setTransactionDetails({
           senderAccount: accountNumber,
@@ -63,7 +65,7 @@ export default withAuthorization (condition, LOGIN)(() => {
           userRemarks: "",
         })
       }
-    } catch(e){
+    } catch (e) {
       toast.error(e.response.data.message)
     }
   }
@@ -84,7 +86,7 @@ export default withAuthorization (condition, LOGIN)(() => {
 
       <label className="w-full">Receiver Account Number:
         <select
-          
+          required
           name="receiverAccount"
           onChange={handleChange}
           className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1 mb-1 w-full"
@@ -100,6 +102,9 @@ export default withAuthorization (condition, LOGIN)(() => {
 
       <label className="w-full my-2">Amount
         <input
+          required
+          min={1}
+          max={500000}
           type="number"
           name="txnAmount"
           value={transactionDetails.txnAmount}
@@ -128,7 +133,19 @@ export default withAuthorization (condition, LOGIN)(() => {
         />
       </label>
 
-      <button type='submit' className='p-2 my-4 w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>SUBMIT</button>
+      <label className="w-full my-2">Transaction Password:
+        <input
+          required
+          minLength={8}
+          type="password"
+          name="transactionPassword"
+          value={transactionDetails.transactionPassword}
+          onChange={handleChange}
+          className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3 w-full"
+        />
+      </label>
+
+      <button type='submit' className='p-2  w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>SUBMIT</button>
     </form>
   )
 })

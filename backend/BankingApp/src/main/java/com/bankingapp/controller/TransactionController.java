@@ -30,20 +30,22 @@ public class TransactionController
 {
 	@Autowired
 	TransactionService tService;
+	
+	//do we need to check the acnt number and userName match?
 	@PostMapping("/save/withdraw")
-	public String withdraw(@RequestBody TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException, UnauthorizedAccessException
+	public String withdraw(@RequestBody TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException
 	{
 		return tService.withdraw(transactionModel);
 	}
 	
 	@PostMapping("/save/deposit")
-	public String deposit(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException, UnauthorizedAccessException
+	public String deposit(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException
 	{
 		return tService.deposit(transactionModel);
 	}
 	// To be tested
 	@PostMapping("/save/fundTransfer")
-	public String fundTransfer(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException, UnauthorizedAccessException
+	public String fundTransfer(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException, InvalidTypeException, UnauthorizedAccessException
 	{
 		return tService.fundTransfer(transactionModel);
 	}

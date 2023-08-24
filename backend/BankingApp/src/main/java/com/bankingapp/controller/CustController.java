@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,11 +74,11 @@ public class CustController {
 //	@ResponseBody
 	public CustomerDTO validateCustomer(@RequestBody LoginModel u) throws Exception
 	{
-		System.out.println("reached here");
+//		System.out.println("reached here");
 		authenticate(u.getUsername(), u.getPassword());
 		final UserDetails userDetails = custService.loadUserByUsername(u.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
-		System.out.println(token);
+//		System.out.println(token);
 		 CustomerDTO custDTO =  modelMapper.map(custRepo.findByUserName(u.getUsername()),CustomerDTO.class);
 		 custDTO.setToken(token);
 		 return custDTO;
@@ -85,9 +86,10 @@ public class CustController {
 	}
 	
 	@GetMapping("/fetchAccounts")
-	public List<AccountDTO> fetchAccounts(@RequestParam("username") String username) throws ResourceNotFoundException
+	public List<AccountDTO> fetchAccounts(@RequestHeader(value="Authorization", required=true) String bearerToken) throws ResourceNotFoundException
 	{
-		return custService.fetchAccounts(username).stream().map(acnt -> modelMapper.map(acnt, AccountDTO.class)).collect(Collectors.toList());
+		String userName = jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));
+		return custService.fetchAccounts(userName).stream().map(acnt -> modelMapper.map(acnt, AccountDTO.class)).collect(Collectors.toList());
 	}
 	// To be tested for exception
 	@PutMapping("/netBankingRegistration")
@@ -108,6 +110,7 @@ public class CustController {
 		return custService.changePassword(obj);
 	}
 	
+	//not implementing frontend fn
 	@PutMapping("/forgotUserName")
 	public String changeUserName(@RequestBody ChangeUserNameModel obj) throws ResourceNotFoundException, InvalidTypeException {
 		return custService.changeUserName(obj);

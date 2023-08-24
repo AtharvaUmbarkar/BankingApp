@@ -11,6 +11,7 @@ const Withdraw = () => {
 
     const [transactionDetails, setTransactionDetails] = useState({
         senderAccountNumber: accountNumber,
+        transactionPassword: "",
         txnAmount: 0,
         userRemarks: "",
     })
@@ -32,11 +33,13 @@ const Withdraw = () => {
                         "txnAmount": transactionDetails.txnAmount,
                         "userRemarks": transactionDetails.userRemarks
                     },
-                    "senderAccountNumber": transactionDetails.senderAccountNumber
+                    "senderAccountNumber": transactionDetails.senderAccountNumber,
+                    transactionPassword: transactionDetails.transactionPassword
                 }
             ), {
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${sessionStorage.getItem("token")}`
                 }
             })
             toast.success(res.data, { duration: 3000 })
@@ -63,6 +66,8 @@ const Withdraw = () => {
 
             <label className="w-full my-2">Amount
                 <input
+                    required
+                    min={1}
                     type="number"
                     name="txnAmount"
                     value={transactionDetails.txnAmount}
@@ -81,7 +86,19 @@ const Withdraw = () => {
                 />
             </label>
 
-            <button type='submit' className='p-2 my-4 w-full bg-indigo-700 text-xl text-white rounded-sm'>SUBMIT</button>
+            <label className="w-full my-2">Transaction Password:
+                <input
+                    required
+                    minLength={8}
+                    type="password"
+                    name="transactionPassword"
+                    value={transactionDetails.transactionPassword}
+                    onChange={handleChange}
+                    className="border w-full border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+                />
+            </label>
+
+            <button type='submit' className='p-2 w-full bg-indigo-700 text-xl text-white rounded-sm'>SUBMIT</button>
         </form>
     )
 }

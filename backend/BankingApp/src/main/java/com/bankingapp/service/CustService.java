@@ -124,7 +124,7 @@ public class CustService implements UserDetailsService {
 			}
 			else
 			{
-				custRepo.setUserName(nb.getUserName(), bcryptEncoder.encode(nb.getLoginPassword()), bcryptEncoder.encode(nb.getTransactionPassword()), cust.getCustomerId());
+				custRepo.setUserName(nb.getUserName(), bcryptEncoder.encode(nb.getLoginPassword()), nb.getTransactionPassword(), cust.getCustomerId());
 				result = "successfully registered for net banking";
 			}
 		}
