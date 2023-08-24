@@ -53,7 +53,7 @@ public class WebSecurityConfig {
 		httpSecurity.csrf((csrf) -> csrf.disable())
 				// dont authenticate this particular request
 				.authorizeHttpRequests((authz) -> authz
-						.requestMatchers("/Login", "/netBankingRegistration", "/createFirstAccount").permitAll().
+						.requestMatchers("/Login", "/netBankingRegistration", "/createFirstAccount", "/forgotPassword", "/changePassowrd").permitAll().
 				// all other requests need to be authenticated
 						anyRequest().authenticated())
 				// make sure we use stateless session; session won't be used to

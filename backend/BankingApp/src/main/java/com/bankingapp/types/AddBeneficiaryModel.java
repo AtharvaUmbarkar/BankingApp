@@ -5,7 +5,7 @@ public class AddBeneficiaryModel {
 	private String name;
 	private String nickname;
 	private long accountNumber;
-	private String userName;
+//	private String userName;
 	
 	public String getName() {
 		return name;
@@ -25,12 +25,12 @@ public class AddBeneficiaryModel {
 	public void setAccountNumber(long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+//	public String getUserName() {
+//		return userName;
+//	}
+//	public void setUserName(String userName) {
+//		this.userName = userName;
+//	}
 	
 	
 }
