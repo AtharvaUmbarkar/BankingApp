@@ -63,6 +63,8 @@ const Withdraw = () => {
 
             <label className="w-full my-2">Amount
                 <input
+                    required
+                    min={1}
                     type="number"
                     name="txnAmount"
                     value={transactionDetails.txnAmount}

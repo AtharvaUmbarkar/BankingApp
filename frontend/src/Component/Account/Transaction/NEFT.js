@@ -59,6 +59,7 @@ const NEFT = () => {
 
       <label className="w-full">Receiver Account Number:
         <select
+          required
           name="receiverAccount"
           value={transactionDetails.receiverAccount}
           onChange={handleChange}
@@ -75,6 +76,8 @@ const NEFT = () => {
 
       <label className="w-full my-2">Amount
         <input
+          required
+          min={1}
           type="number"
           name="txnAmount"
           value={transactionDetails.txnAmount}
