@@ -58,4 +58,17 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 		}
 		
 	}
+	
+	public String deleteBeneficiary(int Id) throws ResourceNotFoundException {
+		Optional<Beneficiary> beneobj = benRepo.findById(Id);
+		String result = "";
+		if (!beneobj.isPresent()) {
+			throw new ResourceNotFoundException("Beneficiary not Present");
+		}
+		else {
+			benRepo.deleteBeneficiary(Id);
+			return "Beneficiary with Id :" + Id + "deleted";
+		}
+		
+	}
 }

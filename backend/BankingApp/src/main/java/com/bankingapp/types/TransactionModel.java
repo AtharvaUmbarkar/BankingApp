@@ -12,6 +12,7 @@ public class TransactionModel {
 	private Transaction transaction;
 	private long senderAccountNumber;
 	private long receiverAccountNumber;
+	private String transactionPassword;
 	public Transaction getTransaction() {
 		return transaction;
 	}
@@ -29,6 +30,12 @@ public class TransactionModel {
 	}
 	public void setReceiverAccountNumber(long receiverAccountNumber) {
 		this.receiverAccountNumber = receiverAccountNumber;
+	}
+	public String getTransactionPassword() {
+		return transactionPassword;
+	}
+	public void setTransactionPassword(String transactionPassword) {
+		this.transactionPassword = transactionPassword;
 	}
 	
 }
