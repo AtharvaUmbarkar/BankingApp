@@ -97,7 +97,7 @@ const Deposit = () => {
                 />
             </label>
 
-            <button type='submit' className='p-2 my-4 w-full bg-indigo-700 text-xl text-white rounded-sm'>SUBMIT</button>
+            <button type='submit' className='p-2 w-full bg-indigo-700 text-xl text-white rounded-sm'>SUBMIT</button>
         </form>
     )
 }

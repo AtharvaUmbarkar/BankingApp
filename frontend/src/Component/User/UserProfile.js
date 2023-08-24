@@ -8,7 +8,7 @@ const UserProfile = () => {
   return (
     <div className='w-full p-8'>
       <div className='w-2/5 flex flex-col mx-auto items-center'>
-        <h1 className='font-semibold text-2xl mb-8'>User Details</h1>
+        <h1 className='font-semibold text-2xl mb-4 border-b border-indigo-700 w-full text-center pb-4'>User Details</h1>
         <div className='w-full flex flex-col divide-y space-y-2 divide-indigo-200 shadow-md rounded p-2'>
           {/* {Object.keys(user).map((key, i) => {
             return (

@@ -32,7 +32,7 @@ const AccountDetails = () => {
   return (
     <div className='w-full p-8'>
       <div className='w-2/5 flex flex-col mx-auto items-center'>
-        <h1 className='font-semibold text-2xl mb-8'>Account Details</h1>
+        <h1 className='font-semibold text-2xl mb-4 border-b border-indigo-700 w-full text-center pb-4'>Account Details</h1>
         {accountDetails && (
           <div className='w-full shadow-md rounded lex flex-row divide-y space-y-2 divide-indigo-200 f p-2'>
             <div className='w-full flex flex-row items-center p-1 px-2 pt-2 rounded'>
