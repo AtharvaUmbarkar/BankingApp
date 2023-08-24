@@ -70,4 +70,10 @@ public class AdminController {
 	public List<Customer> searchCustomersByUsername(@RequestParam("query") String query) throws NoDataFoundException{
 		return adminService.searchCustomersByUsername(query);
 	}
+	
+	@GetMapping("/getTransactionStats")
+	public Object getTransactionStats() throws NoDataFoundException{
+		return adminService.getTransactionStats();
+	}
+	
 }

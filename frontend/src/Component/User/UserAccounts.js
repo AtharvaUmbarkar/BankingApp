@@ -29,7 +29,7 @@ const UserAccounts = () => {
               <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Number: </span><span>{account.accountNumber}</span></p>
               <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Type: </span><span>{account.accountType}</span></p>
               <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Balance: </span><span>{account.accountBalance}</span></p>
-              <Link to={'/account/' + account.accountNumber} className='self-end bg-indigo-700 text-white py-1 px-2 rounded mt-8'>Enter Account</Link>
+              <Link to={'/account/' + account.accountNumber}  className={`self-end bg-indigo-700 text-white py-1 px-2 rounded mt-8 ${!account.active && 'pointer-events-none disabled cursor-not-allowed'}`}>{account.active ? "Enter Account" : "Account Disabled"}</Link>
             </div>
           )
         })}

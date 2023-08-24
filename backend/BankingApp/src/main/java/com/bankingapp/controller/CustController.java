@@ -8,6 +8,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,17 +20,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.models.Account;
+import com.bankingapp.config.JwtTokenUtil;
 import com.bankingapp.dto.AccountDTO;
 import com.bankingapp.dto.CustomerDTO;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.InvalidTypeException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
-import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Customer;
+import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.service.CustService;
 import com.bankingapp.types.ForgotPasswordModel;
 import com.bankingapp.types.ChangePasswordModel;
@@ -40,6 +47,12 @@ public class CustController {
 	CustService custService;
 	@Autowired
 	ModelMapper modelMapper;
+	@Autowired
+	AuthenticationManager authenticationManager;
+	@Autowired
+	JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	CustomerRepo custRepo;
 	
 	//no longer needed
 	@PostMapping("/saveCustomer")
@@ -50,14 +63,28 @@ public class CustController {
 		return c;
 	}
 	
+//	@PostMapping("/Login")
+//	public CustomerDTO validateCustomer(@RequestBody LoginModel u) throws UnauthorizedAccessException, ResourceNotFoundException
+//	{
+//		return modelMapper.map(custService.validateCustomer(u), CustomerDTO.class);
+//	}
+	
 	@PostMapping("/Login")
-	public CustomerDTO validateCustomer(@RequestBody LoginModel u) throws UnauthorizedAccessException, ResourceNotFoundException
+//	@ResponseBody
+	public CustomerDTO validateCustomer(@RequestBody LoginModel u) throws Exception
 	{
-		return modelMapper.map(custService.validateCustomer(u), CustomerDTO.class);
+		System.out.println("reached here");
+		authenticate(u.getUsername(), u.getPassword());
+		final UserDetails userDetails = custService.loadUserByUsername(u.getUsername());
+		final String token = jwtTokenUtil.generateToken(userDetails);
+		System.out.println(token);
+		 CustomerDTO custDTO =  modelMapper.map(custRepo.findByUserName(u.getUsername()),CustomerDTO.class);
+		 custDTO.setToken(token);
+		 return custDTO;
+		 
 	}
 	
 	@GetMapping("/fetchAccounts")
-
 	public List<AccountDTO> fetchAccounts(@RequestParam("username") String username) throws ResourceNotFoundException
 	{
 		return custService.fetchAccounts(username).stream().map(acnt -> modelMapper.map(acnt, AccountDTO.class)).collect(Collectors.toList());
@@ -95,6 +122,16 @@ public class CustController {
 	public List<Object> getCustomerAndAccountDetails(@PathVariable("id") int id)
 	{
 		return custService.getCustomerAndAccountDetails(id);
+	}
+	
+	public void authenticate(String userName, String password) throws Exception {
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+		}catch(DisabledException e) {
+			throw new Exception("USER_DISABLED",e);
+		}catch(BadCredentialsException e) {
+			throw new Exception("INVALID_CREDENTIALS", e);
+		}
 	}
 
 }

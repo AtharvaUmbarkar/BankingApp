@@ -32,7 +32,7 @@ function CustomerDetails() {
         toast.success(`Account ${message}`)
         setToggled((prev) => !prev)
       } catch(e){
-        toast.error(e.response.data)
+        toast.error(e.response.data.message)
       }
     }
 

@@ -9,6 +9,7 @@ import { HOME } from "../Utilities/routes";
 
 
 
+
 const condition = (authUser) => authUser
 export default withAuthorization(condition, HOME)(() => {
   const [username, setUsername] = useState("")
@@ -16,7 +17,6 @@ export default withAuthorization(condition, HOME)(() => {
   const [admin, setAdmin] = useState(false);
   const navigate = useNavigate()
   const { setUserInContext } = useContext(UserContext)
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +42,7 @@ export default withAuthorization(condition, HOME)(() => {
 
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-2 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Link to="/" className="-m-1.5 p-1.5 text-center">
           <span className="sr-only">Banking App</span>
@@ -53,7 +53,7 @@ export default withAuthorization(condition, HOME)(() => {
               alt=""
             /> */}
         </Link>
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <h2 className="mt-2 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Log in to your account
         </h2>
       </div>
@@ -74,6 +74,7 @@ export default withAuthorization(condition, HOME)(() => {
                 className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                
               />
             </div>
           </div>

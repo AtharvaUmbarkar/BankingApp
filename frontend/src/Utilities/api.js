@@ -84,3 +84,7 @@ export const searchCustomerByUsername = async (query) => {
     return response;
 }
 
+export const getTransactionStats = async (query) => {
+    const response = await axios.get(`${API_URL}/getTransactionStats`)
+    return response;
+}
