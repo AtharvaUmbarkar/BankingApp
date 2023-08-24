@@ -30,19 +30,19 @@ public class TransactionController
 	@Autowired
 	TransactionService tService;
 	@PostMapping("/save/withdraw")
-	public String withdraw(@RequestBody TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException
+	public String withdraw(@RequestBody TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException, InvalidTypeException
 	{
 		return tService.withdraw(transactionModel);
 	}
 	
 	@PostMapping("/save/deposit")
-	public String deposit(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException
+	public String deposit(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException, InvalidTypeException
 	{
 		return tService.deposit(transactionModel);
 	}
 	// To be tested
 	@PostMapping("/save/fundTransfer")
-	public String fundTransfer(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException
+	public String fundTransfer(@RequestBody TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException, InvalidTypeException
 	{
 		return tService.fundTransfer(transactionModel);
 	}

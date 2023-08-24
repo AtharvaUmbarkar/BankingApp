@@ -111,7 +111,7 @@ public class TransactionService {
 	
 	
 	@Transactional
-	public String withdraw(TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException
+	public String withdraw(TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException, InvalidTypeException
 	{
 		String result="";
 		long accountNumber = transactionModel.getSenderAccountNumber();
@@ -128,6 +128,9 @@ public class TransactionService {
 				double new_balance = acnt.getAccountBalance() - transaction.getTxnAmount();
 				if(new_balance < 0.00d) {
 					throw new InsufficientBalanceException("Insufficient Balance");
+				}
+				else if (!acnt.getCustomer().getTransactionPassword().equals(transactionModel.getTransactionPassword())) {
+					throw new InvalidTypeException("Invalid Transaction Password");
 				}
 				else {
 					int rowsAffected = accountRepo.updateBalance(new_balance, accountNumber);
@@ -150,7 +153,7 @@ public class TransactionService {
 	}
 	
 	@Transactional
-	public String deposit(TransactionModel transactionModel) throws ResourceNotFoundException
+	public String deposit(TransactionModel transactionModel) throws ResourceNotFoundException, InvalidTypeException
 	{
 		String result="";
 		long accountNumber = transactionModel.getReceiverAccountNumber();
@@ -159,6 +162,9 @@ public class TransactionService {
 			if(!obj.isPresent()) {
 //				result="Receiver account does not exist";
 				throw new ResourceNotFoundException("Account does not Exist");
+			}
+			else if (!obj.get().getCustomer().getTransactionPassword().equals(transactionModel.getTransactionPassword())) {
+				throw new InvalidTypeException("Invalid Transaction Password");
 			}
 			else {
 				Account acnt = obj.get();
@@ -186,7 +192,7 @@ public class TransactionService {
 	}
 	
 	@Transactional 
-	public String fundTransfer(TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException
+	public String fundTransfer(TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException, InvalidTypeException
 	{
 			Optional<Account> obj1 = accountRepo.findById(transactionModel.getSenderAccountNumber());
 			Optional<Account> obj2 = accountRepo.findById(transactionModel.getReceiverAccountNumber());
@@ -200,6 +206,9 @@ public class TransactionService {
 				if(senderNewBalance < 0.00d) {
 //					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance");
 					throw new InsufficientBalanceException("Insufficient Balance");
+				}
+				else if (!transactionModel.getTransactionPassword().equals(senderAccount.getCustomer().getTransactionPassword())) {
+					throw new InvalidTypeException("Invalid Transaction Password");
 				}
 				else {
 					int rowsAffected1 = accountRepo.updateBalance(senderNewBalance, senderAccount.getAccountNumber());
