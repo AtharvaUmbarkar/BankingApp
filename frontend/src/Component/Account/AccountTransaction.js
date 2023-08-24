@@ -25,7 +25,7 @@ const AccountTransaction = () => {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8090/getAllBeneficiaries", { params: { userName: userName.userName } }).then(
+    axios.get("http://localhost:8090/getAllBeneficiaries", { params: { userName: userName.userName }, headers: { "Authorization": `Bearer ${sessionStorage.getItem("token")}` } }).then(
       (response) => {
         setBeneficiaries(response.data)
       }

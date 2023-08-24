@@ -16,7 +16,10 @@ const AccountDetails = () => {
   useEffect(() => {
     const fetchAccount = () => {
       axios.get(BASE_URL,
-        { params: { accountNo: accountNumber } }).then((response) => {
+        {
+          params: { accountNo: accountNumber },
+          headers: { "Authorization": `Bearer ${sessionStorage.getItem("token")}` }
+        }).then((response) => {
           setAccountDetails(response.data)
           // console.log(response.data);
         }).catch(error => {
@@ -31,28 +34,28 @@ const AccountDetails = () => {
       <div className='w-2/5 flex flex-col mx-auto items-center'>
         <h1 className='font-semibold text-2xl mb-8'>Account Details</h1>
         {accountDetails && (
-        <div className='w-full shadow-md rounded bg-slate-200 p-2'>
-          <div className='w-full flex flex-row items-center p-1 px-2 my-0.5 rounded'>
-            <span className='w-1/2 font-semibold'>Account Number:</span>
-            <span className='flex-grow'>{accountDetails.accountNumber}</span>
+          <div className='w-full shadow-md rounded bg-slate-200 p-2'>
+            <div className='w-full flex flex-row items-center p-1 px-2 my-0.5 rounded'>
+              <span className='w-1/2 font-semibold'>Account Number:</span>
+              <span className='flex-grow'>{accountDetails.accountNumber}</span>
+            </div>
+            <div className='w-full flex flex-row items-center p-1 px-2 my-0.5 rounded'>
+              <span className='w-1/2 font-semibold'>Account Type:</span>
+              <span className='flex-grow'>{accountDetails.accountType}</span>
+            </div>
+            <div className='w-full flex flex-row items-center p-1 px-2 my-0.5 rounded'>
+              <span className='w-1/2 font-semibold'>Account Balance:</span>
+              <span className='flex-grow'>{accountDetails.accountBalance}</span>
+            </div>
+            <div className='w-full flex flex-row items-center p-1 px-2 my-0.5 rounded'>
+              <span className='w-1/2 font-semibold'>Creation Date:</span>
+              <span className='flex-grow'>{format(new Date(accountDetails.accountCreationDate), "dd/MM/yyyy")}</span>
+            </div>
+            <div className='w-full flex flex-row items-center p-1 px-2 my-0.5 rounded'>
+              <span className='w-1/2 font-semibold'>Account Status:</span>
+              <span className='flex-grow'>{accountDetails.active ? "Activated" : "Deactivated"}</span>
+            </div>
           </div>
-          <div className='w-full flex flex-row items-center p-1 px-2 my-0.5 rounded'>
-            <span className='w-1/2 font-semibold'>Account Type:</span>
-            <span className='flex-grow'>{accountDetails.accountType}</span>
-          </div>
-          <div className='w-full flex flex-row items-center p-1 px-2 my-0.5 rounded'>
-            <span className='w-1/2 font-semibold'>Account Balance:</span>
-            <span className='flex-grow'>{accountDetails.accountBalance}</span>
-          </div>
-          <div className='w-full flex flex-row items-center p-1 px-2 my-0.5 rounded'>
-            <span className='w-1/2 font-semibold'>Creation Date:</span>
-            <span className='flex-grow'>{format(new Date(accountDetails.accountCreationDate), "dd/MM/yyyy")}</span>
-          </div>
-          <div className='w-full flex flex-row items-center p-1 px-2 my-0.5 rounded'>
-            <span className='w-1/2 font-semibold'>Account Status:</span>
-            <span className='flex-grow'>{accountDetails.active ? "Activated" : "Deactivated"}</span>
-          </div>
-        </div>
         )}
       </div>
     </div>

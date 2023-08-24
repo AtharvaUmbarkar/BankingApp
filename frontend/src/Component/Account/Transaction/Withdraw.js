@@ -36,7 +36,8 @@ const Withdraw = () => {
                 }
             ), {
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${sessionStorage.getItem("token")}`
                 }
             })
             toast.success(res.data, { duration: 3000 })
