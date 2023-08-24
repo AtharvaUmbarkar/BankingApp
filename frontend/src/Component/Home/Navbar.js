@@ -73,7 +73,7 @@ const Navbar = () => {
             <div className='py-1 px-3 text-white bg-indigo-700 mr-8 rounded'>{user.userName}</div>
           }
           {!user ? <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900">
-            Log imgn <span aria-hidden="true">&rarr;</span>
+            Log In <span aria-hidden="true">&rarr;</span>
           </Link>
             :
             <button type='button' onClick={handleLogout} className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
