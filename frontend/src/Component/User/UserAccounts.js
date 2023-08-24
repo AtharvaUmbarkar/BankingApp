@@ -15,7 +15,6 @@ const UserAccounts = () => {
       if (user) {
         try {
           const authHeader = "Bearer " + token
-          console.log(authHeader);
           const response = await axios.get(
             BASE_URL,
             {

@@ -35,7 +35,10 @@ const NEFT = () => {
         "receiverAccountNumber": transactionDetails.receiverAccount,
         "senderAccountNumber": transactionDetails.senderAccount,
       }, {
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+        }
       });
       toast.success(response.data, { duration: 3000 })
     } catch (error) {
