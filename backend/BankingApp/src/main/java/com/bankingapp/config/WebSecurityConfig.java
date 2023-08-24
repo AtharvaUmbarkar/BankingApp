@@ -13,12 +13,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
 
+	
+	
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	@Autowired
@@ -50,10 +53,10 @@ public class WebSecurityConfig {
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		// We don't need CSRF for this example
-		httpSecurity.csrf((csrf) -> csrf.disable())
+		httpSecurity.csrf((csrf) -> csrf.disable()).cors().and()
 				// dont authenticate this particular request
 				.authorizeHttpRequests((authz) -> authz
-						.requestMatchers("/Login", "/netBankingRegistration", "/createFirstAccount").permitAll().
+						.requestMatchers("/Login", "/netBankingRegistration", "/createFirstAccount", "/forgotPassword", "/changePassowrd").permitAll().
 				// all other requests need to be authenticated
 						anyRequest().authenticated())
 				// make sure we use stateless session; session won't be used to

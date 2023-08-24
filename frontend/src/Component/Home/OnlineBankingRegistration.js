@@ -36,7 +36,7 @@ const OnlineBankingRegistration = () => {
         otp: inputs.otp,
       }
       ).then((response) => {
-        console.log(response);
+        // console.log(response);
         toast.success("Welcome " + inputs.userName, { duration: 3000 });
         navigate("/login")
       }, (error) => {
@@ -53,7 +53,7 @@ const OnlineBankingRegistration = () => {
 
   return (
     <div className='w-full flex flex-col'>
-      <div className="flex flex-col w-2/5 mt-3 self-center">
+      <div className="flex flex-col w-1/3 mt-3 self-center">
         <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-2">Internet Banking</h2>
         <form onSubmit={handleSubmit} className=''>
 
@@ -130,8 +130,8 @@ const OnlineBankingRegistration = () => {
             <label className="text-base my-2">Enter OTP:
               <input
                 required
-                minLength={8}
-                maxLength={30}
+                minLength={4}
+                maxLength={6}
                 type="otp"
                 name="otp"
                 value={inputs.otp || ""}
