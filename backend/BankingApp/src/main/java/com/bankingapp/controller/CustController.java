@@ -57,7 +57,7 @@ public class CustController {
 	
 	@GetMapping("/fetchAccounts")
 
-	public List<AccountDTO> fetchAccounts(@RequestParam("username") String username) throws ResourceNotFoundException, NoDataFoundException
+	public List<AccountDTO> fetchAccounts(@RequestParam("username") String username) throws ResourceNotFoundException
 	{
 		return custService.fetchAccounts(username).stream().map(acnt -> modelMapper.map(acnt, AccountDTO.class)).collect(Collectors.toList());
 	}

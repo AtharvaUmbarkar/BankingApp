@@ -35,6 +35,10 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
 	@Modifying
 	@Query("update Customer c set c.userName = ?1 where c.aadhaarNumber = ?2")
 	public int changeUserName(String userName, String aadhaarNumber);
+	
+	@Modifying
+	@Query("update Customer c set c.unLocked = ?1 where c.userName = ?2")
+	public int toggleUser(boolean unLocked, String userName);
 
 }
 

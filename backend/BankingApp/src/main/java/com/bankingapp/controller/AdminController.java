@@ -40,6 +40,8 @@ public class AdminController {
 	@Autowired
 	AccountService acntService;
 	@Autowired
+	CustService custService;
+	@Autowired
 	ModelMapper modelMapper;
 	
 	
@@ -55,8 +57,13 @@ public class AdminController {
 	}
 	
 	@PutMapping("toggle/Activation")
-	public boolean toggleActivation(@RequestParam("acntNo") long acntNo) throws ResourceNotFoundException {
+	public boolean toggleActivation(@RequestParam("acntNo") long acntNo) throws ResourceNotFoundException, UnauthorizedAccessException {
 		return acntService.toggleActivation(acntNo);
+	}
+	
+	@PutMapping("toggle/user")
+	public boolean toggleUser(@RequestParam("userName") String userName) throws ResourceNotFoundException {
+		return custService.toggleUser(userName);
 	}
 
 }

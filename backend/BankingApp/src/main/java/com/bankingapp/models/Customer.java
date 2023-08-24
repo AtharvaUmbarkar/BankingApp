@@ -143,14 +143,12 @@ public class Customer {
 	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String transactionPassword;
 	
-	@Value("{some.key:0}")
+	@Value("${some.key:0}")
 	private int noFailedAttemps;
 	
-	@Value("{some.key:true}")
+	@Value("${some.key:true}")
 	private boolean unLocked;
-	
-	
-	
+
 	@JsonManagedReference
 	@JsonIgnore
 	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)

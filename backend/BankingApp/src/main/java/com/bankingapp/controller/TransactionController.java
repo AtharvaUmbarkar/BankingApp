@@ -19,6 +19,7 @@ import com.bankingapp.exception.InsufficientBalanceException;
 import com.bankingapp.exception.InvalidTypeException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Transaction;
 import com.bankingapp.service.TransactionService;
 import com.bankingapp.types.TransactionModel;
@@ -48,7 +49,7 @@ public class TransactionController
 	}
 	
 	@GetMapping("/getLatestTransactions")
-	public ResponseEntity<List<Object[]>> getLatestTransactions(@RequestParam long accountNumber) throws ResourceNotFoundException, NoDataFoundException
+	public ResponseEntity<List<Object[]>> getLatestTransactions(@RequestParam long accountNumber) throws ResourceNotFoundException
 	{
 		return new ResponseEntity<>(tService.getLatestTransactions(accountNumber), HttpStatus.OK);
 	}

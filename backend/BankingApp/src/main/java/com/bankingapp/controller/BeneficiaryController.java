@@ -37,7 +37,7 @@ public class BeneficiaryController {
 	}
 	
 	@GetMapping("/getAllBeneficiaries")
-	public List<BeneficiaryDTO> getAllBeneficiary(@RequestParam String userName) throws ResourceNotFoundException, NoDataFoundException{
+	public List<BeneficiaryDTO> getAllBeneficiary(@RequestParam String userName) throws ResourceNotFoundException{
 		return benService.getAllBeneficiaries(userName).stream().map(ben -> modelMapper.map(ben, BeneficiaryDTO.class)).collect(Collectors.toList());
 	}
 	@DeleteMapping("/delete/beneficiary")
