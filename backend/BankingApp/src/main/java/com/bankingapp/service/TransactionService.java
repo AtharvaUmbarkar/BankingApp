@@ -112,7 +112,7 @@ public class TransactionService {
 	
 	
 	@Transactional
-	public String withdraw(TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException, InvalidTypeException
+	public String withdraw(TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException
 	{
 		String result="";
 		long accountNumber = transactionModel.getSenderAccountNumber();
@@ -158,7 +158,7 @@ public class TransactionService {
 	}
 	
 	@Transactional
-	public String deposit(TransactionModel transactionModel) throws ResourceNotFoundException, InvalidTypeException
+	public String deposit(TransactionModel transactionModel) throws ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException
 	{
 		String result="";
 		long accountNumber = transactionModel.getReceiverAccountNumber();
@@ -201,35 +201,24 @@ public class TransactionService {
 	}
 	
 	@Transactional 
-	public String fundTransfer(TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException, InvalidTypeException
+	public String fundTransfer(TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException, InvalidTypeException, UnauthorizedAccessException
 	{
 			Optional<Account> obj1 = accountRepo.findById(transactionModel.getSenderAccountNumber());
 			Optional<Account> obj2 = accountRepo.findById(transactionModel.getReceiverAccountNumber());
 			if(obj1.isPresent() && obj2.isPresent()) {
 				Account senderAccount = obj1.get();
 				Account receiverAccount = obj2.get();
-				Transaction transaction = transactionModel.getTransaction();
-				//acnt.setAccountBalance(100000);
-				double senderNewBalance = senderAccount.getAccountBalance() - transaction.getTxnAmount();
-				double receiverNewBalance = receiverAccount.getAccountBalance() + transaction.getTxnAmount();
-				if(senderNewBalance < 0.00d) {
-//					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance");
-					throw new InsufficientBalanceException("Insufficient Balance");
-				}
-				else if (!transactionModel.getTransactionPassword().equals(senderAccount.getCustomer().getTransactionPassword())) {
-					throw new InvalidTypeException("Invalid Transaction Password");
-				}
-				else {
-					int rowsAffected1 = accountRepo.updateBalance(senderNewBalance, senderAccount.getAccountNumber());
-					int rowsAffected2 = accountRepo.updateBalance(receiverNewBalance, receiverAccount.getAccountNumber());
-					if(rowsAffected1>0 && rowsAffected2>0) {
-						transaction.setSenderAccount(senderAccount);
-						transaction.setReceiverAccount(receiverAccount);
-						transaction.setSenderBalance(senderNewBalance);
-						transaction.setReceiverBalance(receiverNewBalance);
-						transaction.setTxnStatus("Successful");
-						transRepo.save(transaction);
-						return ("Transaction is successful with transaction id: " + transaction.getTxnId());	
+				if(senderAccount.isActive() && receiverAccount.isActive()) {
+					Transaction transaction = transactionModel.getTransaction();
+					//acnt.setAccountBalance(100000);
+					double senderNewBalance = senderAccount.getAccountBalance() - transaction.getTxnAmount();
+					double receiverNewBalance = receiverAccount.getAccountBalance() + transaction.getTxnAmount();
+					if(senderNewBalance < 0.00d) {
+	//					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance");
+						throw new InsufficientBalanceException("Insufficient Balance");
+					}
+					else if (!transactionModel.getTransactionPassword().equals(senderAccount.getCustomer().getTransactionPassword())) {
+						throw new InvalidTypeException("Invalid Transaction Password");
 					}
 					else {
 						int rowsAffected1 = accountRepo.updateBalance(senderNewBalance, senderAccount.getAccountNumber());
@@ -240,9 +229,7 @@ public class TransactionService {
 							transaction.setSenderBalance(senderNewBalance);
 							transaction.setReceiverBalance(receiverNewBalance);
 							transaction.setTxnStatus("Successful");
-							transaction = transRepo.save(transaction);
-							accountRepo.changeLastTxn(transaction.getTxnDate(), senderAccount.getAccountNumber());
-							accountRepo.changeLastTxn(transaction.getTxnDate(), receiverAccount.getAccountNumber());
+							transRepo.save(transaction);
 							return ("Transaction is successful with transaction id: " + transaction.getTxnId());	
 						}
 						else {
