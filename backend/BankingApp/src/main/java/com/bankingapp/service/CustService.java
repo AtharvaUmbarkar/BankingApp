@@ -94,6 +94,8 @@ public class CustService implements UserDetailsService {
 		throw new ResourceNotFoundException("Customer not Present");
 	}
 	
+//	public void handleLockedCustomer(String userName)
+	
 	public List<Account> fetchAccounts(String username) throws ResourceNotFoundException
 	{
 		Optional<Customer> obj = custRepo.findByUserName(username);
@@ -117,7 +119,7 @@ public class CustService implements UserDetailsService {
 		{
 			Customer cust = obj.get().getCustomer();
 
-			if (cust.isNetBankingEnabled())
+			if (cust.getUserName() == null)
 			{
 //				result = "User already exists";
 				throw new AlreadyExistsException("User Already Exists");
@@ -143,7 +145,7 @@ public class CustService implements UserDetailsService {
 		Optional<Customer> optCust= custRepo.findByUserName(userName);
 		if(optCust.isPresent()) {
 			if(obj.getPasswordType().equals("Login")) {
-				custRepo.changeLoginPassword(obj.getNewPassword(), userName);
+				custRepo.changeLoginPassword(bcryptEncoder.encode(obj.getNewPassword()), userName);
 			}
 			else if(obj.getPasswordType().equals("Transactional")){
 				custRepo.changeTransactionPassword(obj.getNewPassword(), userName);
@@ -173,9 +175,9 @@ public class CustService implements UserDetailsService {
 		Optional<Customer> optCust= custRepo.findByUserName(userName);
 		if(optCust.isPresent()) {
 			Customer cust = optCust.get();
-			String curPassword = obj.getCurrentPassword();
+			String curPassword = bcryptEncoder.encode(obj.getCurrentPassword());
 			if(obj.getPasswordType().equals("Login") && cust.getLoginPassword().equals(curPassword)) {
-				custRepo.changeLoginPassword(obj.getNewPassword(), userName);
+				custRepo.changeLoginPassword(bcryptEncoder.encode(obj.getNewPassword()), userName);
 			}
 			else if(obj.getPasswordType().equals("Transactional") && cust.getTransactionPassword().equals(curPassword)){
 				custRepo.changeTransactionPassword(obj.getNewPassword(), userName);

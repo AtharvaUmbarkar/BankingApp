@@ -125,8 +125,7 @@ public class Customer {
 	private int grossAnnualIncome;
 	
 	@Column(name="net_banking", nullable=false)
-	@Value("${some.key:false}")
-	private boolean netBankingEnabled;
+	private boolean netBankingEnabled=false;
 	
 	@Column(name="last_login") //last login attempt
 	private Date lastLogin;
@@ -146,8 +145,8 @@ public class Customer {
 	@Value("${some.key:0}")
 	private int noFailedAttemps;
 	
-	@Value("${some.key:true}")
-	private boolean unLocked;
+//	@Value("${some.key:1}")
+	private boolean unLocked=true;
 
 	@JsonManagedReference
 	@JsonIgnore

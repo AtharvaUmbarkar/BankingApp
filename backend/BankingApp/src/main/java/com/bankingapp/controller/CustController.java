@@ -1,5 +1,6 @@
 package com.bankingapp.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -11,8 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.models.Account;
+import com.bankingapp.config.CustomAuthenticationProvider;
 import com.bankingapp.config.JwtTokenUtil;
 import com.bankingapp.dto.AccountDTO;
 import com.bankingapp.dto.CustomerDTO;
@@ -32,6 +36,7 @@ import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.InvalidTypeException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.service.CustService;
@@ -72,10 +77,12 @@ public class CustController {
 	
 	@PostMapping("/Login")
 //	@ResponseBody
+	@Transactional
 	public CustomerDTO validateCustomer(@RequestBody LoginModel u) throws Exception
 	{
 //		System.out.println("reached here");
 		authenticate(u.getUsername(), u.getPassword());
+		custRepo.changeLastLogin(new Date(),0,true,u.getUsername());
 		final UserDetails userDetails = custService.loadUserByUsername(u.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 //		System.out.println(token);
@@ -127,13 +134,22 @@ public class CustController {
 		return custService.getCustomerAndAccountDetails(id);
 	}
 	
+	@Transactional
 	public void authenticate(String userName, String password) throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
 		}catch(DisabledException e) {
 			throw new Exception("USER_DISABLED",e);
 		}catch(BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
+			if(e.getMessage().contains("password")){
+				custRepo.changeLastLogin(new Date(),custRepo.findByUserName(userName).get().getNoFailedAttemps()+1,true,userName);
+			}
+			throw new UnauthorizedAccessException(e.getMessage());
+		}catch(LockedException e) {
+			if(e.getMessage().contentEquals("3 attempts failed, your account have be locked for 1 day")) {
+				custRepo.changeLastLogin(new Date(),0,true,userName);
+			}
+			throw new UnauthorizedAccessException(e.getMessage());
 		}
 	}
 

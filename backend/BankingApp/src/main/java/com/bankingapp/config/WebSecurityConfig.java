@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
-
-	
 	
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -39,6 +37,12 @@ public class WebSecurityConfig {
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
 		return authenticationConfiguration.getAuthenticationManager();
 	}
+	
+	@Bean
+	public CustomAuthenticationProvider authProvider() {
+		CustomAuthenticationProvider  customAuthenticationProvider = new CustomAuthenticationProvider();
+		return customAuthenticationProvider; 
+	}
 
 	@Bean
 	public static PasswordEncoder passwordEncoder() {
@@ -52,7 +56,7 @@ public class WebSecurityConfig {
 
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-		// We don't need CSRF for this example
+		// Weauth don't need CSRF for this example
 		httpSecurity.csrf((csrf) -> csrf.disable()).cors().and()
 				// dont authenticate this particular request
 				.authorizeHttpRequests((authz) -> authz
@@ -62,7 +66,8 @@ public class WebSecurityConfig {
 				// make sure we use stateless session; session won't be used to
 				// store user's state.
 				.exceptionHandling((exp) -> exp.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-				.sessionManagement((mgmt) -> mgmt.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+				.sessionManagement((mgmt) -> mgmt.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authenticationProvider(authProvider());
 
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
