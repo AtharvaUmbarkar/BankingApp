@@ -60,6 +60,7 @@ const RTGS = () => {
 
       <label className="w-full">Receiver Account Number:
         <select
+          required
           name="receiverAccount"
           onChange={handleChange}
           className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1 mb-1 w-full"
@@ -75,6 +76,9 @@ const RTGS = () => {
 
       <label className="w-full my-2">Amount
         <input
+          required
+          min={10000}
+          max={1000000}
           type="number"
           name="txnAmount"
           value={transactionDetails.txnAmount}

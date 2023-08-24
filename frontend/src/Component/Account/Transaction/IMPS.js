@@ -9,8 +9,8 @@ import { toast } from 'react-hot-toast';
 
 const condition = (authUser) => !authUser
 
-export default withAuthorization (condition, LOGIN)(() => {
-  
+export default withAuthorization(condition, LOGIN)(() => {
+
   const { accountNumber } = useParams()
   const [transactionDetails, setTransactionDetails] = useState({
     senderAccount: accountNumber,
@@ -26,11 +26,11 @@ export default withAuthorization (condition, LOGIN)(() => {
 
 
   useEffect(() => {
-      const updateBeneficiaries = async (user) => {
-        const result = await getAllBeneficiaries(user.userName)
-        setBeneficiaries(result.data)
-      }
-      updateBeneficiaries(user);      
+    const updateBeneficiaries = async (user) => {
+      const result = await getAllBeneficiaries(user.userName)
+      setBeneficiaries(result.data)
+    }
+    updateBeneficiaries(user);
   }, [])
 
 
@@ -43,7 +43,7 @@ export default withAuthorization (condition, LOGIN)(() => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       const response = await makeFundTransfer({
         transaction: {
           txnType: "IMPS",
@@ -53,7 +53,7 @@ export default withAuthorization (condition, LOGIN)(() => {
         senderAccountNumber: accountNumber,
         receiverAccountNumber: transactionDetails.receiverAccount
       })
-      if(response){
+      if (response) {
         toast.success(response.data)
         setTransactionDetails({
           senderAccount: accountNumber,
@@ -63,7 +63,7 @@ export default withAuthorization (condition, LOGIN)(() => {
           userRemarks: "",
         })
       }
-    } catch(e){
+    } catch (e) {
       toast.error(e.response.data.message)
     }
   }
@@ -84,6 +84,7 @@ export default withAuthorization (condition, LOGIN)(() => {
 
       <label className="w-full">Receiver Account Number:
         <select
+          required
           name="receiverAccount"
           onChange={handleChange}
           className="border rounded-md pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 p-1.5 mt-1 mb-1 w-full"
@@ -99,6 +100,9 @@ export default withAuthorization (condition, LOGIN)(() => {
 
       <label className="w-full my-2">Amount
         <input
+          required
+          min={1}
+          max={500000}
           type="number"
           name="txnAmount"
           value={transactionDetails.txnAmount}
