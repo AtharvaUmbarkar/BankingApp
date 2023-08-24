@@ -133,7 +133,7 @@ export default withAuthorization(condition, LOGIN)(() => {
         />
       </label>
 
-      <label className=" my-2">Transaction Password:
+      <label className="w-full my-2">Transaction Password:
         <input
           required
           minLength={8}
