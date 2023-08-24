@@ -123,11 +123,12 @@ public class CustController {
 		return custService.changeUserName(obj);
 	}
 	
+	//for admin
 	@GetMapping("/fetchUser")
 	public Customer fetchUser(@RequestParam("customerId") int custId) throws ResourceNotFoundException{
 		return custService.fetchUser(custId);
 	}
-	
+	//fpr admin
 	@GetMapping("/getCustomerAndAccountDetails/{id}")
 	public List<Object> getCustomerAndAccountDetails(@PathVariable("id") int id)
 	{

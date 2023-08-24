@@ -47,6 +47,7 @@ public class AccountController {
 		return accountService.firstAccount(obj);
 	}
 	
+	//for admin
 	@GetMapping("/fetchAccount")
 	public AccountDTO fetchAccount(@RequestParam("accountNo") long accountNo) throws ResourceNotFoundException{
 		return modelMapper.map(accountService.fetchAccount(accountNo), AccountDTO.class);
