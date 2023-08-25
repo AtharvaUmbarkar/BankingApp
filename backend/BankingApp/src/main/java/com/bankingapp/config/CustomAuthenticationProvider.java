@@ -2,10 +2,12 @@ package com.bankingapp.config;
 
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Date;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -13,13 +15,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.bankingapp.models.Admin;
-import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AdminRepo;
-import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.types.UserRole;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.bankingapp.repository.CustomerRepo;
+import com.bankingapp.exception.UnauthorizedAccessException;
+import com.bankingapp.models.Customer;
 
 public class CustomAuthenticationProvider implements AuthenticationProvider{
 

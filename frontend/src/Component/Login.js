@@ -86,7 +86,7 @@ export default withAuthorization(condition, HOME)(() => {
               </label>
               <div className="text-sm">
                 <Link to="/forgot-password" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                  Change/Forgot password?
+                  Change/Forgot Password?
                 </Link>
               </div>
             </div>

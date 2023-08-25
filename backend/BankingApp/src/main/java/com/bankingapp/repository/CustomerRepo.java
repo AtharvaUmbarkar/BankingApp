@@ -17,7 +17,7 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
 	Optional<Customer> findByAadhaarNumber(String aadhaarNumber);
 	
 	@Modifying
-	@Query("update Customer c set c.userName = ?1, c.loginPassword = ?2, c.transactionPassword = ?3, c.netBankingEnabled = true where c.customerId = ?4")
+	@Query("update Customer c set c.userName = ?1, c.loginPassword = ?2, c.transactionPassword = ?3, c.netBankingEnabled = true, c.unLocked = true where c.customerId = ?4")
 	public int setUserName(String userName, String lPassword, String tPassword, int customerId);
 	
 	@Modifying

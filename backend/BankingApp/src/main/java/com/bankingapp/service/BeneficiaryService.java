@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.interfaces.BeneficiaryServiceInterface;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Beneficiary;
@@ -59,11 +60,15 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 		
 	}
 	
-	public String deleteBeneficiary(int Id) throws ResourceNotFoundException {
-		Optional<Beneficiary> beneobj = benRepo.findById(Id);
+	public String deleteBeneficiary(int Id, String userName) throws ResourceNotFoundException, UnauthorizedAccessException {
+		
+		Beneficiary ben = benRepo.findById(Id).get();
 		String result = "";
-		if (!beneobj.isPresent()) {
+		if (ben == null) {
 			throw new ResourceNotFoundException("Beneficiary not Present");
+		}
+		else if(!ben.getCustomer().getUserName().equals(userName)) {
+			throw new UnauthorizedAccessException("Beneficiary doesn't belong to the customer");
 		}
 		else {
 			benRepo.deleteBeneficiary(Id);

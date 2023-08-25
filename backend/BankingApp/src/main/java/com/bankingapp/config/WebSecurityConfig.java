@@ -27,8 +27,6 @@ import com.bankingapp.service.CustService;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
-
-	
 	
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -100,7 +98,7 @@ public class WebSecurityConfig {
 
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-		// We don't need CSRF for this example
+		// Weauth don't need CSRF for this example
 		httpSecurity.csrf((csrf) -> csrf.disable()).cors().and()
 		// dont authenticate this particular request
 		.authorizeHttpRequests((authz) -> authz
