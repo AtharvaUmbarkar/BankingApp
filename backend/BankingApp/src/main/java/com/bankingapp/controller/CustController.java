@@ -1,17 +1,15 @@
 package com.bankingapp.controller;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,28 +19,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bankingapp.models.Account;
 import com.bankingapp.config.JwtTokenUtil;
 import com.bankingapp.dto.AccountDTO;
 import com.bankingapp.dto.CustomerDTO;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.InvalidTypeException;
-import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.service.CustService;
-import com.bankingapp.types.ForgotPasswordModel;
 import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("*")
 public class CustController {
 	@Autowired
 	CustService custService;
@@ -59,7 +53,6 @@ public class CustController {
 	@PostMapping("/saveCustomer")
 	public Customer saveCustomer(@RequestBody Customer cust)
 	{
-		System.out.println(cust);
 		Customer c=custService.saveCustomer(cust);
 		return c;
 	}
@@ -134,6 +127,8 @@ public class CustController {
 			throw new Exception("USER_DISABLED",e);
 		}catch(BadCredentialsException e) {
 			throw new Exception("INVALID_CREDENTIALS", e);
+		}catch(AuthenticationException e) {
+			throw new Exception("AUTHENTICATION_ERROR", e);
 		}
 	}
 

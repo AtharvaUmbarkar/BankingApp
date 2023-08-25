@@ -17,10 +17,16 @@ function CustomerDetails() {
     useEffect(() => {
       const updateData = async (customerId) => {
           const result = await getCustomerAndAccountDetails(customerId)
-          console.log(result)
-          if(result){
+          if(result.data.length){
             setCustomer(result.data[0][0])
             setAccounts(result.data.map(([c, a]) => a))
+          } else{
+            const result = await getCustomerDetails(customerId)
+            if(result){
+              setCustomer(result.data)
+            } else{
+              toast.error("Error fetching customer details!")
+            } 
           }
       }
       updateData(customerId, username);        
@@ -76,7 +82,7 @@ function CustomerDetails() {
 text-gray-700 border-black-700">
       <p className="text-2xl px-7 mb-4 font-bold tracking-tight text-gray-900">Accounts</p>
       <div className="flex flex-col px-3 gap-y-4 overflow-y-auto max-h-[280px]">
-        {accounts.map(({accountNumber, accountType, accountBalance, active}) => (
+        {accounts.length  ? accounts.map(({accountNumber, accountType, accountBalance, active}) => (
           <article key={accountNumber} className="flex border rounded-lg p-4 justify-between text-blue-500">
             <div className='flex flex-col text-indigo-600'>
               <Link className='flex gap-x-1' to={`/admin/viewAccount/${accountNumber}`}>
@@ -94,7 +100,7 @@ text-gray-700 border-black-700">
             </div>
 
         </article>
-        ))}
+        )): <p className="mt-6 text-center text-gray-500 font-semibold">No records</p>}
       </div>
       </div>
   </div>

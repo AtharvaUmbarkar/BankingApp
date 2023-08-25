@@ -1,8 +1,12 @@
 package com.bankingapp.models;
 
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.hibernate.validator.constraints.Length;
 
+import com.bankingapp.types.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -20,7 +24,7 @@ public class Admin {
 	private String userName;
 	
 	@Column(name="login_password")
-	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
+//	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String loginPassword;	
 	
 	@Column(nullable=false)
@@ -38,7 +42,6 @@ public class Admin {
 	@Column(name="email_id", unique=true)
 	private String emailId;
 	
-	 
 	public String getTitle() {
 		return title;
 	}

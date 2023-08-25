@@ -1,5 +1,6 @@
 package com.bankingapp.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,15 +29,17 @@ import com.bankingapp.dto.CustomerDTO;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
+import com.bankingapp.models.Admin;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AdminRepo;
 import com.bankingapp.service.AccountService;
 import com.bankingapp.service.AdminService;
 import com.bankingapp.service.CustService;
 import com.bankingapp.types.LoginModel;
+import com.bankingapp.types.UserRole;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("*")
 @RequestMapping("/admin/")
 public class AdminController {
 	@Autowired
@@ -44,19 +50,42 @@ public class AdminController {
 	CustService custService;
 	@Autowired
 	ModelMapper modelMapper;
+	
 	@Autowired
-	AuthenticationManager authenticationManager;
+	AuthenticationManager adminAuthenticationManager;
 	@Autowired
 	JwtTokenUtil jwtTokenUtil;
 	@Autowired
 	AdminRepo adminRepo;
 	
-
+	@PostMapping("SignupAdmin")
+	public AdminDTO signUp(@RequestBody LoginModel u) throws Exception
+	{
+		BCryptPasswordEncoder e = new BCryptPasswordEncoder();
+//		System.out.println(e.encode(u.getPassword()));
+//		authenticate(u.getUsername(), u.getPassword());
+//		System.out.println("reached here");
+		Admin admin = new Admin();
+		admin.setEmailId("admin@gmial.cinm");
+		admin.setMobileNumber("1234567890");
+		admin.setName("aaaa");
+		admin.setUserName(u.getUsername());
+		admin.setLoginPassword(e.encode(u.getPassword()));
+		admin.setTitle("MRr");
+		adminRepo.save(admin);		
+		final UserDetails userDetails = adminService.loadUserByUsername(u.getUsername());
+		final String token = jwtTokenUtil.generateToken(userDetails);
+		AdminDTO adminDTO =  modelMapper.map(adminRepo.findByUserName(u.getUsername()),AdminDTO.class);
+		adminDTO.setToken(token);
+		return adminDTO;
+	}
+	
+	
 	@PostMapping("LoginAdmin")
 	public AdminDTO validateAdmin(@RequestBody LoginModel u) throws Exception
 	{
+		authenticate(u.getUsername(), u.getPassword());
 		System.out.println("reached here");
-//		authenticate(u.getUsername(), u.getPassword());
 		final UserDetails userDetails = adminService.loadUserByUsername(u.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		System.out.println(token);
@@ -92,11 +121,18 @@ public class AdminController {
 	
 	public void authenticate(String userName, String password) throws Exception {
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+			List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(UserRole.ROLE_ADMIN.toString()));
+			adminAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password, authorities));
 		}catch(DisabledException e) {
-			throw new Exception("USER_DISABLED",e);
+			System.out.println("DISABLED!");
+//			throw new Exception("USER_DISABLED",e);
 		}catch(BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
+//			System.out.println("BAD CREDS!!!");
+			throw new BadCredentialsException("BAD CREDS!");
+//			throw new Exception("INVALID_CREDENTIALS", e);
+		} catch (AuthenticationException e) {
+			System.out.println(e.getMessage());
+			throw new Exception("Authentication failed!");
 		}
 	}
 	

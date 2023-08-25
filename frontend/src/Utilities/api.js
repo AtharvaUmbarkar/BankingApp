@@ -84,7 +84,9 @@ export const getCustomerAndAccountDetails = async (id) => {
 }
 
 export const searchCustomerByUsername = async (query) => {
-    const response = await axios.get(`${API_URL}/admin/searchCustomerByUsername?query=${query}`)
+    const response = await axios.get(`${API_URL}/admin/searchCustomerByUsername?query=${query}`,  {
+        headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}
+    })
     return response;
 }
 
