@@ -9,13 +9,13 @@ const Home = () => {
 
     const { user } = useContext(UserContext)
 
-    useEffect(() => {
-        if(user) {
-            setTimeout(() => {
-                toast.success(`Welcome ${user.userName}`)
-            }, 1000)
-        }
-    })
+    // useEffect(() => {
+    //     if(user) {
+    //         setTimeout(() => {
+    //             toast.success(`Welcome ${user.userName}`)
+    //         }, 1000)
+    //     }
+    // })
 
     return (
         <div className='bg-white'>
