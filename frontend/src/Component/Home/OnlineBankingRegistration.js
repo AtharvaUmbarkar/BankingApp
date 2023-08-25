@@ -37,7 +37,7 @@ const OnlineBankingRegistration = () => {
       }
       ).then((response) => {
         // console.log(response);
-        toast.success("Welcome " + inputs.userName, { duration: 3000 });
+        // toast.success("Welcome " + inputs.userName, { duration: 3000 });
         navigate("/login")
       }, (error) => {
         console.log(error);
