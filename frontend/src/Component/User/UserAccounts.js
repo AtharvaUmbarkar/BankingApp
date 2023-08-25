@@ -35,6 +35,7 @@ const UserAccounts = () => {
   return (
     <div className='w-full flex flex-col items-center'>
       <div className='w-1/4 my-8'>
+      <h1 className='font-semibold text-2xl mb-8 border-b border-indigo-700 w-full text-center pb-4'>Your Accounts</h1>
         {accountsList && accountsList.map((account, i) => {
           return (
             <div key={i} className='w-full p-4 my-2 bg-slate-100 shadow-md flex flex-col rounded'>

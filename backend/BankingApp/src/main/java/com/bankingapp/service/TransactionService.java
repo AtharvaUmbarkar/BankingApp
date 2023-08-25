@@ -278,9 +278,15 @@ public class TransactionService {
 		if(!acc.get().getCustomer().getUserName().equals(userName)) {
 			throw new UnauthorizedAccessException("Account doesn't belong to customer");
 		}
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(from);
+		cal.add(Calendar.DATE, -1);
+		Date start = cal.getTime();
+		
 		Date creationDate = acc.get().getAccountCreationDate();
 		Date currentdate = new Date();
-		if (from.before(creationDate)) {
+		if (start.before(creationDate)) {
 			throw new InvalidTypeException("Start date cannot be before the account creation date");
 		}
 		else if (to.after(currentdate)) {

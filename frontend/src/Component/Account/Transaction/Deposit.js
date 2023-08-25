@@ -11,6 +11,7 @@ const Deposit = () => {
 
     const [transactionDetails, setTransactionDetails] = useState({
         receiverAccountNumber: accountNumber,
+        transactionPassword: "",
         txnAmount: 0,
         userRemarks: "",
     })
@@ -32,6 +33,7 @@ const Deposit = () => {
                     txnType: "Deposit",
                 },
                 receiverAccountNumber: transactionDetails.receiverAccountNumber,
+                transactionPassword: transactionDetails.transactionPassword
             }), {
                 headers: {
                     "Content-Type": "application/json",
@@ -83,7 +85,19 @@ const Deposit = () => {
                 />
             </label>
 
-            <button type='submit' className='p-2 my-4 w-full bg-indigo-700 text-xl text-white rounded-sm'>SUBMIT</button>
+            <label className=" my-2">Transaction Password:
+                <input
+                    required
+                    minLength={8}
+                    type="password"
+                    name="transactionPassword"
+                    value={transactionDetails.transactionPassword}
+                    onChange={handleChange}
+                    className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+                />
+            </label>
+
+            <button type='submit' className='p-2 w-full bg-indigo-700 text-xl text-white rounded-sm'>SUBMIT</button>
         </form>
     )
 }
