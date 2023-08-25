@@ -6,7 +6,7 @@ export default function Stats(){
   const [stats, setStats] = useState({
     customers: "-",
     transactions: "-",
-    transactionsWorth: "-"
+    transactionsWorth: "0"
   })
 
   useEffect(() => {
