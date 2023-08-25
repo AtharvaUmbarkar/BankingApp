@@ -1,6 +1,9 @@
 package com.bankingapp.config;
 
 import java.util.Calendar;
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,11 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+
+import com.bankingapp.models.Admin;
+import com.bankingapp.repository.AdminRepo;
+import com.bankingapp.types.UserRole;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.bankingapp.repository.CustomerRepo;
@@ -22,11 +30,31 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	@Autowired
 	CustomerRepo custRepo;
 	@Autowired
+	AdminRepo adminRepo;
+	@Autowired
 	PasswordEncoder bcryptEncoder;
 	
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		System.out.println("start of auth");
 		String userName = authentication.getName();
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		if(!authorities.isEmpty()) {
+			boolean isAdmin = authorities.stream()
+					.anyMatch(authority -> authority.getAuthority().equals(UserRole.ROLE_ADMIN.toString()));
+			
+			Optional<Admin> optAdmin = adminRepo.findByUserName(userName);
+			if(isAdmin && optAdmin.isPresent()) {
+				Admin admin = optAdmin.get();
+				if(bcryptEncoder.matches(authentication.getCredentials().toString(), admin.getLoginPassword())) {
+//					custRepo.changeLastLogin(new Date(),0,true,userName); //also set 0 failed attempts
+					return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), authentication.getCredentials());
+				} else {
+					throw new BadCredentialsException("Not an admin!");
+
+				}
+			}
+
+		}
 		Optional<Customer> optCust = custRepo.findByUserName(userName);
 		if(optCust.isPresent()) {
 			Customer cust = optCust.get();

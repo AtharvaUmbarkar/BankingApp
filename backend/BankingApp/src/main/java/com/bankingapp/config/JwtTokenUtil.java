@@ -1,23 +1,23 @@
 package com.bankingapp.config;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import com.bankingapp.models.Admin;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtTokenUtil implements Serializable {
@@ -39,10 +39,16 @@ public class JwtTokenUtil implements Serializable {
 		return getClaimFromToken(token, Claims::getExpiration);
 	}
 
+	public List<String> getRolesFromToken(String token){
+		Claims claims = getAllClaimsFromToken(token);
+		return (List<String>) claims.get("roles");
+	}
+	
 	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
 		final Claims claims = getAllClaimsFromToken(token);
 		return claimsResolver.apply(claims);
 	}
+	
     //for retrieveing any information from token we will need the secret key
 	private Claims getAllClaimsFromToken(String token) {
 		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
@@ -57,9 +63,18 @@ public class JwtTokenUtil implements Serializable {
 	//generate token for user
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
+		List<String> roles = getRolesFromUserDetails(userDetails);
+		claims.put("roles", roles);
 		return doGenerateToken(claims, userDetails.getUsername());
 	}
 
+	public List<String> getRolesFromUserDetails(UserDetails userDetails){
+		return userDetails.getAuthorities()
+				.stream()
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.toList());
+	}
+	
 	//while creating the token -
 	//1. Define  claims of the token, like Issuer, Expiration, Subject, and the ID
 	//2. Sign the JWT using the HS512 algorithm and secret key.

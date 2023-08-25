@@ -37,6 +37,7 @@ import CustomerDetails from './Component/Admin/CustomerDetails';
 import ViewAccountDetails from './Component/Admin/AccountDetails';
 import OpenAccount from './Component/Admin/OpenAccount';
 import NotFound from './Component/NotFound';
+import AddCustomer from './Component/Admin/AddCustomer';
 
 function App() {
   return (
@@ -53,7 +54,15 @@ function App() {
             <Route path='online-banking-registration' element={<OnlineBankingRegistration />} />
 
           </Route>
-
+        <Route path="/admin" element={<AdminDashboard />}>
+        <Route index element={<Navigate to='stats' />} />
+          <Route path="stats" element={<Stats />} />
+          <Route path="openAccount" element={<OpenAccount />} />
+          <Route path="addCustomer" element={<AddCustomer />} />
+          <Route path="viewCustomers" element={<CustomersList />} />
+          <Route path="viewCustomer/:customerId/:username" element={<CustomerDetails />} />
+          <Route path="viewAccount/:accountNumber" element={<ViewAccountDetails />} />
+        </Route>
           <Route exact path="/logout" element={<Logout />} />
 
           <Route path="/user" element={<UserDashboard />}>

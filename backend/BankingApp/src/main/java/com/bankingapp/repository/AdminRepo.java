@@ -14,6 +14,5 @@ import com.bankingapp.models.Customer;
 
 @Repository
 public interface AdminRepo extends JpaRepository<Admin, String> {
-	
-	
+	Optional<Admin> findByUserName(String userName);
 }

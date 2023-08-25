@@ -118,8 +118,10 @@ public class CustService implements UserDetailsService {
 		if (obj.isPresent())
 		{
 			Customer cust = obj.get().getCustomer();
-
-			if (cust.getUserName() == null)
+			if(!obj.get().isActive()) {
+				throw new ResourceNotFoundException("Account is not activated");
+			}
+			if (cust.isNetBankingEnabled())
 			{
 //				result = "User already exists";
 				throw new AlreadyExistsException("User Already Exists");

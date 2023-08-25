@@ -35,13 +35,13 @@ export default function Stats(){
                 <div className="w-64 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 px-16 py-12 mx-auto flex max-w-xs items-center flex-col gap-y-4">
                       <dt className="text-base leading-7 text-gray-600">customers</dt>
                       <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                        {stats.customers}+
+                        {stats.customers}
                       </dd>
                     </div>
                     <div className="w-64 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 px-16 py-12 mx-auto flex max-w-xs items-center flex-col gap-y-4">
                       <dt className="text-base leading-7 text-gray-600">transactions</dt>
                       <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                        {stats.transactions}+
+                        {stats.transactions}
                       </dd>
                     </div>
                     <div className="w-64 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 px-16 py-12 mx-auto flex max-w-xs items-center flex-col gap-y-4">
