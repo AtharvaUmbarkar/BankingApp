@@ -14,11 +14,13 @@ export default function Stats(){
       const promises = [getAllCustomers(), getTransactionStats()];
       try{
         let response = await Promise.all(promises)
-        setStats({
-          customers: response[0].data.length,
-          transactions: response[1].data[0],
-          transactionsWorth: response[1].data[1],
-        })
+        if(response){
+          setStats({
+            customers: response[0].data.length ?? "-",
+            transactions: response[1].data[0] ?? "-",
+            transactionsWorth: response[1].data[1] ?? "0", 
+          })
+        }
       } catch(e){
         toast.error(e.response.data.message)
       }
