@@ -15,6 +15,7 @@ export default withAuthorization(condition, LOGIN)(() => {
   const [transactionDetails, setTransactionDetails] = useState({
     senderAccount: accountNumber,
     receiverAccount: "",
+    transactionPassword: "",
     txnAmount: 0,
     // txnDate: new Date(),
     userRemarks: "",
@@ -51,7 +52,8 @@ export default withAuthorization(condition, LOGIN)(() => {
           remarks: transactionDetails.userRemarks
         },
         senderAccountNumber: accountNumber,
-        receiverAccountNumber: transactionDetails.receiverAccount
+        receiverAccountNumber: transactionDetails.receiverAccount,
+        transactionPassword: transactionDetails.transactionPassword
       })
       if (response) {
         toast.success(response.data)
@@ -131,7 +133,19 @@ export default withAuthorization(condition, LOGIN)(() => {
         />
       </label>
 
-      <button type='submit' className='p-2 my-4 w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>SUBMIT</button>
+      <label className="w-full my-2">Transaction Password:
+        <input
+          required
+          minLength={8}
+          type="password"
+          name="transactionPassword"
+          value={transactionDetails.transactionPassword}
+          onChange={handleChange}
+          className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3 w-full"
+        />
+      </label>
+
+      <button type='submit' className='p-2  w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>SUBMIT</button>
     </form>
   )
 })

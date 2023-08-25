@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bankingapp.config.JwtTokenUtil;
 import com.bankingapp.dto.BeneficiaryDTO;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.NoDataFoundException;
@@ -30,16 +32,23 @@ public class BeneficiaryController {
 	BeneficiaryService benService;
 	@Autowired
 	ModelMapper modelMapper;
+	@Autowired
+	JwtTokenUtil jwtTokenUtil;
+	
 	@PostMapping("/save/beneficiary")
-	public boolean saveBeneficiary(@RequestBody AddBeneficiaryModel benModel) throws ResourceNotFoundException, AlreadyExistsException {
-		benService.saveBeneficiary(benModel);
+	public boolean saveBeneficiary(@RequestBody AddBeneficiaryModel benModel, @RequestHeader(value="Authorization", required=true) String bearerToken) throws ResourceNotFoundException, AlreadyExistsException {
+		String userName = jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));
+		benService.saveBeneficiary(benModel, userName);
 		return true;
 	}
 	
 	@GetMapping("/getAllBeneficiaries")
-	public List<BeneficiaryDTO> getAllBeneficiary(@RequestParam String userName) throws ResourceNotFoundException{
+	public List<BeneficiaryDTO> getAllBeneficiary(@RequestHeader(value="Authorization", required=true) String bearerToken) throws ResourceNotFoundException{
+		String userName = jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));
 		return benService.getAllBeneficiaries(userName).stream().map(ben -> modelMapper.map(ben, BeneficiaryDTO.class)).collect(Collectors.toList());
 	}
+	
+	//might need to verify if id belongs to the user
 	@DeleteMapping("/delete/beneficiary")
 	public String deleteBeneficiary(@RequestParam int Id) throws ResourceNotFoundException {
 		return benService.deleteBeneficiary(Id);

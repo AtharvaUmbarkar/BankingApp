@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bankingapp.config.JwtTokenUtil;
 import com.bankingapp.dto.AccountDTO;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.NoDataFoundException;
@@ -27,10 +29,13 @@ public class AccountController {
 	@Autowired
 	private AccountService accountService;
 	@Autowired ModelMapper modelMapper;
+	@Autowired
+	JwtTokenUtil jwtTokenUtil;
 	//To be tested for exception
 	@PostMapping("/createAccount")
-	public String createAccount(@RequestBody AccountDTO accountDto, @RequestParam("userName") String userName) throws ResourceNotFoundException
+	public String createAccount(@RequestBody AccountDTO accountDto, @RequestHeader(value="Authorization", required=true) String bearerToken) throws ResourceNotFoundException
 	{
+		String userName = jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));
 		Account account = modelMapper.map(accountDto, Account.class);
 		return accountService.createAccount(account, userName);
 	}

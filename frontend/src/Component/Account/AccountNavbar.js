@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, ChevronLeftIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { UserContext } from '../../Utilities/context/userContext';
 
 
@@ -56,6 +56,10 @@ const AccountNavbar = () => {
                     </button>
                 </div>
                 <div className="hidden lg:flex lg:gap-x-12 items-center">
+                    <Link to={"/user/account"} className="flex flex-row items-center text-sm font-semibold leading-6 text-gray-900">
+                        <ChevronLeftIcon className="h-4 w-4 mr-1" />
+                        Accounts
+                    </Link>
                     {navigation.map((item) => (
                         <Link key={item.name} to={item.to} className="text-sm font-semibold leading-6 text-gray-900">
                             {item.name}
@@ -67,7 +71,7 @@ const AccountNavbar = () => {
                         <Link to={"/user"} className='py-1 px-3 text-white bg-indigo-700 mr-8 rounded'>{user.userName}</Link>
                     }
                     <button type='button' onClick={handleLogout} className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-gray-900">
-                        Log out
+                        Log Out
                     </button>
                 </div>
             </nav>
@@ -114,7 +118,7 @@ const AccountNavbar = () => {
                                     onClick={handleLogout}
                                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
-                                    Logout
+                                    Log Out
                                 </button>
                             </div>
                         </div>
