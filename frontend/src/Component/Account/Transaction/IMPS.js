@@ -65,8 +65,9 @@ export default withAuthorization(condition, LOGIN)(() => {
           userRemarks: "",
         })
       }
-    } catch (e) {
-      toast.error(e.response.data.message)
+    } catch (error) {
+      if (error.response.status === 404) toast.error(error.response.data.message, { duration: 3000 })
+      else toast.error("Transaction Failed!", { duration: 3000 })
     }
   }
 
