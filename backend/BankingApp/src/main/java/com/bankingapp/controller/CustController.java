@@ -24,11 +24,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-<<<<<<< HEAD
-=======
 import com.bankingapp.models.Account;
 import com.bankingapp.config.CustomAuthenticationProvider;
->>>>>>> ef401006e90ee72f127e36269bb7a78109b9daab
 import com.bankingapp.config.JwtTokenUtil;
 import com.bankingapp.dto.AccountDTO;
 import com.bankingapp.dto.CustomerDTO;
@@ -140,17 +137,13 @@ public class CustController {
 			throw new Exception("USER_DISABLED",e);
 		}catch(BadCredentialsException e) {
 			throw new Exception("INVALID_CREDENTIALS", e);
-		}catch(AuthenticationException e) {
-			throw new Exception("AUTHENTICATION_ERROR", e);
-			if(e.getMessage().contains("Password")){
-				custRepo.changeLastLogin(new Date(),custRepo.findByUserName(userName).get().getNoFailedAttemps()+1,true,userName);
-			}
-			throw new UnauthorizedAccessException(e.getMessage());
 		}catch(LockedException e) {
 			if(e.getMessage().contentEquals("3 attempts failed, your account have be locked for 1 day")) {
 				custRepo.changeLastLogin(new Date(),0,false,userName);
 			}
 			throw new UnauthorizedAccessException(e.getMessage());
+		}catch(AuthenticationException e) {
+			throw new Exception("AUTHENTICATION_ERROR", e);
 		}
 	}
 
