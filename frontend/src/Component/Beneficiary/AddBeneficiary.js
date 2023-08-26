@@ -63,7 +63,8 @@ export default withAuthorization(condition, LOGIN)(() => {
               className="border border-slate-500 focus-within:border-indigo-700 text-base px-1 py-0.5 mb-1 mt-1"
             />
           </label>
-          <label className="text-base py-8">Name:
+          <label for="name" className="text-base py-8">Name:
+          </label>
             <input
               required
               minLength={3}
@@ -74,7 +75,6 @@ export default withAuthorization(condition, LOGIN)(() => {
               onChange={handleChange}
               className="border border-slate-500 focus-within:border-indigo-700 text-base px-1 py-0.5 mb-1 mt-1"
             />
-          </label>
           <label className="text-base py-8">Nickname:
             <input
               required
