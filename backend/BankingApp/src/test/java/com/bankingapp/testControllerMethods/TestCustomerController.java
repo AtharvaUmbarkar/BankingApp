@@ -40,7 +40,6 @@ import com.bankingapp.service.AccountService;
 import com.bankingapp.service.AdminService;
 import com.bankingapp.service.BeneficiaryService;
 import com.bankingapp.service.CustService;
-import com.bankingapp.service.EmailService;
 import com.bankingapp.service.TransactionService;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
@@ -70,8 +69,6 @@ class TestCustomerController {
 	private CustomerRepo customerRepo;
 	@MockBean
 	private AccountRepo accRepo;
-	@MockBean
-	private EmailService emailService;
 	
 	@MockBean
 	private ModelMapper mockModelMapper;
