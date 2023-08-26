@@ -35,6 +35,7 @@ import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.service.CustService;
+import com.bankingapp.service.EmailService;
 import com.bankingapp.types.ForgotPasswordModel;
 import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
@@ -54,6 +55,8 @@ public class CustController {
 	JwtTokenUtil jwtTokenUtil;
 	@Autowired
 	CustomerRepo custRepo;
+	@Autowired
+	EmailService emailService;
 	
 	//no longer needed
 	@PostMapping("/saveCustomer")
@@ -79,10 +82,9 @@ public class CustController {
 		final UserDetails userDetails = custService.loadUserByUsername(u.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 //		System.out.println(token);
-		 CustomerDTO custDTO =  modelMapper.map(custRepo.findByUserName(u.getUsername()),CustomerDTO.class);
+		 CustomerDTO custDTO =  modelMapper.map(custService.findByUserName(u.getUsername()),CustomerDTO.class);
 		 custDTO.setToken(token);
 		 return custDTO;
-		 
 	}
 	
 	@GetMapping("/fetchAccounts")

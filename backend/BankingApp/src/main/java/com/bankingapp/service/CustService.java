@@ -246,4 +246,9 @@ public class CustService implements UserDetailsService {
 		return custRepo.getCustomerAndAccountDetails(custId);
 	}
 
+	public Optional<Customer> findByUserName(String username) {
+		
+		return custRepo.findByUserName(username);
+	}
+
 }

@@ -19,6 +19,7 @@ const OnlineBankingRegistration = () => {
   }
 
   const handleSubmit = async (event) => {
+    
     event.preventDefault();
     const valid = (inputs.loginPassword === inputs.confirmLoginPassword) &&
       (inputs.transactionPassword === inputs.confirmTransactionPassword) &&
