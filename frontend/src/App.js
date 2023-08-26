@@ -37,6 +37,7 @@ import CustomerDetails from './Component/Admin/CustomerDetails';
 import ViewAccountDetails from './Component/Admin/AccountDetails';
 import OpenAccount from './Component/Admin/OpenAccount';
 import NotFound from './Component/NotFound';
+import UserCreateAccount from './Component/User/UserCreateAccount';
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
             <Route path='account' index element={<UserAccounts />} />
             <Route path='addBeneficiary' element={<AddBeneficiary />} />
             <Route path='beneficiaries' element={<Beneficiaries />} />
+            <Route path='createAccount' element={<UserCreateAccount />} />
           </Route>
 
           <Route path='/account/:accountNumber' element={<AccountDashboard />}>

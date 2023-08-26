@@ -51,7 +51,7 @@ const RTGS = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='my-4 w-full flex flex-col'>
+    <form autoComplete='off' onSubmit={handleSubmit} className='my-4 w-full flex flex-col'>
       <h2 className='text-xl mb-3 font-semibold'>Transaction Details</h2>
 
       <label className="w-full">Sender Account Number:

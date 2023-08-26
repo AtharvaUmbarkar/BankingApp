@@ -50,7 +50,7 @@ const Deposit = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className='my-4 w-full'>
+        <form autoComplete='off' onSubmit={handleSubmit} className='my-4 w-full'>
             <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold'>Transaction Details</h2>
 
             <label className=" my-2">Receiver Account Number:
