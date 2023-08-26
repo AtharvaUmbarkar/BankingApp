@@ -39,17 +39,18 @@ const NEFT = () => {
       }, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+          // "Authorization": `Bearer ${sessionStorage.getItem("token")}`
         }
       });
       toast.success(response.data, { duration: 3000 })
     } catch (error) {
-      toast.error(error.response.data.message, { duration: 3000 })
+      if (error.response.status === 404) toast.error(error.response.data.message, { duration: 3000 })
+      else toast.error("Transaction Failed!", { duration: 3000 })
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className='my-4 w-full flex flex-col'>
+    <form autoComplete='off' onSubmit={handleSubmit} className='my-4 w-full flex flex-col'>
       <h2 className='text-xl mb-3 font-semibold'>Transaction Details</h2>
 
       <label className="w-full">Sender Account Number:

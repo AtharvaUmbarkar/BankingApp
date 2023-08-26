@@ -44,13 +44,14 @@ const Withdraw = () => {
             })
             toast.success(res.data, { duration: 3000 })
         } catch (error) {
-            toast.error(error.response.data.message, { duration: 3000 })
+            if (error.response.status === 404) toast.error(error.response.data.message, { duration: 3000 })
+            else toast.error("Transaction Failed!", { duration: 3000 })
 
         }
     }
 
     return (
-        <form onSubmit={handleSubmit} className='my-4 w-full'>
+        <form autoComplete='off' onSubmit={handleSubmit} className='my-4 w-full'>
             <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold'>Transaction Details</h2>
 
             <label className=" my-2">Sender Account Number:
