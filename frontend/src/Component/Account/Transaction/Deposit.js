@@ -42,7 +42,8 @@ const Deposit = () => {
             });
             toast.success(res.data, { duration: 3000 })
         } catch (error) {
-            toast.error(error.response.data.message, { duration: 3000 })
+            if (error.response.status === 404) toast.error(error.response.data.message, { duration: 3000 })
+            else toast.error("Transaction Failed!", { duration: 3000 })
 
         }
 
