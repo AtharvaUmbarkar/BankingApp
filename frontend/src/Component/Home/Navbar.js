@@ -6,7 +6,7 @@ import { UserContext } from '../../Utilities/context/userContext';
 
 
 const navigation = [
-  { name: 'Open a Savings Account', to: '/savings-account-registration' },
+  // { name: 'Open a Savings Account', to: '/savings-account-registration' },
   // { name: 'Register for Online Banking', to: '/online-banking-registration' },
   // { name: 'About', to: '/' },
 ]
@@ -63,9 +63,14 @@ const Navbar = () => {
           ))}
           {(
             !sessionStorage.getItem('user') &&
-            <Link to='/online-banking-registration' className="text-sm font-semibold leading-6 text-gray-900">
-              Register for Online Banking
-            </Link>
+            <>
+              <Link to='/savings-account-registration' className="text-sm font-semibold leading-6 text-gray-900">
+                Open a Savings Account
+              </Link>
+              <Link to='/online-banking-registration' className="text-sm font-semibold leading-6 text-gray-900">
+                Register for Online Banking
+              </Link>
+            </>
           )}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -125,12 +130,20 @@ const Navbar = () => {
                   </Link>
                 ))}
                 {(!sessionStorage.getItem("user")) &&
-                  <Link
-                    to="/online-banking-registration"
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Register for Online Banking
-                  </Link>
+                  <>
+                    <Link
+                      to="/savings-account-registration"
+                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Open a Savings Account
+                    </Link>
+                    <Link
+                      to="/online-banking-registration"
+                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Register for Online Banking
+                    </Link>
+                  </>
                 }
               </div>
               <div className="py-6">

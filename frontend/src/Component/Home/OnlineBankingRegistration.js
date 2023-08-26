@@ -55,7 +55,7 @@ const OnlineBankingRegistration = () => {
     <div className='w-full flex flex-col'>
       <div className="flex flex-col w-1/3 mt-3 self-center">
         <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-2">Internet Banking</h2>
-        <form onSubmit={handleSubmit} className=''>
+        <form autoComplete='off' onSubmit={handleSubmit} className=''>
 
           <div className=''>
 

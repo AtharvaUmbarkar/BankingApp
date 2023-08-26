@@ -32,16 +32,16 @@ export default withAuthorization(condition, LOGIN)(() => {
       }
 
     } catch (error) {
-      toast.error(error.response.data, { duration: 3000 })
+      toast.error(error.response.data.message, { duration: 3000 })
     }
   }
 
   return (
     <div className='w-full flex flex-col'>
       <div className="flex flex-col w-1/3 mt-8 self-center">
-        <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-4">Add payee</h2>
-        <form onSubmit={handleSubmit}>
-          <label className="text-base py-8">Account Number:
+        <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-4">Add Payee</h2>
+        <form onSubmit={handleSubmit} autoComplete='off'>
+          <label className="text-base">Account Number:
             <input
               required
               pattern='^[0-9]{10}$'
@@ -52,7 +52,7 @@ export default withAuthorization(condition, LOGIN)(() => {
               className="border border-slate-500 focus-within:border-indigo-700 text-base px-1 py-0.5 mb-1 mt-1"
             />
           </label>
-          <label className="text-base py-8">Re-enter Account Number:
+          <label className="text-base">Re-enter Account Number:
             <input
               required
               pattern='^[0-9]{10}$'
@@ -63,7 +63,7 @@ export default withAuthorization(condition, LOGIN)(() => {
               className="border border-slate-500 focus-within:border-indigo-700 text-base px-1 py-0.5 mb-1 mt-1"
             />
           </label>
-          <label className="text-base py-8">Name:
+          <label className="text-base">Name:
             <input
               required
               minLength={3}
@@ -75,7 +75,7 @@ export default withAuthorization(condition, LOGIN)(() => {
               className="border border-slate-500 focus-within:border-indigo-700 text-base px-1 py-0.5 mb-1 mt-1"
             />
           </label>
-          <label className="text-base py-8">Nickname:
+          <label className="text-base">Nickname:
             <input
               required
               minLength={3}

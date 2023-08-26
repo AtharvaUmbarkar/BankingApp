@@ -34,15 +34,16 @@ const UserAccounts = () => {
 
   return (
     <div className='w-full flex flex-col items-center'>
-      <div className='w-1/4 my-8'>
-      <h1 className='font-semibold text-2xl mb-8 border-b border-indigo-700 w-full text-center pb-4'>Your Accounts</h1>
+      <div className='w-1/3 my-8'>
+        <h1 className='font-semibold text-2xl mb-4 border-b border-indigo-700 w-full text-center pb-4'>Your Accounts</h1>
+        <Link to="/user/createAccount" className='block bg-indigo-700 text-center w-full p-1 text-white mb-4 rounded'>+ Create Account</Link>
         {accountsList && accountsList.map((account, i) => {
           return (
             <div key={i} className='w-full p-4 my-2 bg-slate-100 shadow-md flex flex-col rounded'>
               <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Number: </span><span>{account.accountNumber}</span></p>
               <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Type: </span><span>{account.accountType}</span></p>
               <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Balance: </span><span>{account.accountBalance}</span></p>
-              <Link to={'/account/' + account.accountNumber} className={`self-end bg-indigo-700 text-white py-1 px-2 rounded mt-8 ${!account.active && 'pointer-events-none disabled cursor-not-allowed'}`}>{account.active ? "Enter Account" : "Account Disabled"}</Link>
+              <Link to={'/account/' + account.accountNumber} className={`self-end bg-indigo-700 text-white py-1 px-2 rounded mt-8 ${!account.active && 'bg-slate-500 pointer-events-none disabled cursor-not-allowed'}`}>{account.active ? "Select Account" : "Account Disabled"}</Link>
             </div>
           )
         })}

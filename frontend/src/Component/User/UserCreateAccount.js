@@ -3,9 +3,9 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from 'react-hot-toast';
 
-const CUSTOMER_DATA_URL = "http://localhost:8090/createFirstAccount";
+const CUSTOMER_DATA_URL = "http://localhost:8090/createAccount";
 
-const SavingsAccountRegistration = () => {
+const UserCreateAccount = () => {
   const navigate = useNavigate()
   const [personalDetails, setPersonalDetails] = useState({
     title: "",
@@ -99,7 +99,7 @@ const SavingsAccountRegistration = () => {
 
   return (
     <form onSubmit={handleSubmit} className='w-full flex flex-col items-center'>
-      <h1 className='text-2xl m-4 mt-6 self-center'>Open a Savings Account</h1>
+      <h1 className='text-2xl m-4 mt-6 self-center'>Add New Savings Account</h1>
       <div className='px-4 my-2 w-full lg:w-1/3'>
         <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold pb-2'>Personal Details</h2>
 
@@ -474,4 +474,4 @@ const SavingsAccountRegistration = () => {
   )
 }
 
-export default SavingsAccountRegistration
+export default UserCreateAccount
