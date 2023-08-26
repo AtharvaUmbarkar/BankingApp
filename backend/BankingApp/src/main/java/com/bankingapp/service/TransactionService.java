@@ -268,15 +268,17 @@ public class TransactionService {
 		if (!acc.isPresent()) {
 			throw new ResourceNotFoundException("Account not Present");
 		}
+				
+		Date creationDate = acc.get().getAccountCreationDate();
 		
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(from);
+		cal.setTime(creationDate);
 		cal.add(Calendar.DATE, -1);
-		Date start = cal.getTime();
+		Date createDate = cal.getTime();
+				
+		Date currentdate = new Date();;
 		
-		Date creationDate = acc.get().getAccountCreationDate();
-		Date currentdate = new Date();
-		if (start.before(creationDate)) {
+		if (from.before(createDate)) {
 			throw new InvalidTypeException("Start date cannot be before the account creation date");
 		}
 		else if (to.after(currentdate)) {
