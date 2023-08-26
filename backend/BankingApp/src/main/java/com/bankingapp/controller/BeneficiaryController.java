@@ -21,6 +21,7 @@ import com.bankingapp.dto.BeneficiaryDTO;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Beneficiary;
 import com.bankingapp.service.BeneficiaryService;
 import com.bankingapp.types.AddBeneficiaryModel;
@@ -50,8 +51,9 @@ public class BeneficiaryController {
 	
 	//might need to verify if id belongs to the user
 	@DeleteMapping("/delete/beneficiary")
-	public String deleteBeneficiary(@RequestParam int Id) throws ResourceNotFoundException {
-		return benService.deleteBeneficiary(Id);
+	public String deleteBeneficiary(@RequestParam int Id,  @RequestHeader(value="Authorization", required=true) String bearerToken) throws ResourceNotFoundException, UnauthorizedAccessException {
+		String userName = jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));
+		return benService.deleteBeneficiary(Id, userName);
 	}
 	
 }

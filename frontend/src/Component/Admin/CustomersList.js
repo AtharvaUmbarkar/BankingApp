@@ -18,7 +18,7 @@ function CustomersList() {
     useEffect(() => {
       const updateCustomers = async () => {
           const result = await getAllCustomers()
-          setAllCustomers([...result.data])
+          setAllCustomers(result.data)
       }
       updateCustomers();        
   }, [])
@@ -27,7 +27,7 @@ function CustomersList() {
     e.preventDefault();
     const response = await searchCustomerByUsername(query)
     if(response){
-      setAllCustomers(...response.data)
+      setAllCustomers(response.data)
     }
   } 
 

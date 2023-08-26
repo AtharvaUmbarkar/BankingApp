@@ -36,6 +36,7 @@ import Stats from './Component/Admin/Stats';
 import CustomerDetails from './Component/Admin/CustomerDetails';
 import ViewAccountDetails from './Component/Admin/AccountDetails';
 import OpenAccount from './Component/Admin/OpenAccount';
+import AddCustomer from './Component/Admin/AddCustomer';
 import NotFound from './Component/NotFound';
 
 function App() {
@@ -64,28 +65,29 @@ function App() {
             <Route path='beneficiaries' element={<Beneficiaries />} />
           </Route>
 
-          <Route path='/account/:accountNumber' element={<AccountDashboard />}>
-            <Route index element={<Navigate to='details' />} />
-            <Route path='details' element={<AccountDetails />} />
-            <Route path='statement' element={<AccountStatement />} />
-            <Route path='transactionHistory' element={<AccountTransactionHistory />} />
-            <Route path='transaction' element={<AccountTransaction />} >
-              <Route index element={<Navigate to='imps' />} />
-              <Route path='imps' element={<IMPS />} />
-              <Route path='neft' element={<NEFT />} />
-              <Route path='rtgs' element={<RTGS />} />
-              <Route path='withdraw' element={<Withdraw />} />
-              <Route path='deposit' element={<Deposit />} />
-            </Route>
+        <Route path='/account/:accountNumber' element={<AccountDashboard />}>
+          <Route index element={<Navigate to='details' />} />
+          <Route path='details' element={<AccountDetails />} />
+          <Route path='statement' element={<AccountStatement />} />
+          <Route path='transactionHistory' element={<AccountTransactionHistory />} />
+          <Route path='transaction' element={<AccountTransaction />} >
+            <Route index element={<Navigate to='imps' />} />
+            <Route path='imps' element={<IMPS />} />
+            <Route path='neft' element={<NEFT />} />
+            <Route path='rtgs' element={<RTGS />} />
+            <Route path='withdraw' element={<Withdraw />} />
+            <Route path='deposit' element={<Deposit />} />
           </Route>
-          <Route path="/admin" element={<AdminDashboard />}>
-            <Route index element={<Navigate to='stats' />} />
-            <Route path="stats" element={<Stats />} />
-            <Route path="openAccount" element={<OpenAccount />} />
-            <Route path="viewCustomers" element={<CustomersList />} />
-            <Route path="viewCustomer/:customerId/:username" element={<CustomerDetails />} />
-            <Route path="viewAccount/:accountNumber" element={<ViewAccountDetails />} />
-          </Route>
+        </Route>
+        <Route path="/admin" element={<AdminDashboard />}>
+        <Route index element={<Navigate to='stats' />} />
+          <Route path="stats" element={<Stats />} />
+          <Route path="openAccount" element={<OpenAccount />} />
+          <Route path="addCustomer" element={<AddCustomer />} />
+          <Route path="viewCustomers" element={<CustomersList />} />
+          <Route path="viewCustomer/:customerId/:username" element={<CustomerDetails />} />
+          <Route path="viewAccount/:accountNumber" element={<ViewAccountDetails />} />
+        </Route>
           <Route exact path="/logout" element={<Logout />} />
           <Route path='*' element={<NotFound />} />
 
