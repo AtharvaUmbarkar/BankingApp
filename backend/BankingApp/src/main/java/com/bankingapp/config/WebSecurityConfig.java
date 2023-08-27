@@ -108,7 +108,8 @@ public class WebSecurityConfig {
 						"/forgotPassword",
 						"/changePassword",
 						"/admin/LoginAdmin",
-						"admin/SignupAdmin"
+						"admin/SignupAdmin",
+						"/sendOTPEmail"
 						).permitAll()
 				.requestMatchers("/admin/**", "/fetchUser", "/getCustomerAndAccountDetails/{id}").hasAnyRole("ADMIN")
 		// all other requests need to be authenticated

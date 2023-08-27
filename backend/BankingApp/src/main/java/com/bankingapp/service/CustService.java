@@ -256,4 +256,10 @@ public class CustService implements UserDetailsService, CustomerServiceInterface
 	public List<Object> getCustomerAndAccountDetails(int custId) {
 		return custRepo.getCustomerAndAccountDetails(custId);
 	}
+
+	public Optional<Customer> findByUserName(String username) {
+		
+		return custRepo.findByUserName(username);
+	}
+
 }

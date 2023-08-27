@@ -1,4 +1,4 @@
-package com.bankingapp;
+package com.bankingapp.testControllerMethods;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 //import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,17 +27,20 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.bankingapp.config.JwtTokenUtil;
 import com.bankingapp.config.WebSecurityConfig;
 import com.bankingapp.dto.CustomerDTO;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
+import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.service.AccountService;
 import com.bankingapp.service.AdminService;
 import com.bankingapp.service.BeneficiaryService;
 import com.bankingapp.service.CustService;
+import com.bankingapp.service.EmailService;
 import com.bankingapp.service.TransactionService;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
@@ -64,6 +68,13 @@ class TestCustomerController {
 	private BeneficiaryService bService;
 	@MockBean
 	private CustomerRepo customerRepo;
+	@MockBean
+	private AccountRepo accRepo;
+	@MockBean
+	private EmailService emailService;
+	
+	@MockBean
+	private ModelMapper mockModelMapper;
 	
 	@MockBean
 	private AuthenticationManager authManager;
@@ -71,34 +82,42 @@ class TestCustomerController {
 			.findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 	
 
-	/*@Test
+	@Test
 	public void testCustomerLogin() throws Exception
 	{
 		//Test login with valid credentials
 		LoginModel login = new LoginModel();
-		login.setUsername("saket");
-		login.setPassword("saket@123");
+		login.setUsername("sumit");
+		login.setPassword("sumit@123");
 		
 		CustomerDTO custDTO = new CustomerDTO();
 		Customer cust = new Customer();
+		cust.setFirstName("Sumit");
+		cust.setMiddleName("Manoj");
+		cust.setLastName("Kumavat");
+		cust.setEmailId("sumit@gmail.com");
+		cust.setCustomerId(0);
 		
 		Mockito.when(customerService.validateCustomer(ArgumentMatchers.any())
 				).thenReturn(cust);
 		
+		Mockito.when(mockModelMapper.map(cust, CustomerDTO.class)).thenReturn(custDTO);
 		System.out.println("Testing login unit....");
 		
 		
 		String json = mapper.writeValueAsString(login);
 		String custStr = mapper.writeValueAsString(custDTO);
 		System.out.println("String Customer : "+custStr);
-		MvcResult mvcRes = mvc.perform(post("/Login").
+		/*MvcResult mvcRes =
+				mvc.perform(post("/Login").
 				contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8").
-				content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
-		String res = mvcRes.getResponse().getContentAsString();
-		System.out.println("******Returned object : "+res);
-		assertEquals(res,custStr);
+				content(json).andExpect(MockMvcResultMatchers.status().isCreated());*/
+				//accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
+		//String res = mvcRes.getResponse().getContentAsString();
+		//System.out.println("******Returned object : "+res);
+		//assertEquals(res,custStr);
 		
-	}*/
+	}
 	
 	@Test
 	public void testSaveCustomer() throws Exception
@@ -141,7 +160,7 @@ class TestCustomerController {
 		assertEquals(res,json);
 	}
 	
-	
+
 	/*@Test
 	public void testFetchAccount() throws Exception
 	{
