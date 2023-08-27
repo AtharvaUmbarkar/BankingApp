@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.bankingapp.config.JwtTokenUtil;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
+import com.bankingapp.repository.AdminRepo;
 import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.service.AccountService;
 import com.bankingapp.service.AdminService;
@@ -49,6 +50,8 @@ public class TestCustomerRepo
 	private BeneficiaryService bService;
 	@MockBean
 	private CustomerRepo custRepo;
+	@MockBean
+	private AdminRepo adminRepo;
 	@MockBean
 	private AccountRepo accRepo;
 	@MockBean
