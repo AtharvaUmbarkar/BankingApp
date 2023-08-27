@@ -17,7 +17,7 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
 	Optional<Customer> findByAadhaarNumber(String aadhaarNumber);
 	
 	@Modifying
-	@Query("update Customer c set c.userName = ?1, c.loginPassword = ?2, c.transactionPassword = ?3, c.netBankingEnabled = true where c.customerId = ?4")
+	@Query("update Customer c set c.userName = ?1, c.loginPassword = ?2, c.transactionPassword = ?3, c.netBankingEnabled = true, c.unLocked = true where c.customerId = ?4")
 	public int setUserName(String userName, String lPassword, String tPassword, int customerId);
 	
 	@Modifying
@@ -37,8 +37,8 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
 	public int changeUserName(String userName, String aadhaarNumber);
 	
 	@Modifying
-	@Query("update Customer c set c.unLocked = ?1 where c.userName = ?2")
-	public int toggleUser(boolean unLocked, String userName);
+	@Query("update Customer c set c.enabled = ?1 where c.customerId = ?2")
+	public int toggleUser(boolean enabled, int custId);
 
 	@Query("SELECT c from Customer c WHERE c.userName LIKE ?1")
 	public List<Customer> searchByUsername(String query);

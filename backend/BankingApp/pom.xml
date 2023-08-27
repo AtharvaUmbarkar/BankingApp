@@ -116,6 +116,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>CustomAuthenticationManager</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

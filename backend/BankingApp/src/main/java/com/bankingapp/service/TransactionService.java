@@ -1,28 +1,26 @@
 package com.bankingapp.service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.exception.InsufficientBalanceException;
 import com.bankingapp.exception.InvalidTypeException;
-import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Account;
-import com.bankingapp.models.Customer;
 import com.bankingapp.models.Transaction;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.TransactionRepo;
 import com.bankingapp.types.TransactionModel;
+import com.bankingapp.types.UserRole;
 
 import jakarta.transaction.Transactional;
 
@@ -34,97 +32,22 @@ public class TransactionService {
 	AccountRepo accountRepo;
 	
 	
-	//********** Code added for getting list of transactions of a account
-//	public List<Transaction> getAllTransactions(long accountNo) throws ResourceNotFoundException, NoDataFoundException
-//	{
-//		Optional<Account> obj = accountRepo.findById(accountNo);
-//		if(obj.isPresent()) {
-//			List<Transaction> statement = obj.get().getDebitTransactions();
-//			if (statement.isEmpty())
-//			{
-//				throw new NoDataFoundException("No Transactions performed");
-//			}
-//			else {
-//				return statement;
-//			}
-//		}
-//		else
-//		{
-//			throw new ResourceNotFoundException("Account Not Present");
-//		}
-//	}
-	
-	
-	
-//	public List<Transaction> getStatementTransactions(long accountNo, String fromDt, String toDt) throws ResourceNotFoundException, NoDataFoundException
-//	{
-//		Optional<Account> obj = accountRepo.findById(accountNo);
-//		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-//		if(obj.isPresent()) {
-//			
-//			List<Transaction> txns = new ArrayList<Transaction>();
-//			
-//			for(Transaction t:obj.get().getDebitTransactions())
-//			{
-//				Calendar cal = Calendar.getInstance();
-//				cal.setTime(t.getTxnDate());
-//				String month = "";
-//				if((cal.get(Calendar.MONTH)+1) < 10)
-//				{
-//					month = "0"+(cal.get(Calendar.MONTH)+1);
-//				}
-//				else
-//				{
-//					month = ""+(cal.get(Calendar.MONTH)+1);
-//				}
-//				String txnDt = ""+cal.get(Calendar.YEAR)+"-"+month+"-"+cal.get(Calendar.DAY_OF_MONTH);
-//				System.out.println("DT : "+txnDt);
-//				if(fromDt.equals(toDt)) {
-//					//System.out.println("Dates are same : "+fromDt);
-//					
-//					//System.out.println("Transaction date : "+txnDt);
-//					if(txnDt.equals(fromDt)) {
-//						txns.add(t);
-//					}
-//				}
-//				//else if(t.getTxnDate().compareTo(format.parse(fromDt))>0 && t.getTxnDate().compareTo(format.parse(toDt))>0)
-//				else if(txnDt.compareTo(fromDt)>=0 && txnDt.compareTo(toDt)<=0)
-//				{
-//					System.out.println("Transaction date : "+t.getTxnDate()+" from : "+fromDt);
-//					txns.add(t);
-//				}
-//			}
-//			if (txns.isEmpty())
-//			{
-//				throw new NoDataFoundException("No transactions in the specified period");
-//			}
-//			return txns;
-//		}
-//		else
-//		{
-//			throw new ResourceNotFoundException("Account not Present");
-//		}
-//	}
-//	
-//	//*******************************
-	
-	
-	
-	
 	@Transactional
-	public String withdraw(TransactionModel transactionModel) throws InsufficientBalanceException, ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException
+	public String withdraw(TransactionModel transactionModel, String userName) throws InsufficientBalanceException, ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException
 	{
 		String result="";
 		long accountNumber = transactionModel.getSenderAccountNumber();
 		
-			Optional<Account> obj = accountRepo.findById(accountNumber);
-			if(!obj.isPresent()) {
+			Account acnt = accountRepo.findById(accountNumber).get();
+			if(acnt == null) {
 //				result="Sender account does not exist";
 				throw new ResourceNotFoundException("Account does not exist");
 			}
+			else if(!acnt.getCustomer().getUserName().equals(userName)) {
+				throw new UnauthorizedAccessException("Account doesn't belong to the user");
+			}
 			else {
-				Account acnt = obj.get();
-				if(!acnt.isActive()) {
+					if(!acnt.isActive()) {
 					throw new UnauthorizedAccessException("Account is Deactivated");
 				}
 				Transaction transaction = transactionModel.getTransaction();
@@ -158,56 +81,56 @@ public class TransactionService {
 	}
 	
 	@Transactional
-	public String deposit(TransactionModel transactionModel) throws ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException
+	public String deposit(TransactionModel transactionModel, String userName) throws ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException
 	{
 		String result="";
 		long accountNumber = transactionModel.getReceiverAccountNumber();
-		
-			Optional<Account> obj = accountRepo.findById(accountNumber);
-			if(!obj.isPresent()) {
-//				result="Receiver account does not exist";
-				throw new ResourceNotFoundException("Account does not Exist");
+	
+		Account acnt = accountRepo.findById(accountNumber).get();
+		if(acnt == null) {
+//			result="Sender account does not exist";
+			throw new ResourceNotFoundException("Account does not exist");
+		}
+		else if(!acnt.getCustomer().getUserName().equals(userName)) {
+			throw new UnauthorizedAccessException("Account doesn't belong to the user");
+		}
+		else {
+			if(!acnt.isActive()) {
+				throw new UnauthorizedAccessException("Account is Deactivated");
 			}
-			else if (!obj.get().getCustomer().getTransactionPassword().equals(transactionModel.getTransactionPassword())) {
-				throw new InvalidTypeException("Invalid Transaction Password");
+			Transaction transaction = transactionModel.getTransaction();
+			//acnt.setAccountBalance(100000);
+			double new_balance = acnt.getAccountBalance() + transaction.getTxnAmount();
+			
+			int rowsAffected = accountRepo.updateBalance(new_balance, accountNumber);
+			if(rowsAffected > 0) {
+				transaction.setReceiverAccount(acnt);
+				transaction.setReceiverBalance(new_balance);
+				transaction.setTxnStatus("Successful");
+				transaction = transRepo.save(transaction);
+				accountRepo.changeLastTxn(transaction.getTxnDate(), acnt.getAccountNumber());
+//					acnt.setAccountBalance(new_balance);
+				result = "Transaction is successful with transaction id: " + transaction.getTxnId();
 			}
 			else {
-				Account acnt = obj.get();
-				if(!acnt.isActive()) {
-					throw new UnauthorizedAccessException("Account is Deactivated");
-				}
-				Transaction transaction = transactionModel.getTransaction();
-				//acnt.setAccountBalance(100000);
-				double new_balance = acnt.getAccountBalance() + transaction.getTxnAmount();
+				result = "unable to process the request";
 				
-				int rowsAffected = accountRepo.updateBalance(new_balance, accountNumber);
-				if(rowsAffected > 0) {
-					transaction.setReceiverAccount(acnt);
-					transaction.setReceiverBalance(new_balance);
-					transaction.setTxnStatus("Successful");
-					transaction = transRepo.save(transaction);
-					accountRepo.changeLastTxn(transaction.getTxnDate(), acnt.getAccountNumber());
-//					acnt.setAccountBalance(new_balance);
-					result = "Transaction is successful with transaction id: " + transaction.getTxnId();
-				}
-				else {
-					result = "unable to process the request";
-					
-				}
 			}
+		}
 		
 		
 		return result;
 	}
 	
 	@Transactional 
-	public String fundTransfer(TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException, InvalidTypeException, UnauthorizedAccessException
+	public String fundTransfer(TransactionModel transactionModel, String userName) throws ResourceNotFoundException, InsufficientBalanceException, InvalidTypeException, UnauthorizedAccessException
 	{
-			Optional<Account> obj1 = accountRepo.findById(transactionModel.getSenderAccountNumber());
-			Optional<Account> obj2 = accountRepo.findById(transactionModel.getReceiverAccountNumber());
-			if(obj1.isPresent() && obj2.isPresent()) {
-				Account senderAccount = obj1.get();
-				Account receiverAccount = obj2.get();
+			Account senderAccount = accountRepo.findById(transactionModel.getSenderAccountNumber()).get();
+			Account receiverAccount = accountRepo.findById(transactionModel.getReceiverAccountNumber()).get();
+			if((senderAccount != null) && (receiverAccount != null)) {
+				if(!senderAccount.getCustomer().getUserName().equals(userName)) {
+					throw new UnauthorizedAccessException("Account doesn't belong to customer");
+				}
 				if(senderAccount.isActive() && receiverAccount.isActive()) {
 					Transaction transaction = transactionModel.getTransaction();
 					//acnt.setAccountBalance(100000);
@@ -243,30 +166,49 @@ public class TransactionService {
 			}
 			else {
 //				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sender's or receiver's account doesn't exist");
-				if (!(obj1.isPresent())) {
+				if (senderAccount == null) {
 					throw new ResourceNotFoundException("Sender's Account number Incorrect or doesn't exist");
 				}
-				if (!(obj2.isPresent())) {
+				if (receiverAccount == null) {
 					throw new ResourceNotFoundException("Receiver's Account Number Incorrect or doesn't exist");
 				}
 			return "";
 			}
 	}
 	
-	public List<Object[]> getLatestTransactions(long accountNumber) throws ResourceNotFoundException
+	public List<Object[]> getLatestTransactions(long accountNumber) throws ResourceNotFoundException, UnauthorizedAccessException
 	{
 		Optional<Account> acc = accountRepo.findById(accountNumber);
 		if (!acc.isPresent()) {
 			throw new ResourceNotFoundException("Account not Present");
 		}
-		return transRepo.getLatestTransactionForAccount(accountNumber);
+		else {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			boolean isAdmin = authentication.getAuthorities().stream()
+					.anyMatch(authority -> authority.getAuthority().equals(UserRole.ROLE_ADMIN.toString()));
+			if(isAdmin || acc.get().getCustomer().getUserName().equals(userDetails.getUsername())) {
+				return transRepo.getLatestTransactionForAccount(accountNumber);
+			}
+			else {
+				throw new UnauthorizedAccessException("Account doesn't belong to customer");				
+			}
+		}
+		
 	}
 	
-	public List<Object[]> getAccountStatement(long accountNumber, Date from, Date to) throws ResourceNotFoundException, InvalidTypeException{
+	public List<Object[]> getAccountStatement(long accountNumber, Date from, Date to) throws ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException{
 		
 		Optional<Account> acc = accountRepo.findById(accountNumber);
 		if (!acc.isPresent()) {
 			throw new ResourceNotFoundException("Account not Present");
+		}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		boolean isAdmin = authentication.getAuthorities().stream()
+				.anyMatch(authority -> authority.getAuthority().equals(UserRole.ROLE_ADMIN.toString()));
+		if(!isAdmin && !acc.get().getCustomer().getUserName().equals(userDetails.getUsername())) {
+			throw new UnauthorizedAccessException("Account doesn't belong to customer");
 		}
 				
 		Date creationDate = acc.get().getAccountCreationDate();

@@ -1,11 +1,9 @@
 package com.bankingapp.config;
 
 import java.io.IOException;
+import java.util.List;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.security.sasl.AuthenticationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,16 +13,26 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.bankingapp.exception.UnauthorizedAccessException;
+import com.bankingapp.service.AdminService;
 import com.bankingapp.service.CustService;
+import com.bankingapp.types.UserRole;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private CustService jwtUserDetailsService;
+	private AdminService adminService;
 
+	@Autowired
+	private CustService customerService;
+	
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
@@ -38,6 +46,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		String jwtToken = null;
 		// JWT Token is in the form "Bearer token". Remove Bearer word and get
 		// only the Token
+		
+		String requestUri = request.getRequestURI();
+		
+		if(requestUri.equals("/admin/LoginAdmin") || requestUri.equals("/admin/SignupAdmin") || requestUri.equals("/Login") || requestUri.equals("/saveCustomer")
+				|| requestUri.equals("/netBankingRegistration") ) {
+			chain.doFilter(request, response);
+			return;
+		}
+		
 		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 			jwtToken = requestTokenHeader.substring(7);
 			try {
@@ -52,9 +69,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		}
 
 		// Once we get the token validate it.
+		System.out.println("Username: " + username);
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+			UserDetails userDetails;
 			System.out.println("username from request="+username);
-			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+			List<String> roles = jwtTokenUtil.getRolesFromToken(jwtToken);
+			if(roles.contains(UserRole.ROLE_ADMIN.toString())) {
+				userDetails = adminService.loadUserByUsername(username);				
+			} else {
+				userDetails = customerService.loadUserByUsername(username);		
+				if(!userDetails.isEnabled()) {
+					throw new AuthenticationException("User is disabled");
+				}
+			}
 
 			// if token is valid configure Spring Security to manually set
 			// authentication

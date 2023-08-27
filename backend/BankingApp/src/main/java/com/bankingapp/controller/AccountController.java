@@ -17,6 +17,7 @@ import com.bankingapp.dto.AccountDTO;
 import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Account;
 import com.bankingapp.service.AccountService;
 import com.bankingapp.types.CustomerAndAccountModel;
@@ -39,6 +40,13 @@ public class AccountController {
 		Account account = modelMapper.map(accountDto, Account.class);
 		return accountService.createAccount(account, userName);
 	}
+	
+	@PostMapping("/createAccoutUsingId")
+	public String createAccountUsingId(@RequestBody AccountDTO accountDto, @RequestParam int custId) throws ResourceNotFoundException
+	{
+		Account account = modelMapper.map(accountDto, Account.class);
+		return accountService.createAccountUsingId(account, custId);
+	}
 	//To be tested for Exception
 	//add dto to model
 	@PostMapping("/createFirstAccount")
@@ -48,7 +56,7 @@ public class AccountController {
 	}
 	
 	@GetMapping("/fetchAccount")
-	public AccountDTO fetchAccount(@RequestParam("accountNo") long accountNo) throws ResourceNotFoundException{
+	public AccountDTO fetchAccount(@RequestParam("accountNo") long accountNo) throws ResourceNotFoundException, UnauthorizedAccessException{
 		return modelMapper.map(accountService.fetchAccount(accountNo), AccountDTO.class);
 	}
 }

@@ -29,7 +29,6 @@ import jakarta.validation.constraints.Pattern;
 @Entity
 public class Customer {
 	@Id
-//	@GeneratedValue
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="customer_generator")
 	@SequenceGenerator(
 			name="customer_generator",
@@ -60,6 +59,7 @@ public class Customer {
 	private String fatherName;
 	
 	@Column(name="email_id", unique=true)
+	@Pattern(regexp="^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$")
 	private String emailId;
 	
 	
@@ -125,8 +125,7 @@ public class Customer {
 	private int grossAnnualIncome;
 	
 	@Column(name="net_banking", nullable=false)
-	@Value("${some.key:false}")
-	private boolean netBankingEnabled;
+	private boolean netBankingEnabled=false;
 	
 	@Column(name="last_login") //last login attempt
 	private Date lastLogin;
@@ -146,9 +145,16 @@ public class Customer {
 	@Value("${some.key:0}")
 	private int noFailedAttemps;
 	
-	@Value("${some.key:true}")
-	private boolean unLocked;
+//	@Value("${some.key:1}")
+	private boolean unLocked=true;
+	private boolean enabled=true;
 
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 	@JsonManagedReference
 	@JsonIgnore
 	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
