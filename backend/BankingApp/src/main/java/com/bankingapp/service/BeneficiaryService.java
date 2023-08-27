@@ -3,12 +3,10 @@ package com.bankingapp.service;
 import java.util.List;
 import java.util.Optional;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.exception.AlreadyExistsException;
-import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.interfaces.BeneficiaryServiceInterface;
@@ -33,13 +31,14 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 		Optional<Account> acntObj = acntRepo.findById(benModel.getAccountNumber());
 		if(custObj.isPresent() && acntObj.isPresent()) { //also check if same user alter
 			Customer cust = custObj.get();
+			Account acnt = acntObj.get();
 			if(cust.getBeneficiaries().stream().anyMatch(ben -> (ben.getAccount().getAccountNumber()==(benModel.getAccountNumber()))))
 				throw new AlreadyExistsException("Beneficary with given account number already exist");
 			Beneficiary ben = new Beneficiary();
 			ben.setName(benModel.getName());
 			ben.setNickname(benModel.getNickname());
-			ben.setAccount(acntObj.get());
-			ben.setCustomer(custObj.get());
+			ben.setAccount(acnt);
+			ben.setCustomer(cust);
 			benRepo.save(ben);
 			return ben;
 		}
@@ -75,12 +74,5 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 			return "Beneficiary with Id :" + Id + "deleted";
 		}
 		
-	}
-
-	@Override
-	public Beneficiary saveBeneficiary(AddBeneficiaryModel benModel)
-			throws ResourceNotFoundException, AlreadyExistsException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

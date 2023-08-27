@@ -1,5 +1,6 @@
 package com.bankingapp.controller;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,8 +26,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bankingapp.models.Account;
-import com.bankingapp.config.CustomAuthenticationProvider;
 import com.bankingapp.config.JwtTokenUtil;
 import com.bankingapp.dto.AccountDTO;
 import com.bankingapp.dto.CustomerDTO;
@@ -40,6 +40,7 @@ import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
+import com.bankingapp.types.UserRole;
 
 @RestController
 @CrossOrigin("*")
@@ -62,12 +63,6 @@ public class CustController {
 		Customer c=custService.saveCustomer(cust);
 		return c;
 	}
-	
-//	@PostMapping("/Login")
-//	public CustomerDTO validateCustomer(@RequestBody LoginModel u) throws UnauthorizedAccessException, ResourceNotFoundException
-//	{
-//		return modelMapper.map(custService.validateCustomer(u), CustomerDTO.class);
-//	}
 	
 	@PostMapping("/Login")
 //	@ResponseBody
@@ -132,7 +127,8 @@ public class CustController {
 	@Transactional
 	public void authenticate(String userName, String password) throws Exception {
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+			List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(UserRole.ROLE_USER.toString()));
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password, authorities));
 		}catch(DisabledException e) {
 			throw new Exception("USER_DISABLED",e);
 		}catch(BadCredentialsException e) {

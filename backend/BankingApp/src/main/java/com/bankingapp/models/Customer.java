@@ -147,7 +147,14 @@ public class Customer {
 	
 //	@Value("${some.key:1}")
 	private boolean unLocked=true;
+	private boolean enabled=true;
 
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 	@JsonManagedReference
 	@JsonIgnore
 	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)

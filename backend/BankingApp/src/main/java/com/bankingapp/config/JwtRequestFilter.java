@@ -3,6 +3,8 @@ package com.bankingapp.config;
 import java.io.IOException;
 import java.util.List;
 
+import javax.security.sasl.AuthenticationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +13,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.service.AdminService;
 import com.bankingapp.service.CustService;
 import com.bankingapp.types.UserRole;
@@ -74,7 +77,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			if(roles.contains(UserRole.ROLE_ADMIN.toString())) {
 				userDetails = adminService.loadUserByUsername(username);				
 			} else {
-				userDetails = customerService.loadUserByUsername(username);								
+				userDetails = customerService.loadUserByUsername(username);		
+				if(!userDetails.isEnabled()) {
+					throw new AuthenticationException("User is disabled");
+				}
 			}
 
 			// if token is valid configure Spring Security to manually set

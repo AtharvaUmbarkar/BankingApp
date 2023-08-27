@@ -1,12 +1,14 @@
 package com.bankingapp.service;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +19,7 @@ import com.bankingapp.exception.AlreadyExistsException;
 import com.bankingapp.exception.InvalidTypeException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
+import com.bankingapp.interfaces.CustomerServiceInterface;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
@@ -25,11 +28,12 @@ import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
 import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
+import com.bankingapp.types.UserRole;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class CustService implements UserDetailsService {
+public class CustService implements UserDetailsService, CustomerServiceInterface {
 	@Autowired
 	CustomerRepo custRepo;
 	@Autowired
@@ -41,7 +45,9 @@ public class CustService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		Customer cust = custRepo.findByUserName(userName).get();
 		if(cust!=null) {
-			return new org.springframework.security.core.userdetails.User(cust.getUserName(), cust.getLoginPassword(), new ArrayList());
+			Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+			authorities.add(new SimpleGrantedAuthority(UserRole.ROLE_USER.toString()));
+			return new org.springframework.security.core.userdetails.User(cust.getUserName(), cust.getLoginPassword(), cust.isEnabled(), true, true, true,authorities );
 		}
 		else {
 			throw new UsernameNotFoundException("User name not found");
@@ -55,6 +61,7 @@ public class CustService implements UserDetailsService {
 		return obj;
 	}
 	
+	//no longer needed
 	@Transactional
 	public Customer validateCustomer(LoginModel loginUser) throws UnauthorizedAccessException, ResourceNotFoundException
 	{
@@ -235,7 +242,7 @@ public class CustService implements UserDetailsService {
 		Optional<Customer> obj = custRepo.findByUserName(userName);
 		if(obj.isPresent()) {
 			Customer cust = obj.get(); 
-			int rowsAffected = custRepo.toggleUser(!cust.isUnLocked(), userName);
+			int rowsAffected = custRepo.toggleUser(!cust.isEnabled(), userName);
 			if(rowsAffected > 0)
 				return true;
 			else
@@ -249,5 +256,4 @@ public class CustService implements UserDetailsService {
 	public List<Object> getCustomerAndAccountDetails(int custId) {
 		return custRepo.getCustomerAndAccountDetails(custId);
 	}
-
 }

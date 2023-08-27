@@ -58,17 +58,15 @@ public class TransactionController
 	}
 	
 	@GetMapping("/getLatestTransactions")
-	public ResponseEntity<List<Object[]>> getLatestTransactions(@RequestParam long accountNumber, @RequestHeader(value="Authorization", required=true) String bearerToken) throws ResourceNotFoundException, UnauthorizedAccessException
+	public ResponseEntity<List<Object[]>> getLatestTransactions(@RequestParam long accountNumber) throws ResourceNotFoundException, UnauthorizedAccessException
 	{
-		String userName = jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));
-		return new ResponseEntity<>(tService.getLatestTransactions(accountNumber, userName), HttpStatus.OK);
+		return new ResponseEntity<>(tService.getLatestTransactions(accountNumber), HttpStatus.OK);
 	}
 	
 	@GetMapping("/getAccountStatement")
-	public List<Object[]> getAccountStatement(@RequestParam long accountNumber, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date to, @RequestHeader(value="Authorization", required=true) String bearerToken) throws ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException
+	public List<Object[]> getAccountStatement(@RequestParam long accountNumber, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date to) throws ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException
 	{
-		String userName = jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));
-		return tService.getAccountStatement(accountNumber, from, to, userName);
+		return tService.getAccountStatement(accountNumber, from, to);
 	}
 //	
 //	

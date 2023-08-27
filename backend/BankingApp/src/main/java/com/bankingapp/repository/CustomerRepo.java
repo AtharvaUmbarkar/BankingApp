@@ -37,8 +37,8 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
 	public int changeUserName(String userName, String aadhaarNumber);
 	
 	@Modifying
-	@Query("update Customer c set c.unLocked = ?1 where c.userName = ?2")
-	public int toggleUser(boolean unLocked, String userName);
+	@Query("update Customer c set c.enabled = ?1 where c.userName = ?2")
+	public int toggleUser(boolean enabled, String userName);
 
 	@Query("SELECT c from Customer c WHERE c.userName LIKE ?1")
 	public List<Customer> searchByUsername(String query);

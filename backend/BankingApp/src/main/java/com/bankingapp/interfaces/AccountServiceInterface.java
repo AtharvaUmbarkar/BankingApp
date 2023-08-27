@@ -12,6 +12,6 @@ import com.bankingapp.types.CustomerAndAccountModel;
 public interface AccountServiceInterface {
 	public String createAccount(Account account, String userName) throws ResourceNotFoundException;
 	public String firstAccount(CustomerAndAccountModel obj) throws AlreadyExistsException;
-	public Account fetchAccount(long accountNo) throws ResourceNotFoundException ;
+	public Account fetchAccount(long accountNo) throws ResourceNotFoundException, UnauthorizedAccessException ;
 	public boolean toggleActivation(long acntNo) throws ResourceNotFoundException, UnauthorizedAccessException; 
 }

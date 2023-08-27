@@ -1,28 +1,26 @@
 package com.bankingapp.service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.exception.InsufficientBalanceException;
 import com.bankingapp.exception.InvalidTypeException;
-import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Account;
-import com.bankingapp.models.Customer;
 import com.bankingapp.models.Transaction;
 import com.bankingapp.repository.AccountRepo;
 import com.bankingapp.repository.TransactionRepo;
 import com.bankingapp.types.TransactionModel;
+import com.bankingapp.types.UserRole;
 
 import jakarta.transaction.Transactional;
 
@@ -32,83 +30,6 @@ public class TransactionService {
 	TransactionRepo transRepo;
 	@Autowired
 	AccountRepo accountRepo;
-	
-	
-	//********** Code added for getting list of transactions of a account
-//	public List<Transaction> getAllTransactions(long accountNo) throws ResourceNotFoundException, NoDataFoundException
-//	{
-//		Optional<Account> obj = accountRepo.findById(accountNo);
-//		if(obj.isPresent()) {
-//			List<Transaction> statement = obj.get().getDebitTransactions();
-//			if (statement.isEmpty())
-//			{
-//				throw new NoDataFoundException("No Transactions performed");
-//			}
-//			else {
-//				return statement;
-//			}
-//		}
-//		else
-//		{
-//			throw new ResourceNotFoundException("Account Not Present");
-//		}
-//	}
-	
-	
-	
-//	public List<Transaction> getStatementTransactions(long accountNo, String fromDt, String toDt) throws ResourceNotFoundException, NoDataFoundException
-//	{
-//		Optional<Account> obj = accountRepo.findById(accountNo);
-//		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-//		if(obj.isPresent()) {
-//			
-//			List<Transaction> txns = new ArrayList<Transaction>();
-//			
-//			for(Transaction t:obj.get().getDebitTransactions())
-//			{
-//				Calendar cal = Calendar.getInstance();
-//				cal.setTime(t.getTxnDate());
-//				String month = "";
-//				if((cal.get(Calendar.MONTH)+1) < 10)
-//				{
-//					month = "0"+(cal.get(Calendar.MONTH)+1);
-//				}
-//				else
-//				{
-//					month = ""+(cal.get(Calendar.MONTH)+1);
-//				}
-//				String txnDt = ""+cal.get(Calendar.YEAR)+"-"+month+"-"+cal.get(Calendar.DAY_OF_MONTH);
-//				System.out.println("DT : "+txnDt);
-//				if(fromDt.equals(toDt)) {
-//					//System.out.println("Dates are same : "+fromDt);
-//					
-//					//System.out.println("Transaction date : "+txnDt);
-//					if(txnDt.equals(fromDt)) {
-//						txns.add(t);
-//					}
-//				}
-//				//else if(t.getTxnDate().compareTo(format.parse(fromDt))>0 && t.getTxnDate().compareTo(format.parse(toDt))>0)
-//				else if(txnDt.compareTo(fromDt)>=0 && txnDt.compareTo(toDt)<=0)
-//				{
-//					System.out.println("Transaction date : "+t.getTxnDate()+" from : "+fromDt);
-//					txns.add(t);
-//				}
-//			}
-//			if (txns.isEmpty())
-//			{
-//				throw new NoDataFoundException("No transactions in the specified period");
-//			}
-//			return txns;
-//		}
-//		else
-//		{
-//			throw new ResourceNotFoundException("Account not Present");
-//		}
-//	}
-//	
-//	//*******************************
-	
-	
 	
 	
 	@Transactional
@@ -255,27 +176,38 @@ public class TransactionService {
 			}
 	}
 	
-	public List<Object[]> getLatestTransactions(long accountNumber, String userName) throws ResourceNotFoundException, UnauthorizedAccessException
+	public List<Object[]> getLatestTransactions(long accountNumber) throws ResourceNotFoundException, UnauthorizedAccessException
 	{
 		Optional<Account> acc = accountRepo.findById(accountNumber);
 		if (!acc.isPresent()) {
 			throw new ResourceNotFoundException("Account not Present");
 		}
 		else {
-			if(!acc.get().getCustomer().getUserName().equals(userName)) {
-				throw new UnauthorizedAccessException("Account doesn't belong to customer");
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			boolean isAdmin = authentication.getAuthorities().stream()
+					.anyMatch(authority -> authority.getAuthority().equals(UserRole.ROLE_ADMIN.toString()));
+			if(isAdmin || acc.get().getCustomer().getUserName().equals(userDetails.getUsername())) {
+				return transRepo.getLatestTransactionForAccount(accountNumber);
+			}
+			else {
+				throw new UnauthorizedAccessException("Account doesn't belong to customer");				
 			}
 		}
-		return transRepo.getLatestTransactionForAccount(accountNumber);
+		
 	}
 	
-	public List<Object[]> getAccountStatement(long accountNumber, Date from, Date to, String userName) throws ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException{
+	public List<Object[]> getAccountStatement(long accountNumber, Date from, Date to) throws ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException{
 		
 		Optional<Account> acc = accountRepo.findById(accountNumber);
 		if (!acc.isPresent()) {
 			throw new ResourceNotFoundException("Account not Present");
 		}
-		if(!acc.get().getCustomer().getUserName().equals(userName)) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		boolean isAdmin = authentication.getAuthorities().stream()
+				.anyMatch(authority -> authority.getAuthority().equals(UserRole.ROLE_ADMIN.toString()));
+		if(!isAdmin && !acc.get().getCustomer().getUserName().equals(userDetails.getUsername())) {
 			throw new UnauthorizedAccessException("Account doesn't belong to customer");
 		}
 		
