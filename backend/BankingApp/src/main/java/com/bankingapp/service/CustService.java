@@ -238,11 +238,11 @@ public class CustService implements UserDetailsService, CustomerServiceInterface
 	}
 	
 	@Transactional
-	public boolean toggleUser(String userName) throws ResourceNotFoundException {
-		Optional<Customer> obj = custRepo.findByUserName(userName);
+	public boolean toggleUser(int custId) throws ResourceNotFoundException {
+		Optional<Customer> obj = custRepo.findById(custId);
 		if(obj.isPresent()) {
 			Customer cust = obj.get(); 
-			int rowsAffected = custRepo.toggleUser(!cust.isEnabled(), userName);
+			int rowsAffected = custRepo.toggleUser(!cust.isEnabled(), custId);
 			if(rowsAffected > 0)
 				return true;
 			else

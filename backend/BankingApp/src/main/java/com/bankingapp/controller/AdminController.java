@@ -105,8 +105,8 @@ public class AdminController {
 	}
 	
 	@PutMapping("toggle/user")
-	public boolean toggleUser(@RequestParam("userName") String userName) throws ResourceNotFoundException {
-		return custService.toggleUser(userName);
+	public boolean toggleUser(@RequestParam("custId") int custId) throws ResourceNotFoundException {
+		return custService.toggleUser(custId);
 	}
 
 	@GetMapping("searchCustomerByUsername")
@@ -121,16 +121,18 @@ public class AdminController {
 	
 	public void authenticate(String userName, String password) throws Exception {
 		try {
+			System.out.println("admin auth cp1");
 			List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(UserRole.ROLE_ADMIN.toString()));
 			adminAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password, authorities));
 		}catch(DisabledException e) {
 			System.out.println("DISABLED!");
 //			throw new Exception("USER_DISABLED",e);
 		}catch(BadCredentialsException e) {
-//			System.out.println("BAD CREDS!!!");
+			System.out.println("BAD CREDS!!!");
 			throw new BadCredentialsException("BAD CREDS!");
 //			throw new Exception("INVALID_CREDENTIALS", e);
 		} catch (AuthenticationException e) {
+			System.out.println("AUTH FAILED!!!");
 			System.out.println(e.getMessage());
 			throw new Exception("Authentication failed!");
 		}

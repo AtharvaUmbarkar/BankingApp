@@ -1,5 +1,7 @@
 package com.bankingapp.service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.exception.AlreadyExistsException;
-import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.interfaces.AccountServiceInterface;
@@ -43,9 +44,16 @@ public class AccountService implements AccountServiceInterface {
 		}
 		else {
 			customer = obj.get();
-			account.setCustomer(customer);
-			Account acnt = accountRepo.save(account);
-			result = "Account successfully created wth Account No: " + acnt.getAccountNumber();
+			customer = obj.get();
+			long years = ChronoUnit.YEARS.between( LocalDate.now(), customer.getDateOfBirth());
+			if(years>18) {
+				result = "Age not sufficient";
+			}
+			else {
+				account.setCustomer(customer);
+				Account acnt = accountRepo.save(account);
+				result = "Account successfully created wth Account No: " + acnt.getAccountNumber();
+			}
 		}
 		return result;
 	}
@@ -61,9 +69,15 @@ public class AccountService implements AccountServiceInterface {
 		}
 		else {
 			customer = obj.get();
-			account.setCustomer(customer);
-			Account acnt = accountRepo.save(account);
-			result = "Account successfully created wth Account No: " + acnt.getAccountNumber();
+			long years = ChronoUnit.YEARS.between( LocalDate.now(), customer.getDateOfBirth());
+			if(years>18) {
+				result = "Age not sufficient";
+			}
+			else {
+				account.setCustomer(customer);
+				Account acnt = accountRepo.save(account);
+				result = "Account successfully created wth Account No: " + acnt.getAccountNumber();
+			}
 		}
 		return result;
 	}

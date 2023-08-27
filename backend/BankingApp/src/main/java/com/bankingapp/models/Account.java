@@ -41,10 +41,9 @@ public class Account {
 	private String accountType;
 	@Value("${some.key:1000}")
 	private double accountBalance;
-//	@Value("${some.key:2023-08-14T01:30:00.000-05:00}")
 	@CreatedDate
 	private Date accountCreationDate =  new Date();
-	private boolean active = false; //need to be removed
+	private boolean active = false; //change later
 	private boolean debitCardAvailed;
 	private Date lastTransaction;
 	
