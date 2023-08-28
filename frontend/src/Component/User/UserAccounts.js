@@ -10,7 +10,7 @@ const UserAccounts = () => {
   const CREATE_ACCOUNT_URL = "http://localhost:8090/createAccount";
   // const { user, token } = useContext(UserContext)
   const token = sessionStorage.getItem("token");
-  const user = sessionStorage.getItem("user");
+  const { user } = useContext(UserContext);
   const [accountsList, setAccounts] = useState([])
 
   const handleOnClick = async (e) => {
@@ -18,10 +18,9 @@ const UserAccounts = () => {
     try {
       const authHeader = "Bearer " + token;
       const response = await axios.post(
-        CREATE_ACCOUNT_URL,
+        `${CREATE_ACCOUNT_URL}?username=${user.userName}`,
         {},
         {
-          params: { username: user.userName },
           headers: { "Authorization": authHeader }
         }
       )

@@ -104,3 +104,13 @@ export const getTransactionStats = async (query) => {
     })
     return response;
 }
+
+export const createAccount = async (username) => {
+    const response = await axios.post(`${API_URL}/createAccount?username=${username}`, {}, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+        }
+    })
+    return response
+}

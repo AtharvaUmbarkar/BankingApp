@@ -21,6 +21,7 @@ import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Account;
 import com.bankingapp.service.AccountService;
 import com.bankingapp.types.CustomerAndAccountModel;
+import com.bankingapp.types.UserRole;
 
 import jakarta.validation.Valid;
 
@@ -34,9 +35,10 @@ public class AccountController {
 	JwtTokenUtil jwtTokenUtil;
 	//To be tested for exception
 	@PostMapping("/createAccount")
-	public String createAccount(@RequestBody AccountDTO accountDto, @RequestHeader(value="Authorization", required=true) String bearerToken) throws ResourceNotFoundException
+	public String createAccount(@RequestBody AccountDTO accountDto, @RequestParam String username, @RequestHeader(value="Authorization", required=true) String bearerToken) throws ResourceNotFoundException
 	{
-		String userName = jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));
+		String userName = jwtTokenUtil.getRolesFromToken(bearerToken.substring(7)).contains(UserRole.ROLE_ADMIN.toString()) ? 
+				username : jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));
 		Account account = modelMapper.map(accountDto, Account.class);
 		return accountService.createAccount(account, userName);
 	}

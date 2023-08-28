@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import AdminNavbar from './AdminNavbar'
-import { getAllCustomers, getCustomerAccounts, getCustomerAndAccountDetails, getCustomerDetails, toggleActivation, toggleUser } from '../../Utilities/api'
+import { createAccount, getAllCustomers, getCustomerAccounts, getCustomerAndAccountDetails, getCustomerDetails, toggleActivation, toggleUser } from '../../Utilities/api'
 import { PaperClipIcon, PhoneIcon, UserIcon } from '@heroicons/react/20/solid'
 import { ArrowTopRightOnSquareIcon, CalendarDaysIcon } from '@heroicons/react/24/outline'
 import { Link, useParams } from 'react-router-dom'
@@ -51,6 +51,19 @@ function CustomerDetails() {
         }
       } catch(e){
         toast.error(e.response.data.message)
+      }
+    }
+
+    const handleAddNewAccount = async (e) => {
+      try {
+        const response = await createAccount(customer.userName);
+        if (response) {
+          toast.success("Acount Created Successfully", { duration: 3000 })
+          setToggled((prev) => !prev)
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message, { duration: 3000 })
       }
     }
 
@@ -115,6 +128,7 @@ text-gray-700 border-black-700">
         </article>
         )): <p className="mt-6 text-center text-gray-500 font-semibold">No records</p>}
       </div>
+        <button type='button' onClick={handleAddNewAccount} className='rounded p-1 uppercase px-2 mt-3 block bg-slate-500 text-sm text-white ml-auto mr-0'>+ Add new account</button>
       </div>
   </div>
   )
