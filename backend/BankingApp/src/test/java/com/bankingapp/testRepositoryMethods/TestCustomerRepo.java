@@ -28,7 +28,6 @@ import com.bankingapp.service.AccountService;
 import com.bankingapp.service.AdminService;
 import com.bankingapp.service.BeneficiaryService;
 import com.bankingapp.service.CustService;
-import com.bankingapp.service.EmailService;
 import com.bankingapp.service.TransactionService;
 
 @RunWith(SpringRunner.class)
@@ -54,8 +53,6 @@ public class TestCustomerRepo
 	private AdminRepo adminRepo;
 	@MockBean
 	private AccountRepo accRepo;
-	@MockBean
-	private EmailService emailService;
 	@MockBean
 	private AuthenticationManager authManager;
 	@MockBean

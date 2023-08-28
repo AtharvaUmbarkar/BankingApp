@@ -30,7 +30,6 @@ import com.bankingapp.service.AdminService;
 import com.bankingapp.service.BeneficiaryService;
 import com.bankingapp.service.TransactionService;
 import com.bankingapp.service.CustService;
-import com.bankingapp.service.EmailService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -57,8 +56,6 @@ public class TestTransactionRepo
 	private AccountRepo accRepo;
 	@MockBean
 	private TransactionRepo txnRepo;
-	@MockBean
-	private EmailService emailService;
 	@MockBean
 	private AuthenticationManager authManager;
 	@MockBean
