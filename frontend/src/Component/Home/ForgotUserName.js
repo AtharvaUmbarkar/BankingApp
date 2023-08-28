@@ -28,7 +28,7 @@ const ForgotUserName = () => {
     else {
       axios.put("http://localhost:8090/forgotUserName",
         {
-          aadhaarNumber: inputs.aadhaarumber,
+          aadhaarNumber: inputs.aadhaarNumber,
           userName: inputs.newUsername,
           otp: inputs.otp,
         },

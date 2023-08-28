@@ -103,18 +103,18 @@ const SavingsAccountRegistration = () => {
       <div className='px-4 my-2 w-full lg:w-1/3'>
         <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold pb-2'>Personal Details</h2>
 
-        <label className="text-base my-2">Title:
+        <label className="text-sm my-1">Title:
           <input
             required
             type="text"
             name="title"
             value={personalDetails.title}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Firstname:
+        <label className="text-sm my-1">Firstname:
           <input
             required
             minLength={3}
@@ -123,11 +123,11 @@ const SavingsAccountRegistration = () => {
             name="firstName"
             value={personalDetails.firstName}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Middlename:
+        <label className="text-sm my-1">Middlename:
           <input
             minLength={3}
             maxLength={30}
@@ -135,11 +135,11 @@ const SavingsAccountRegistration = () => {
             name="middleName"
             value={personalDetails.middleName}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Lastname:
+        <label className="text-sm my-1">Lastname:
           <input
             required
             minLength={3}
@@ -148,11 +148,11 @@ const SavingsAccountRegistration = () => {
             name="lastName"
             value={personalDetails.lastName}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Father's Name:
+        <label className="text-sm my-1">Father's Name:
           <input
             required
             minLength={3}
@@ -161,36 +161,36 @@ const SavingsAccountRegistration = () => {
             name="fatherName"
             value={personalDetails.fatherName}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Mobile Number:
+        <label className="text-sm my-1">Mobile Number:
           <input
             required
             minLength={10}
             maxLength={10}
-            // pattern='^\\d{10}$'
+            pattern='^[0-9]{10}$'
             type="text"
             name="mobileNumber"
             value={personalDetails.mobileNumber}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Email Id:
+        <label className="text-sm my-1">Email Id:
           <input
+            required
             type="email"
             name="emailId"
-            pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
             value={personalDetails.emailId}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Aadhaar Number:
+        <label className="text-sm my-1">Aadhaar Number:
           <input
             required
             pattern='^[0-9]{12}$'
@@ -198,18 +198,18 @@ const SavingsAccountRegistration = () => {
             name="aadhaarNumber"
             value={personalDetails.aadhaarNumber}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Date of Birth:
+        <label className="text-sm my-1">Date of Birth:
           <input
             required
             type='date'
             name="dateOfBirth"
             value={personalDetails.dateOfBirth}
             onChange={handlePersonalDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
       </div>
@@ -217,7 +217,7 @@ const SavingsAccountRegistration = () => {
       <div className='px-4 my-2 w-full lg:w-1/3'>
         <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold pb-2'>Residential Address</h2>
 
-        <label className="text-base my-2">Address Line 1:
+        <label className="text-sm my-1">Address Line 1:
           <input
             required
             minLength={3}
@@ -226,11 +226,11 @@ const SavingsAccountRegistration = () => {
             name="tempAddressLine1"
             value={residentialAddress.tempAddressLine1}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Address Line 2:
+        <label className="text-sm my-1">Address Line 2:
           <input
             required
             minLength={3}
@@ -239,11 +239,11 @@ const SavingsAccountRegistration = () => {
             name="tempAddressLine2"
             value={residentialAddress.tempAddressLine2}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Landmark:
+        <label className="text-sm my-1">Landmark:
           <input
             minLength={3}
             maxLength={30}
@@ -251,11 +251,11 @@ const SavingsAccountRegistration = () => {
             name="tempLandmark"
             value={residentialAddress.tempLandmark}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">State:
+        <label className="text-sm my-1">State:
           <input
             required
             minLength={3}
@@ -264,11 +264,11 @@ const SavingsAccountRegistration = () => {
             name="tempState"
             value={residentialAddress.tempState}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">City:
+        <label className="text-sm my-1">City:
           <input
             required
             minLength={3}
@@ -277,11 +277,11 @@ const SavingsAccountRegistration = () => {
             name="tempCity"
             value={residentialAddress.tempCity}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Pincode:
+        <label className="text-sm my-1">Pincode:
           <input
             required
             maxLength={6}
@@ -290,7 +290,7 @@ const SavingsAccountRegistration = () => {
             name="tempPincode"
             value={residentialAddress.tempPincode}
             onChange={handleResidentialAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
@@ -309,7 +309,7 @@ const SavingsAccountRegistration = () => {
           />
         </div>
 
-        <label className="text-base my-2">Address Line 1:
+        <label className="text-sm my-1">Address Line 1:
           <input
             disabled={sameAddress}
             required
@@ -319,11 +319,11 @@ const SavingsAccountRegistration = () => {
             name="permAddressLine1"
             value={permanentAddress.permAddressLine1}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Address Line 2:
+        <label className="text-sm my-1">Address Line 2:
           <input
             disabled={sameAddress}
             required
@@ -333,11 +333,11 @@ const SavingsAccountRegistration = () => {
             name="permAddressLine2"
             value={permanentAddress.permAddressLine2}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Landmark:
+        <label className="text-sm my-1">Landmark:
           <input
             disabled={sameAddress}
             minLength={3}
@@ -346,22 +346,22 @@ const SavingsAccountRegistration = () => {
             name="permLandmark"
             value={permanentAddress.permLandmark}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">State:
+        <label className="text-sm my-1">State:
           <input
             disabled={sameAddress}
             type="text"
             name="permState"
             value={permanentAddress.permState}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">City:
+        <label className="text-sm my-1">City:
           <input
             disabled={sameAddress}
             required
@@ -371,11 +371,11 @@ const SavingsAccountRegistration = () => {
             name="permCity"
             value={permanentAddress.permCity}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Pincode:
+        <label className="text-sm my-1">Pincode:
           <input
             disabled={sameAddress}
             required
@@ -385,7 +385,7 @@ const SavingsAccountRegistration = () => {
             name="permPincode"
             value={permanentAddress.permPincode}
             onChange={handlePermanentAddressChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
@@ -394,7 +394,7 @@ const SavingsAccountRegistration = () => {
       <div className='px-4 my-2 w-full lg:w-1/3'>
         <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold pb-2'>Occupation Details</h2>
 
-        <label className="text-base my-2">Occupation Type:
+        <label className="text-sm my-1">Occupation Type:
           <input
             required
             minLength={3}
@@ -403,11 +403,11 @@ const SavingsAccountRegistration = () => {
             name="occupation"
             value={occupationDetails.occupation}
             onChange={handleOccupationDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Source of Income:
+        <label className="text-sm my-1">Source of Income:
           <input
             required
             minLength={3}
@@ -416,18 +416,18 @@ const SavingsAccountRegistration = () => {
             name="sourceOfIncome"
             value={occupationDetails.sourceOfIncome}
             onChange={handleOccupationDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
 
-        <label className="text-base my-2">Gross Annual Income:
+        <label className="text-sm my-1">Gross Annual Income:
           <input
             required
             type="number"
             name="grossAnnualIncome"
             value={occupationDetails.grossAnnualIncome}
             onChange={handleOccupationDetailsChange}
-            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
+            className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-2"
           />
         </label>
       </div>
