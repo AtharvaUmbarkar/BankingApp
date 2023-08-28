@@ -183,6 +183,7 @@ const SavingsAccountRegistration = () => {
           <input
             type="email"
             name="emailId"
+            pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
             value={personalDetails.emailId}
             onChange={handlePersonalDetailsChange}
             className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-3"
@@ -422,7 +423,7 @@ const SavingsAccountRegistration = () => {
         <label className="text-base my-2">Gross Annual Income:
           <input
             required
-            type="text"
+            type="number"
             name="grossAnnualIncome"
             value={occupationDetails.grossAnnualIncome}
             onChange={handleOccupationDetailsChange}
