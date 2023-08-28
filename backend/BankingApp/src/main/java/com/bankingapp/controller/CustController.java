@@ -134,7 +134,7 @@ public class CustController {
 				custService.increaseAttempts(userName);
 			}
 			else {
-				throw new UnauthorizedAccessException("INVALID USERNAME");
+				throw new UnauthorizedAccessException(e.getMessage());
 			}
 		}catch(LockedException e) {
 			throw new UnauthorizedAccessException(e.getMessage());

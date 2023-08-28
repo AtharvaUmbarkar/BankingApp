@@ -7,9 +7,10 @@ const UserProfile = () => {
   // console.log(user);
   return (
     <div className='w-full p-8'>
-      <div className='w-2/5 flex flex-col mx-auto items-center'>
+      <div className='w-full flex flex-col mx-auto items-center sm:w-2/3 md:w-2/4'>
         <h1 className='font-semibold text-2xl mb-4 border-b border-indigo-700 w-full text-center pb-4'>User Details</h1>
-        <div className='w-full flex flex-col divide-y space-y-2 divide-indigo-200 shadow-md rounded p-2'>
+        <div className='w-full flex flex-col divide-y space-y-2 divide-indigo-200 shadow-md rounded p-2 
+         text-xs   sm:text-sm md:text-base lg:text-base xl:text-lg '>
           {/* {Object.keys(user).map((key, i) => {
             return (
               <div key={key} className='w-full flex flex-row items-center p-1 pt-2 px-2 rounded'>
@@ -48,7 +49,7 @@ const UserProfile = () => {
           </div>
           <div className='w-full flex flex-row items-center p-1 pt-2 px-2 rounded'>
             <span className='w-1/2 font-semibold'>Email ID:</span>
-            <span className='flex-grow'>{user.emailId}</span>
+            <span className='flex-grow '>{user.emailId}</span>
           </div>
           <div className='w-full flex flex-row items-center p-1 pt-2 px-2 rounded'>
             <span className='w-1/2 font-semibold'>Mobile No.:</span>
