@@ -64,20 +64,14 @@ public class AccountService implements AccountServiceInterface {
 		Customer customer;
 		Optional<Customer> obj = custRepo.findById(Id);
 		if(!obj.isPresent()) {
-//			result = "Customer not found";
 			throw new ResourceNotFoundException("Customer not found");
 		}
 		else {
 			customer = obj.get();
-			long years = ChronoUnit.YEARS.between( LocalDate.now(), customer.getDateOfBirth());
-			if(years>18) {
-				result = "Age not sufficient";
-			}
-			else {
-				account.setCustomer(customer);
-				Account acnt = accountRepo.save(account);
-				result = "Account successfully created wth Account No: " + acnt.getAccountNumber();
-			}
+			account.setCustomer(customer);
+			Account acnt = accountRepo.save(account);
+			result = "Account successfully created wth Account No: " + acnt.getAccountNumber();
+			
 		}
 		return result;
 	}
@@ -139,17 +133,19 @@ public class AccountService implements AccountServiceInterface {
 		if(obj.isPresent()) {
 			Account acnt = obj.get();
 			if(acnt.isActive()) {
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(acnt.getLastTransaction());
-				cal.add(Calendar.DATE, 730);
-				Date current = new Date();
-				if(current.after(cal.getTime())) {
-					accountRepo.toggleActivation(false, acntNo);
-					return true;
-				}
-				else {
-					throw new UnauthorizedAccessException("Customer have a transaction in last two years");
-				}
+//				Calendar cal = Calendar.getInstance();
+//				cal.setTime(acnt.getLastTransaction());
+//				cal.add(Calendar.DATE, 730);
+//				Date current = new Date();
+//				if(current.after(cal.getTime())) {
+//					accountRepo.toggleActivation(false, acntNo);
+//					return true;
+//				}
+//				else {
+//					throw new UnauthorizedAccessException("Customer have a transaction in last two years");
+//				}
+				accountRepo.toggleActivation(false, acntNo);
+				return true;
 			}
 			else {
 				accountRepo.toggleActivation(true, acntNo);

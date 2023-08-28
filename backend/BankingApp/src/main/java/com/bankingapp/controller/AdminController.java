@@ -62,9 +62,6 @@ public class AdminController {
 	public AdminDTO signUp(@RequestBody LoginModel u) throws Exception
 	{
 		BCryptPasswordEncoder e = new BCryptPasswordEncoder();
-//		System.out.println(e.encode(u.getPassword()));
-//		authenticate(u.getUsername(), u.getPassword());
-//		System.out.println("reached here");
 		Admin admin = new Admin();
 		admin.setEmailId("admin@gmial.cinm");
 		admin.setMobileNumber("1234567890");
