@@ -8,7 +8,7 @@ import { UserContext } from '../../Utilities/context/userContext';
 const navigation = [
   // { name: 'Open a Savings Account', to: '/savings-account-registration' },
   // { name: 'Register for Online Banking', to: '/online-banking-registration' },
-  // { name: 'About', to: '/' },
+  // { name: 'Home', to: '/' },
 ]
 
 
@@ -112,6 +112,12 @@ const Navbar = () => {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
+                <Link
+                  to="/"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                >
+                  Home
+                </Link>
                 {(sessionStorage.getItem("user")) &&
                   <Link
                     to="/user"
