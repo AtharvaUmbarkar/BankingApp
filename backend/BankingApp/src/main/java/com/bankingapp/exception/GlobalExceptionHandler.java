@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -67,9 +69,28 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(value = InvalidTypeException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public @ResponseBody ErrorResponse InvalidTypeException(InvalidTypeException ex) {
+	public @ResponseBody ErrorResponse handleInvalidTypeException(InvalidTypeException ex) {
 		return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
 	}
-
+	
+//	@ExceptionHandler(value = UsernameNotFoundException.class)
+//	@ResponseStatus(HttpStatus.NOT_FOUND)
+//	public @ResponseBody ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException e) {
+//		return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()), HttpStatus.NOT_FOUND);
+//	}
+//	
+//	@ExceptionHandler(value = DisabledException.class)
+//	@ResponseStatus(HttpStatus.NOT_FOUND)
+//	public @ResponseBody ResponseEntity<Object> handleDisabledException(DisabledException e) {
+//		System.out.println("reached here");
+//		return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()), HttpStatus.NOT_FOUND);
+//	}
+	
+	@ExceptionHandler(value = RuntimeException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public @ResponseBody ResponseEntity<Object> handleRuntimeException(RuntimeException e) {
+		System.out.println("reached here");
+		return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()), HttpStatus.NOT_FOUND);
+	}
 }
 

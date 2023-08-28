@@ -3,6 +3,7 @@ import { Outlet, useMatch, useNavigate, useParams } from 'react-router-dom'
 import { Listbox } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
 import axios from 'axios'
+import { toast } from 'react-hot-toast'
 
 const transactionTypes = [
   'imps',
@@ -33,8 +34,9 @@ const AccountTransaction = () => {
         }))
       }
     ).catch(
-      (errors) => {
-        console.log(errors);
+      (error) => {
+        toast.error(error.response.data.message)
+        console.log(error);
       }
     );
   }, [])

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_URL } from "./constants";
+import { toast } from 'react-hot-toast';
 
 
 export const loginUser = async (userCredentials, admin) => {
@@ -22,18 +23,28 @@ export const loginUser = async (userCredentials, admin) => {
 }
 
 export const getAllBeneficiaries = async (currentUsername) => {
-    const response = await axios.get(`${API_URL}/getAllBeneficiaries?userName=${currentUsername}`, { headers: { "Authorization": `Bearer ${sessionStorage.getItem("token")}` } })
+    try{
+        const response = await axios.get(`${API_URL}/getAllBeneficiaries?userName=${currentUsername}`, { headers: { "Authorization": `Bearer ${sessionStorage.getItem("token")}` } })
     return response;
+    }catch(error){
+        toast.error(error.response.data.message)
+    }
+    return null
 }
 
 export const addBeneficiaryToCustomer = async (beneficiary, userName) => {
-    const response = await axios.post(`${API_URL}/save/beneficiary?userName=${userName}`, JSON.stringify(beneficiary), {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${sessionStorage.getItem("token")}`,
-        }
-    })
-    return response
+    try{
+        const response = await axios.post(`${API_URL}/save/beneficiary?userName=${userName}`, JSON.stringify(beneficiary), {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionStorage.getItem("token")}`,
+            }
+        })
+        return response
+    }catch(error){
+        toast(error.response.data.message)
+    }
+    return null;
 }
 
 export const makeFundTransfer = async (transactionDetails) => {
@@ -47,13 +58,23 @@ export const makeFundTransfer = async (transactionDetails) => {
 }
 
 export const getLatestTransactions = async (accountNumber) => {
-    const response = await axios.get(`${API_URL}/getLatestTransactions?accountNumber=${accountNumber}`, { headers: { "Authorization": `Bearer ${sessionStorage.getItem("token")}` } })
-    return response;
+    try{
+        const response = await axios.get(`${API_URL}/getLatestTransactions?accountNumber=${accountNumber}`, { headers: { "Authorization": `Bearer ${sessionStorage.getItem("token")}` } })
+        return response;
+    }catch(error){
+        toast.error(error.response.data.message);
+    }
+    return null
 }
 
 export const getStatement = async (accountNumber, from, to) => {
+    try{
     const response = await axios.get(`${API_URL}/getAccountStatement?accountNumber=${accountNumber}&from=${from}&to=${to}`, { headers: { "Authorization": `Bearer ${sessionStorage.getItem("token")}` } })
     return response;
+    }catch(error){
+        toast.error(error.response.data.message)
+    }
+    return null
 }
 
 export const getAllCustomers = async () => {

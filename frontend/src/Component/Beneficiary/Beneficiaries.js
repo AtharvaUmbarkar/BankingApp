@@ -17,7 +17,8 @@ export default withAuthorization (condition, LOGIN) (() => {
     useEffect(() => {
         const updateBeneficiaries = async (user) => {
             const result = await getAllBeneficiaries(user.userName)
-            setBeneficiaries(result.data)
+            if(result != null)
+              setBeneficiaries(result.data)
         }
         updateBeneficiaries(user);        
     }, [])

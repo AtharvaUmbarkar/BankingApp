@@ -30,8 +30,12 @@ const UserAccounts = () => {
         window.location.reload()
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message, { duration: 3000 })
+      if(error.response.data){
+        toast.error(error.response.data.message, { duration: 3000 })
+      }
+      else{ 
+        toast.error(error.message, { duration: 3000 })
+      }
     }
   }
 
@@ -49,7 +53,7 @@ const UserAccounts = () => {
           )
           setAccounts(response.data);
         } catch (error) {
-          toast.error(error.message)
+          toast.error(error.response.data.message)
         }
       }
     }

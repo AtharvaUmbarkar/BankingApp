@@ -38,7 +38,8 @@ export default withAuthorization(condition, LOGIN)(() => {
     const updateTransactions = async (accountNumber, from, to) => {
       try{
         const result = await getStatement(accountNumber, from, to)
-        setTransactions(result.data)
+        if(result != null)
+          setTransactions(result.data)
       } catch (e){
         toast.error(e.response.data.message)
       }

@@ -52,7 +52,7 @@ const NEFT = () => {
         userRemarks: "",
       })
     } catch (error) {
-      if (error.response.status === 404) toast.error(error.response.data.message, { duration: 3000 })
+      if (error.response.data) toast.error(error.response.data.message, { duration: 3000 })
       else toast.error("Transaction Failed!", { duration: 3000 })
     }
   }

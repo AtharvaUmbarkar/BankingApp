@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import com.bankingapp.service.AdminService;
 import com.bankingapp.service.CustService;
@@ -32,24 +33,18 @@ public class WebSecurityConfig {
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
-	
-	// @Autowired
-	// AdminService adminService;
-	
-	// @Autowired
-	// CustService customerService;
-
 //	@Autowired
-//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//		// configure AuthenticationManager so that it knows from where to load
-//		// user for matching credentials
-//		// Use BCryptPasswordEncoder
-//		auth.authenticationProvider(adminAuthenticationProvider()).authenticationProvider(customerAuthenticationProvider());
-//	}
+//	private FilterChainExceptionHandler filterChainExceptionHandler;
+	
 	
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
 		return authenticationConfiguration.getAuthenticationManager();
+	}
+	
+	@Bean
+	public FilterChainExceptionHandler filterChainExceptionHandler() {
+		return new FilterChainExceptionHandler();
 	}
 	
 	@Bean
@@ -117,6 +112,7 @@ public class WebSecurityConfig {
 				.anyRequest().authenticated())
 		// make sure we use stateless session; session won't be used to
 		// store user's state.
+		.addFilterBefore(filterChainExceptionHandler(), LogoutFilter.class)
 		.exceptionHandling((exp) -> exp.authenticationEntryPoint(jwtAuthenticationEntryPoint))
 		.sessionManagement((mgmt) -> mgmt.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.authenticationProvider(authProvider());

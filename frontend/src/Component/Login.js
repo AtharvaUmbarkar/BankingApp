@@ -34,7 +34,13 @@ export default withAuthorization(condition, HOME)(() => {
           }
         }
       } catch (error) {
-        toast.error("Invalid credentials!");
+        console.log(error)
+        if(error.response.data){
+          toast.error(error.response.data.message);
+        }
+        else{
+          toast.error("Invalid credentials!");
+        }
       }
     }
   }

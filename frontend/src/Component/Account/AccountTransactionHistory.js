@@ -19,7 +19,8 @@ export default withAuthorization(condition, LOGIN)(() => {
     useEffect(() => {
         const updateTransactions = async (accountNumber) => {
             const result = await getLatestTransactions(accountNumber)
-            setTransactions(result.data)
+            if(result != null)
+              setTransactions(result.data)
         }
         updateTransactions(accountNumber);        
     }, [])
