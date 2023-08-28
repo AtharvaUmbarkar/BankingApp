@@ -5,7 +5,6 @@ import { UserContext } from "../../../Utilities/context/userContext";
 import withAuthorization from '../../../Utilities/context/withAuthorization';
 import { ADD_BENEFICIARY, LOGIN } from '../../../Utilities/routes';
 import { toast } from 'react-hot-toast';
-import Modal from 'react-modal';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Dialog } from '@headlessui/react';
 
