@@ -12,7 +12,12 @@ const navigation = [
     { name: 'Add Beneficiary', to: '/user/addBeneficiary' },
 ]
 
-const UserNavbar = () => {
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+}
+
+
+const UserNavbar = ({active}) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
     const { user, removeUser } = useContext(UserContext)
@@ -59,7 +64,12 @@ const UserNavbar = () => {
                         Home
                     </Link>
                     {navigation.map((item) => (
-                        <Link key={item.name} to={item.to} className="text-sm font-semibold leading-6 text-gray-900">
+                        <Link key={item.name} to={item.to} className={classNames(
+                            item.name == active
+                              ? 'bg-indigo-700 text-white'
+                              : 'text-black hover:bg-indigo-700 hover:text-white',
+                            'rounded-md px-3 py-2 text-sm font-medium'
+                          )}>
                             {item.name}
                         </Link>
                     ))}
