@@ -38,6 +38,7 @@ import ViewAccountDetails from './Component/Admin/AccountDetails';
 import OpenAccount from './Component/Admin/OpenAccount';
 import NotFound from './Component/NotFound';
 import UserCreateAccount from './Component/User/UserCreateAccount';
+import ForgotUserName from './Component/Home/ForgotUserName';
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
             <Route exact path="login" element={<Login />} />
 
             <Route exact path="forgot-password" element={<ForgotPassword />} />
+            <Route exact path="forgot-username" element={<ForgotUserName />} />
             <Route path='savings-account-registration' element={<SavingsAccountRegistration />} />
             <Route path='online-banking-registration' element={<OnlineBankingRegistration />} />
 

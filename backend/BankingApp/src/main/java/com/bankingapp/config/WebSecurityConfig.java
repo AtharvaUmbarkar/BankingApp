@@ -106,6 +106,7 @@ public class WebSecurityConfig {
 						"/netBankingRegistration",
 						"/createFirstAccount",
 						"/forgotPassword",
+						"/forgotUserName",
 						"/changePassword",
 						"/admin/LoginAdmin",
 						"admin/SignupAdmin",
