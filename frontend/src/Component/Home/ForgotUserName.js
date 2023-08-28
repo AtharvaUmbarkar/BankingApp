@@ -47,7 +47,7 @@ const ForgotUserName = () => {
   return (
     <div className='w-full flex flex-col'>
       <div className="flex flex-col w-1/3 mt-3 self-center">
-        <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-2">Forgot/Change Password</h2>
+        <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-2">Forgot/Change User Name</h2>
         <form onSubmit={handleSubmit} className=''>
 
           <div className='flex flex-col w-full'>
@@ -62,7 +62,7 @@ const ForgotUserName = () => {
               />
             </label>
 
-            <label className="my-1 text-sm w-full">Set New Username:
+            <label className="my-1 text-sm w-full">Set New User Name:
               <input
                 type="text"
                 name="newUsername"
@@ -71,7 +71,7 @@ const ForgotUserName = () => {
                 className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 mt-1"
               />
             </label>
-            <label className="my-1 text-sm w-full">Confirm New Username:
+            <label className="my-1 text-sm w-full">Confirm New User Name:
               <input
                 type="text"
                 name="confirmNewUsername"
