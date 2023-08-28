@@ -44,16 +44,9 @@ public class AccountService implements AccountServiceInterface {
 		}
 		else {
 			customer = obj.get();
-			customer = obj.get();
-			long years = ChronoUnit.YEARS.between( LocalDate.now(), customer.getDateOfBirth());
-			if(years>18) {
-				result = "Age not sufficient";
-			}
-			else {
-				account.setCustomer(customer);
-				Account acnt = accountRepo.save(account);
-				result = "Account successfully created wth Account No: " + acnt.getAccountNumber();
-			}
+			account.setCustomer(customer);
+			Account acnt = accountRepo.save(account);
+			result = "Account successfully created wth Account No: " + acnt.getAccountNumber();
 		}
 		return result;
 	}

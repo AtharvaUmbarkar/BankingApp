@@ -83,9 +83,12 @@ export default withAuthorization(condition, HOME)(() => {
               <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                 Password
               </label>
-              <div className="text-sm">
+              <div className="text-sm flex flex-col items-end">
                 <Link to="/forgot-password" className="font-semibold text-indigo-600 hover:text-indigo-500">
                   Change/Forgot Password?
+                </Link>
+                <Link to="/forgot-username" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                  Change/Forgot Username?
                 </Link>
               </div>
             </div>
