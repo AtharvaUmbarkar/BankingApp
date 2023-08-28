@@ -53,7 +53,7 @@ public class TransactionService {
 				Transaction transaction = transactionModel.getTransaction();
 				//acnt.setAccountBalance(100000);
 				double new_balance = acnt.getAccountBalance() - transaction.getTxnAmount();
-				if(new_balance < 0.00d) {
+				if(new_balance <= 0.00d) {
 					throw new InsufficientBalanceException("Insufficient Balance");
 				}
 				else if (!acnt.getCustomer().getTransactionPassword().equals(transactionModel.getTransactionPassword())) {
