@@ -38,7 +38,7 @@ export default withAuthorization(condition, LOGIN)(() => {
 
   return (
     <div className='w-full flex flex-col'>
-      <div className="flex flex-col w-1/3 mt-8 self-center">
+      <div className="flex flex-col w-1/3 mt-8 self-center m-20 w-full lg:w-1/3 sm:w-1/2 md:w-1/2">
         <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-4">Add Payee</h2>
         <form onSubmit={handleSubmit} autoComplete='off'>
           <label className="text-base">Account Number:

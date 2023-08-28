@@ -62,12 +62,12 @@ const UserAccounts = () => {
 
   return (
     <div className='w-full flex flex-col items-center'>
-      <div className='w-1/3 my-8'>
+      <div className='w-97% my-8 lg:w-1/4 sm:w-1/2 md:w-1/3'>
         <h1 className='font-semibold text-2xl mb-4 border-b border-indigo-700 w-full text-center pb-4'>Your Accounts</h1>
         <button type='button' onClick={handleOnClick} className='block bg-indigo-700 text-center w-full p-1 text-white mb-4 rounded'>+ Create Account</button>
         {accountsList && accountsList.map((account, i) => {
           return (
-            <div key={i} className='w-full p-4 my-2 bg-slate-100 shadow-md flex flex-col rounded'>
+            <div key={i} className='w-full p-4 my-2 bg-slate-100 shadow-md flex flex-col rounded text-xs sm:text-base md:text-base lg:text-base'>
               <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Number: </span><span>{account.accountNumber}</span></p>
               <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Type: </span><span>{account.accountType}</span></p>
               <p className='flex flex-row items-center justify-between'><span className='font-semibold'>Account Balance: </span><span>{account.accountBalance}</span></p>
