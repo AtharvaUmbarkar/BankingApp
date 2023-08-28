@@ -16,9 +16,9 @@ export default function Stats(){
         let response = await Promise.all(promises)
         if(response){
           setStats({
-            customers: response[0].data.length ?? "-",
-            transactions: response[1].data[0] ?? "-",
-            transactionsWorth: response[1].data[1] ?? "0", 
+            customers: response[0].data ? response[0].data.length :  "-",
+            transactions: response[1].data ? response[1].data[0] : "-",
+            transactionsWorth: response[1].data ? response[1].data[1] : "0", 
           })
         }
       } catch(e){
@@ -49,7 +49,7 @@ export default function Stats(){
                     <div className="w-64 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 px-16 py-12 mx-auto flex max-w-xs items-center flex-col gap-y-4">
                       <dt className="text-base leading-7 text-gray-600">transacted</dt>
                       <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                        {stats.transactionsWorth.toLocaleString('en-IN', {style: "currency", currency: "INR", maximumFractionDigits: 0})}
+                        {stats.transactionsWorth.toLocaleString('en-IN', {style: "currency", currency: "INR", minimumFractionDigits: 0, maximumFractionDigits: 0})}
                       </dd>
                     </div>
                 </dl>

@@ -35,6 +35,7 @@ public class Transaction {
 	@Pattern(regexp="^Withdraw|Deposit|NEFT|RTGS|IMPS$")
 	private String txnType; // withdraw, deposit, NEFT, etc
 	@CreatedDate
+	@Column(nullable = false)
 	private Date txnDate = new Date();
 	@Column(nullable=false)
 	@Range(min = 1, message = "Amount should be greater than 0")

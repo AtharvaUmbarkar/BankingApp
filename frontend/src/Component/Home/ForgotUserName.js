@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 
 const passwordTypes = ["Login", "Transactional"]
 
-const ForgotPassword = () => {
+const ForgotUserName = () => {
   // const { user } = useContext(UserContext)
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate()
@@ -20,29 +20,26 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const valid = (inputs.newPassword === inputs.confirmNewPassword)
+    const valid = (inputs.newUsername === inputs.confirmNewUsername)
 
     if (!valid) {
       toast.error("Entered details are not valid", { duration: 3000 });
     }
     else {
-      axios.put("http://localhost:8090/forgotPassword",
+      axios.put("http://localhost:8090/forgotUserName",
         {
-          userName: inputs.userName,
-          passwordType: inputs.passwordType,
-          newPassword: inputs.newPassword,
+          aadhaarNumber: inputs.aadhaarNumber,
+          userName: inputs.newUsername,
           otp: inputs.otp,
         },
         {
           headers: { "Content-Type": "application/json" }
         }
       ).then((response) => {
-        // console.log(response);
-        toast.success("Password changed successfully", { duration: 3000 });
+        toast.success("Username changed successfully", { duration: 3000 });
         navigate("/login")
       }, (error) => {
-        // console.log("Failure.." + error);
-        toast.error("Failed to change password", { duration: 3000 })
+        toast.error("Failed to change username", { duration: 3000 })
       });
     }
   }
@@ -50,57 +47,44 @@ const ForgotPassword = () => {
   return (
     <div className='w-full flex flex-col'>
       <div className="flex flex-col w-1/3 mt-3 self-center">
-        <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-2">Forgot/Change Password</h2>
+        <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-2">Forgot/Change User Name</h2>
         <form onSubmit={handleSubmit} className=''>
 
           <div className='flex flex-col w-full'>
-            <label className="my-1 text-sm w-full">User Name:
+            <label className="my-1 text-sm w-full">Aadhaar Number:
               <input
                 type="text"
                 required
+                minLength={12}
+                maxLength={12}
+                pattern='^[0-9]{12}$'
+                name="aadhaarNumber"
+                value={inputs.aadhaarNumber || ""}
+                onChange={handleChange}
+                className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 mt-1"
+              />
+            </label>
+
+            <label className="my-1 text-sm w-full">Set New User Name:
+              <input
+                required
                 minLength={8}
                 maxLength={30}
-                name="userName"
-                value={inputs.userName || ""}
+                type="text"
+                name="newUsername"
+                value={inputs.newUsername || ""}
                 onChange={handleChange}
                 className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 mt-1"
               />
             </label>
-
-            <label className="my-1 text-sm w-full">Password Type:
-              <select
-                required
-                name="passwordType"
-                onChange={handleChange}
-                className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-1 w-full"
-              >
-                <option className='w-full' value={""} ></option>
-                {passwordTypes.map((b, i) => {
-                  return <option key={i} className='w-full' value={b} >{b}</option>
-                })}
-              </select>
-            </label>
-
-            <label className="my-1 text-sm w-full">Set New Password:
+            <label className="my-1 text-sm w-full">Confirm New User Name:
               <input
                 required
                 minLength={8}
-                maxLength={16}
-                type="password"
-                name="newPassword"
-                value={inputs.newPassword || ""}
-                onChange={handleChange}
-                className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 mt-1"
-              />
-            </label>
-            <label className="my-1 text-sm w-full">Confirm New Password:
-              <input
-                required
-                minLength={8}
-                maxLength={16}
-                type="password"
-                name="confirmNewPassword"
-                value={inputs.confirmNewPassword || ""}
+                maxLength={30}
+                type="text"
+                name="confirmNewUsername"
+                value={inputs.confirmNewUsername || ""}
                 onChange={handleChange}
                 className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 mt-1"
               />
@@ -122,4 +106,4 @@ const ForgotPassword = () => {
   )
 }
 
-export default ForgotPassword
+export default ForgotUserName

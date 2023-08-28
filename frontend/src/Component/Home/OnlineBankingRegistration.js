@@ -19,7 +19,7 @@ const OnlineBankingRegistration = () => {
   }
 
   const handleSubmit = async (event) => {
-    
+
     event.preventDefault();
     const valid = (inputs.loginPassword === inputs.confirmLoginPassword) &&
       (inputs.transactionPassword === inputs.confirmTransactionPassword) &&
@@ -58,9 +58,9 @@ const OnlineBankingRegistration = () => {
         <h2 className="text-2xl font-semibold mt-4 mb-2 w-full border-b-2 border-indigo-700 pb-2">Internet Banking</h2>
         <form autoComplete='off' onSubmit={handleSubmit} className=''>
 
-          <div className=''>
+          <div className='flex flex-col w-full'>
 
-            <label className="text-base my-2">Account Number:
+            <label className="text-sm my-1 w-full">Account Number:
               <input
                 required
                 pattern='^[0-9]{10}$'
@@ -68,22 +68,22 @@ const OnlineBankingRegistration = () => {
                 name="accountNumber"
                 value={inputs.accountNumber || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 my-1"
               />
             </label>
-            <label className="text-base my-2">User Name:
+            <label className="text-sm my-1 w-full">User Name:
               <input
                 required
-                minLength={3}
+                minLength={8}
                 maxLength={30}
                 type="text"
                 name="userName"
                 value={inputs.userName || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 my-1"
               />
             </label>
-            <label className="text-base my-2">Set Login Password:
+            <label className="text-sm my-1 w-full">Set Login Password:
               <input
                 required
                 minLength={8}
@@ -92,10 +92,10 @@ const OnlineBankingRegistration = () => {
                 name="loginPassword"
                 value={inputs.loginPassword || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 my-1"
               />
             </label>
-            <label className="text-base my-2">Confirm Login Password:
+            <label className="text-sm my-1 w-full">Confirm Login Password:
               <input
                 required
                 minLength={8}
@@ -104,10 +104,10 @@ const OnlineBankingRegistration = () => {
                 name="confirmLoginPassword"
                 value={inputs.confirmLoginPassword || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 my-1"
               />
             </label>
-            <label className="text-base my-2">Set Transaction Password:
+            <label className="text-sm my-1 w-full">Set Transaction Password:
               <input
                 required
                 minLength={8}
@@ -116,19 +116,19 @@ const OnlineBankingRegistration = () => {
                 name="transactionPassword"
                 value={inputs.transactionPassword || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 my-1"
               />
             </label>
-            <label className="text-base my-2">Confirm Transaction Password:
+            <label className="text-sm my-1 w-full">Confirm Transaction Password:
               <input
                 type="password"
                 name="confirmTransactionPassword"
                 value={inputs.confirmTransactionPassword || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 my-1"
               />
             </label>
-            <label className="text-base my-2">Enter OTP:
+            <label className="text-sm my-1 w-full">Enter OTP:
               <input
                 required
                 minLength={4}
@@ -137,11 +137,11 @@ const OnlineBankingRegistration = () => {
                 name="otp"
                 value={inputs.otp || ""}
                 onChange={handleChange}
-                className="border border-slate-500 focus-within:border-indigo-700 text-base p-1 my-1"
+                className="border border-slate-500 focus-within:border-indigo-700 text-sm p-1 my-1"
               />
             </label>
           </div>
-          <input type="submit" value="Submit" className="self-center p-2 uppercase bg-indigo-700 text-white my-4" />
+          <input type="submit" value="Submit" className="self-center p-2 uppercase bg-indigo-700 text-white my-2" />
         </form>
       </div>
     </div>
