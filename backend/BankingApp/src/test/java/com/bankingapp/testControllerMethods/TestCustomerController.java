@@ -35,6 +35,7 @@ import com.bankingapp.dto.CustomerDTO;
 import com.bankingapp.models.Account;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
+import com.bankingapp.repository.AdminRepo;
 import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.service.AccountService;
 import com.bankingapp.service.AdminService;
@@ -70,6 +71,8 @@ class TestCustomerController {
 	private CustomerRepo customerRepo;
 	@MockBean
 	private AccountRepo accRepo;
+	@MockBean
+	private AdminRepo adminRepo;
 	@MockBean
 	private EmailService emailService;
 	
