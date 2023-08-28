@@ -46,7 +46,8 @@ public class AccountService implements AccountServiceInterface {
 			account.setCustomer(customer);
 			Account acnt = accountRepo.save(account);
 			Beneficiary ben = new Beneficiary();
-			ben.setName("self");
+			ben.setName(customer.getFirstName()+" "+customer.getLastName()+"(self)");
+			ben.setNickname(customer.getFirstName()+" "+customer.getLastName());
 			ben.setCustomer(customer);
 			ben.setAccount(account);
 			benRepo.save(ben);
@@ -68,7 +69,8 @@ public class AccountService implements AccountServiceInterface {
 			account.setCustomer(customer);
 			Account acnt = accountRepo.save(account);
 			Beneficiary ben = new Beneficiary();
-			ben.setName("self");
+			ben.setName(customer.getFirstName()+" "+customer.getLastName()+"(self)");
+			ben.setNickname(customer.getFirstName()+" "+customer.getLastName());
 			ben.setCustomer(customer);
 			ben.setAccount(account);
 			benRepo.save(ben);
@@ -91,7 +93,8 @@ public class AccountService implements AccountServiceInterface {
 			Customer newCust = custRepo.save(customer);
 			Account newAccount = newCust.getAccounts().get(0);
 			Beneficiary ben = new Beneficiary();
-			ben.setName("self");
+			ben.setName(newCust.getFirstName()+" "+newCust.getLastName()+"(self)");
+			ben.setNickname(newCust.getFirstName()+" "+newCust.getLastName());
 			ben.setCustomer(newCust);
 			ben.setAccount(newAccount);
 			benRepo.save(ben);
@@ -109,7 +112,8 @@ public class AccountService implements AccountServiceInterface {
 				Customer newCust = custRepo.save(existingCust);
 				Account newAccount = newCust.getAccounts().get(newCust.getAccounts().size()-1);
 				Beneficiary ben = new Beneficiary();
-				ben.setName("self");
+				ben.setName(newCust.getFirstName()+" "+newCust.getLastName()+"(self)");
+				ben.setNickname(newCust.getFirstName()+" "+newCust.getLastName());
 				ben.setCustomer(newCust);
 				ben.setAccount(newAccount);
 				benRepo.save(ben);
