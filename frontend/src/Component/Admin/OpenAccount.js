@@ -169,7 +169,7 @@ const OpenAccount = () => {
             required
             minLength={10}
             maxLength={10}
-            // pattern='^\\d{10}$'
+            pattern='^\\d{10}$'
             type="text"
             name="mobileNumber"
             value={personalDetails.mobileNumber}
@@ -191,6 +191,8 @@ const OpenAccount = () => {
         <label className="text-base my-2">Aadhaar Number:
           <input
             required
+            minLength={12}
+            maxLength={12}
             pattern='^[0-9]{12}$'
             type="text"
             name="aadhaarNumber"
