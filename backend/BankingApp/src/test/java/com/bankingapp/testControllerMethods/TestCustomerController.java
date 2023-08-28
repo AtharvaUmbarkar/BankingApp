@@ -1,6 +1,8 @@
 package com.bankingapp.testControllerMethods;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 //import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -98,16 +100,24 @@ class TestCustomerController {
 		cust.setEmailId("sumit@gmail.com");
 		cust.setCustomerId(0);
 		
-		Mockito.when(customerService.validateCustomer(ArgumentMatchers.any())
+		Mockito.when(customerService.validateCustomer(login)
 				).thenReturn(cust);
+		
+		Customer resCustomer = customerService.validateCustomer(login);
+		assertThat(resCustomer).isNotNull();
+		assertEquals(resCustomer, cust);
 		
 		Mockito.when(mockModelMapper.map(cust, CustomerDTO.class)).thenReturn(custDTO);
 		System.out.println("Testing login unit....");
 		
+		CustomerDTO resCustDTO = mockModelMapper.map(cust, CustomerDTO.class);
 		
-		String json = mapper.writeValueAsString(login);
-		String custStr = mapper.writeValueAsString(custDTO);
-		System.out.println("String Customer : "+custStr);
+		assertThat(resCustDTO).isNotNull();
+		assertEquals(custDTO, resCustDTO);
+		
+		//String json = mapper.writeValueAsString(login);
+		//String custStr = mapper.writeValueAsString(custDTO);
+		//System.out.println("String Customer : "+custStr);
 		/*MvcResult mvcRes =
 				mvc.perform(post("/Login").
 				contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8").
@@ -148,8 +158,7 @@ class TestCustomerController {
 		List<Account> accts = new ArrayList<Account>();
 		
 		cust.setAccounts(accts);
-		
-		//Test login with valid credentials
+	
 		Mockito.when(customerService.saveCustomer(ArgumentMatchers.any())).thenReturn(cust);
 		System.out.println("Testing Save Customer Functionality....");
 		String json = mapper.writeValueAsString(cust);
@@ -161,7 +170,7 @@ class TestCustomerController {
 	}
 	
 
-	/*@Test
+	@Test
 	public void testFetchAccount() throws Exception
 	{
 		String username = "sumit";
@@ -169,23 +178,27 @@ class TestCustomerController {
 		act.setAccountNumber(1000000000);
 		act.setAccountType("Savings");
 		act.setAccountBalance(4800.0);
-		//act.setAccountCreationDate(new Date("2023-08-23T06:09:09.862+00:00"));
 		act.setActive(false);
 		act.setDebitCardAvailed(true);
 		
 		List<Account> actList = new ArrayList<Account>();
 		actList.add(act);
 		
-		Mockito.when(customerService.fetchAccounts(ArgumentMatchers.any())).thenReturn(actList);
+		Mockito.when(customerService.fetchAccounts(username)).thenReturn(actList);
 		System.out.println("Testing Fetch Accounts Functionality....");
-		String json = mapper.writeValueAsString(actList);
-		MvcResult mvcRes =  mvc.perform(get("/fetchAccounts/"+username).
+		
+		List<Account> resList = customerService.fetchAccounts(username);
+		
+		assertThat(resList.size()).isEqualTo(actList.size());
+		assertEquals(resList, actList);
+		
+		/*MvcResult mvcRes =  mvc.perform(get("/fetchAccounts/"+username).
 				contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
 		String res = mvcRes.getResponse().getContentAsString();
 		System.out.println("Expected : "+json);
 		System.out.println("Actual : "+res);
-		assertEquals(res,json);
-	}*/
+		assertEquals(res,json);*/
+	}
 	
 	@Test
 	public void testNetBankingRegistration() throws Exception
