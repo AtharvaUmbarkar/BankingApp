@@ -95,7 +95,15 @@ export const getCustomerAccounts = async (username) => {
 }
 
 export const toggleActivation = async (actNo) => {
-    const response = await axios.put(`${API_URL}/admin/toggle/Activation?acntNo=${actNo}`)
+    const response = await axios.put(`${API_URL}/admin/toggle/Activation?acntNo=${actNo}`, {}, {
+        headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}
+    })
+    return response
+}
+export const toggleUser = async (customerId) => {
+    const response = await axios.put(`${API_URL}/admin/toggle/user?custId=${customerId}`, {}, {
+        headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}
+    })
     return response
 }
 
@@ -116,4 +124,14 @@ export const getTransactionStats = async (query) => {
         headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}
     })
     return response;
+}
+
+export const createAccount = async (username) => {
+    const response = await axios.post(`${API_URL}/createAccount?username=${username}`, {}, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+        }
+    })
+    return response
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import AdminNavbar from './AdminNavbar'
-import { getAllCustomers, getCustomerAccounts, getCustomerAndAccountDetails, getCustomerDetails, toggleActivation } from '../../Utilities/api'
+import { createAccount, getAllCustomers, getCustomerAccounts, getCustomerAndAccountDetails, getCustomerDetails, toggleActivation, toggleUser } from '../../Utilities/api'
 import { PaperClipIcon, PhoneIcon, UserIcon } from '@heroicons/react/20/solid'
 import { ArrowTopRightOnSquareIcon, CalendarDaysIcon } from '@heroicons/react/24/outline'
 import { Link, useParams } from 'react-router-dom'
@@ -42,6 +42,31 @@ function CustomerDetails() {
       }
     }
 
+    const handleCustomerStatus = async (message) => {
+      try{
+        if(customer && customer.customerId){
+          const response = await toggleUser(customer.customerId)
+          toast.success(`Customer ${message}`)
+          setToggled((prev) => !prev)
+        }
+      } catch(e){
+        toast.error(e.response.data.message)
+      }
+    }
+
+    const handleAddNewAccount = async (e) => {
+      try {
+        const response = await createAccount(customer.userName);
+        if (response) {
+          toast.success("Acount Created Successfully", { duration: 3000 })
+          setToggled((prev) => !prev)
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message, { duration: 3000 })
+      }
+    }
+
   return (
     <div className="mt-12 mx-8 md:h-1/3 p-16 grid grid-cols-1 md:grid-cols-2">
       <div className="max-w-[360px] p-6 py-8 pb-12 shadow-md md:max-w-[480px] rounded-2xl border text-gray-700 border-black-700">
@@ -51,6 +76,7 @@ function CustomerDetails() {
                 <p className='text-lg text-indigo-700 font-bold'>#{customer.customerId}</p>
               <p className="text-2xl font-bold tracking-tight text-gray-900">{customer.firstName}</p>
                   <p>@{customer.userName}</p>
+                  <button className={`mt-2 rounded-md px-1.5 p-1 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${customer.enabled ? 'bg-red-600 hover:bg-red-500 focus-visible:outline-red-600': 'bg-green-600 hover:bg-green-500 focus-visible:outline-green-600'}`} onClick={(e) => handleCustomerStatus(customer.enabled ? "disabled!" : "enabled!")}>{customer.enabled ? "Disable" : "Enable"}</button>
             </div>
             <div className='flex justify-between mt-4 px-8'>
               <div className="flex items-center text-sm">
@@ -102,6 +128,7 @@ text-gray-700 border-black-700">
         </article>
         )): <p className="mt-6 text-center text-gray-500 font-semibold">No records</p>}
       </div>
+        <button type='button' onClick={handleAddNewAccount} className='rounded p-1 uppercase px-2 mt-3 block bg-slate-500 text-sm text-white ml-auto mr-0'>+ Add new account</button>
       </div>
   </div>
   )
