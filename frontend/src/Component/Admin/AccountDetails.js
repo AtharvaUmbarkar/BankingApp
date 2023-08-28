@@ -31,7 +31,7 @@ export default withAuthorization(condition, LOGIN)(() => {
   const { accountNumber } = useParams()
   const [page, setPage] = useState(1)
   const [from, setFrom] = useState("")
-  const [to, setTo] = useState("")
+  const [to, setTo] = useState(new Date())
 
   useEffect(() => {
     const updateTransactions = async (accountNumber, from, to) => {
