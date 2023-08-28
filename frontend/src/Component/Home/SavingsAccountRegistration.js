@@ -99,7 +99,7 @@ const SavingsAccountRegistration = () => {
 
   return (
     <form onSubmit={handleSubmit} className='w-full flex flex-col items-center'>
-      <h1 className='text-2xl m-4 mt-6 self-center'>Open a Savings Account</h1>
+      <h1 className='flex flex-col text-2xl m-4 mt-6 self-center'>Open a Savings Account</h1>
       <div className='px-4 my-2 w-full lg:w-1/3'>
         <h2 className='text-xl mb-3 border-b border-indigo-700 font-semibold pb-2'>Personal Details</h2>
 
