@@ -71,11 +71,11 @@ public class CustController {
 	@PostMapping("/Login")
 //	@ResponseBody
 	@Transactional
-	public CustomerDTO validateCustomer(@RequestBody LoginModel u) throws Exception
+	public CustomerDTO validateCustomer(@RequestBody LoginModel u) throws UnauthorizedAccessException 
 	{
 //		System.out.println("reached here");
 		authenticate(u.getUsername(), u.getPassword());
-		custRepo.changeLastLogin(new Date(),0,true,u.getUsername());
+		custService.changeLastLogin(u.getUsername());
 		final UserDetails userDetails = custService.loadUserByUsername(u.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 //		System.out.println(token);
@@ -128,21 +128,19 @@ public class CustController {
 	}
 	
 	@Transactional
-	public void authenticate(String userName, String password) throws Exception {
+	public void authenticate(String userName, String password) throws UnauthorizedAccessException {
 		try {
 			List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(UserRole.ROLE_USER.toString()));
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password, authorities));
-		}catch(DisabledException e) {
-			throw new Exception("USER_DISABLED",e);
 		}catch(BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
-		}catch(LockedException e) {
-			if(e.getMessage().contentEquals("3 attempts failed, your account have be locked for 1 day")) {
-				custRepo.changeLastLogin(new Date(),0,false,userName);
+			if(e.getMessage().contains("Password")) {
+				custService.increaseAttempts(userName);
 			}
+			else {
+				throw new UnauthorizedAccessException("INVALID USERNAME");
+			}
+		}catch(LockedException e) {
 			throw new UnauthorizedAccessException(e.getMessage());
-		}catch(AuthenticationException e) {
-			throw new Exception("AUTHENTICATION_ERROR", e);
 		}
 	}
 
