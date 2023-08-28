@@ -136,7 +136,7 @@ public class TransactionService {
 					//acnt.setAccountBalance(100000);
 					double senderNewBalance = senderAccount.getAccountBalance() - transaction.getTxnAmount();
 					double receiverNewBalance = receiverAccount.getAccountBalance() + transaction.getTxnAmount();
-					if(senderNewBalance < 0.00d) {
+					if(senderNewBalance <= 0.00d) {
 	//					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance");
 						throw new InsufficientBalanceException("Insufficient Balance");
 					}
