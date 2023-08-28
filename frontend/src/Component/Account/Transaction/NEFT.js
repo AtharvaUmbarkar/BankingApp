@@ -3,6 +3,8 @@ import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { toast } from 'react-hot-toast';
 import { ADD_BENEFICIARY, LOGIN } from '../../../Utilities/routes';
+import { Dialog } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const NEFT = () => {
   const { accountNumber } = useParams();
@@ -17,11 +19,28 @@ const NEFT = () => {
 
   const navigate = useNavigate();
   const [beneficiaries] = useOutletContext();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setTransactionDetails((transactionDetails) =>
       ({ ...transactionDetails, [e.target.name]: e.target.value })
     )
+  }
+
+  const openModal = () => {
+    setModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setTransactionDetails({
+      senderAccount: accountNumber,
+      transactionPassword: "",
+      receiverAccount: "",
+      txnAmount: 0,
+      // txnDate: new Date(),
+      userRemarks: "",
+    })
   }
 
   const handleSubmit = async (e) => {
@@ -42,15 +61,7 @@ const NEFT = () => {
           "Authorization": `Bearer ${sessionStorage.getItem("token")}`
         }
       });
-      toast.success(response.data, { duration: 3000 })
-      setTransactionDetails({
-        senderAccount: accountNumber,
-        transactionPassword: "",
-        receiverAccount: "",
-        txnAmount: 0,
-        // txnDate: new Date(),
-        userRemarks: "",
-      })
+      openModal();
     } catch (error) {
       if (error.response.status === 404) toast.error(error.response.data.message, { duration: 3000 })
       else toast.error("Transaction Failed!", { duration: 3000 })
@@ -133,6 +144,33 @@ const NEFT = () => {
       </label>
 
       <button type='submit' className='p-2 w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>SUBMIT</button>
+
+      <Dialog open={modalOpen} className={"fixed top-0 right-0 bottom-0 left-0 overflow-auto z-[60] bg-white"} onClose={closeModal}>
+        <Dialog.Panel className="w-full h-full grid place-content-center p-2 z-50">
+          <div className='h-full w-full p-8 shadow-md flex flex-col'>
+            <button type='button' className='cursor-pointer self-end' onClick={(closeModal)}><XMarkIcon width={28} height={28} /></button>
+            <h1 className='text-3xl font-semibold text-green-500 my-2'>Transaction Successful</h1>
+            <ul className='flex flex-col itens center w-full'>
+              <li className='flex flex-row items-center'>
+                <div className='font-semibold w-56 whitespace-nowrap'>Sender Account Number:</div>
+                <div>{transactionDetails.senderAccount}</div>
+              </li>
+              <li className='flex flex-row items-center'>
+                <div className='font-semibold w-56 whitespace-nowrap'>Receiver Account Number:</div>
+                <div>{transactionDetails.receiverAccount}</div>
+              </li>
+              <li className='flex flex-row items-center'>
+                <div className='font-semibold w-56 whitespace-nowrap'>Amount:</div>
+                <div>{transactionDetails.txnAmount}</div>
+              </li>
+              <li className='flex flex-row items-center'>
+                <div className='font-semibold w-56 whitespace-nowrap'>Remarks:</div>
+                <div>{transactionDetails.userRemarks}</div>
+              </li>
+            </ul>
+          </div>
+        </Dialog.Panel>
+      </Dialog>
     </form>
   )
 }
