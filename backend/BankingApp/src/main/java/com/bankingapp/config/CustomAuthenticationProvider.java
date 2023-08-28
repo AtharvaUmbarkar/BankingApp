@@ -58,6 +58,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 			Optional<Customer> optCust = custRepo.findByUserName(userName);
 			if(optCust.isPresent()) {
 				Customer cust = optCust.get();
+				if(!cust.isEnabled()) {
+					throw new BadCredentialsException("User is disabled");
+				}
 				if(!cust.isUnLocked()) {
 					Calendar cal = Calendar.getInstance();
 					cal.setTime(cust.getLastLogin());

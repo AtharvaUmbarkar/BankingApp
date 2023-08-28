@@ -43,6 +43,14 @@ const NEFT = () => {
         }
       });
       toast.success(response.data, { duration: 3000 })
+      setTransactionDetails({
+        senderAccount: accountNumber,
+        transactionPassword: "",
+        receiverAccount: "",
+        txnAmount: 0,
+        // txnDate: new Date(),
+        userRemarks: "",
+      })
     } catch (error) {
       if (error.response.status === 404) toast.error(error.response.data.message, { duration: 3000 })
       else toast.error("Transaction Failed!", { duration: 3000 })

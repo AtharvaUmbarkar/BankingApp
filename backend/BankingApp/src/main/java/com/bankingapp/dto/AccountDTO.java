@@ -11,7 +11,7 @@ public class AccountDTO {
 	private double accountBalance = 1000d;
 	private Date accountCreationDate = new Date();
 	private boolean active = false; 
-	private boolean debitCardAvailed;
+	private boolean debitCardAvailed=true;
 	
 	public long getAccountNumber() {
 		return accountNumber;
