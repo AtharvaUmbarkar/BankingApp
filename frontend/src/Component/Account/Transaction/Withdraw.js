@@ -43,6 +43,14 @@ const Withdraw = () => {
                 }
             })
             toast.success(res.data, { duration: 3000 })
+            setTransactionDetails({
+                senderAccount: accountNumber,
+                transactionPassword: "",
+                receiverAccount: "",
+                txnAmount: 0,
+                // txnDate: new Date(),
+                userRemarks: "",
+            })
         } catch (error) {
             console.log(error);
             if (error.response.data) toast.error(error.response.data.message, { duration: 3000 })
