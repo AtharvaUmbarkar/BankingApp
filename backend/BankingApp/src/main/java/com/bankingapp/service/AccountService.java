@@ -102,24 +102,23 @@ public class AccountService implements AccountServiceInterface {
 		}
 		else{
 			Customer existingCust = optObj.get();
-			if(existingCust.isNetBankingEnabled()) {
-				throw new AlreadyExistsException("Please login to create a new account");
-			}
-			else {
-				Account account = obj.getAccount();
-				account.setCustomer(existingCust);
-				existingCust.getAccounts().add(account);
-				Customer newCust = custRepo.save(existingCust);
-				Account newAccount = newCust.getAccounts().get(newCust.getAccounts().size()-1);
-				Beneficiary ben = new Beneficiary();
-				ben.setName(newCust.getFirstName()+" "+newCust.getLastName()+"(self)");
-				ben.setNickname(newCust.getFirstName()+" "+newCust.getLastName());
-				ben.setCustomer(newCust);
-				ben.setAccount(newAccount);
-				benRepo.save(ben);
-				result= String.format("successfully created account with account number: %d for customer id: %d" ,  newAccount.getAccountNumber(), newCust.getCustomerId()); 
-			
-			}
+//			if(existingCust.isNetBankingEnabled()) {
+//				throw new AlreadyExistsException("Please login to create a new account");
+//			}
+//			else {
+			Account account = obj.getAccount();
+			account.setCustomer(existingCust);
+			existingCust.getAccounts().add(account);
+			Customer newCust = custRepo.save(existingCust);
+			Account newAccount = newCust.getAccounts().get(newCust.getAccounts().size()-1);
+			Beneficiary ben = new Beneficiary();
+			ben.setName(newCust.getFirstName()+" "+newCust.getLastName()+"(self)");
+			ben.setNickname(newCust.getFirstName()+" "+newCust.getLastName());
+			ben.setCustomer(newCust);
+			ben.setAccount(newAccount);
+			benRepo.save(ben);
+			result= String.format("successfully created account with account number: %d for customer id: %d" ,  newAccount.getAccountNumber(), newCust.getCustomerId());
+//			}
 		}
 		return result;
 	}
