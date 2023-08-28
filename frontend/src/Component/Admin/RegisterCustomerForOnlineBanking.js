@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 
 
 
-const AddCustomer = () => {
+const RegisterCustomerForOnlineBanking = () => {
 
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate()
@@ -143,4 +143,4 @@ const AddCustomer = () => {
   )
 }
 
-export default AddCustomer
+export default RegisterCustomerForOnlineBanking

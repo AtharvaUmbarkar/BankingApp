@@ -1,12 +1,14 @@
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { UserContext } from '../../Utilities/context/userContext'
+import { useContext } from 'react'
 
 const navItems = [
     { name: 'Dashboard', to: "/admin"},
     { name: 'Customers', to: '/admin/viewCustomers'},
     { name: 'Open Account', to: '/admin/openAccount'},
-    { name: 'Add Customer', to: '/admin/addCustomer'},
+    { name: 'Register Customer For Online Banking', to: '/admin/registerCustomerForOnlineBanking'},
 ]
 
 function classNames(...classes) {
@@ -21,6 +23,16 @@ const user = {
 }
 
 export default function AdminNavbar({active}){
+
+  const { removeUser } = useContext(UserContext)
+  const navigate = useNavigate()
+
+    const handleLogout  = () => {
+      removeUser();
+      navigate('/');
+    }
+
+
     return (
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
@@ -29,7 +41,7 @@ export default function AdminNavbar({active}){
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                        <Link to="/" className="-m-1.5 p-1.5 text-center">
+                        <Link to="/admin" className="-m-1.5 p-1.5 text-center">
                             <span className="sr-only">Banking App</span>
                             <p className='font-serif font-bold text-3xl text-white'>BA</p>
                         </Link>
@@ -53,6 +65,10 @@ export default function AdminNavbar({active}){
                       </div>
                     </div>
                   </div>
+                    <div className="flex-shrink-0">
+                        <button type='button' onClick={handleLogout} className="whitespace-nowrap mr-1 text-sm font-semibold leading-6 text-white">
+                        Log Out
+                    </button></div>
                   <div className="-mr-2 flex md:hidden">
                     {/* Mobile menu button */}
                     <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">

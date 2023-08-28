@@ -25,7 +25,7 @@ export default withAuthorization(condition, HOME)(() => {
         const response = await loginUser({ username, password }, admin)
         if (response) {
           if (response.data.mobileNumber) {
-            setUserInContext(response.data)
+            setUserInContext({...response.data, isAdmin: admin})
             toast.success(`Welcome ${response.data.userName}`, {duration:3000})
             if (admin) navigate("/admin")
             else navigate("/user")
@@ -43,16 +43,7 @@ export default withAuthorization(condition, HOME)(() => {
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-2 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <Link to="/" className="-m-1.5 p-1.5 text-center">
-          <span className="sr-only">Banking App</span>
-          <p className='font-serif font-bold text-3xl text-indigo-700'>BA</p>
-          {/* <img
-              className="h-8 w-auto"
-              src="https://ogden_images.s3.amazonaws.com/www.nashuatelegraph.com/images/2018/12/29000134/1024px-Wells_Fargo_Bank.svg_-840x840.png"
-              alt=""
-            /> */}
-        </Link>
-        <h2 className="mt-2 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Log in to your account
         </h2>
       </div>
@@ -76,6 +67,11 @@ export default withAuthorization(condition, HOME)(() => {
 
               />
             </div>
+            <div className="text-sm flex flex-col mt-2 items-end">
+                <Link to="/forgot-username" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                  Change/Forgot Username?
+                </Link>
+              </div>
           </div>
 
           <div>
@@ -83,14 +79,6 @@ export default withAuthorization(condition, HOME)(() => {
               <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                 Password
               </label>
-              <div className="text-sm flex flex-col items-end">
-                <Link to="/forgot-password" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                  Change/Forgot Password?
-                </Link>
-                <Link to="/forgot-username" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                  Change/Forgot Username?
-                </Link>
-              </div>
             </div>
             <div className="mt-2">
               <input
@@ -104,6 +92,13 @@ export default withAuthorization(condition, HOME)(() => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            <div className="text-sm flex flex-col mt-2 items-end">
+                <Link to="/forgot-password" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                  Change/Forgot Password?
+                </Link>
+              </div>
+            </div>
+            <div>
             <div className="mt-4 flex flex-row items-center justify-center">
               <label htmlFor="admin" className="mr-6 whitespace-nowrap text-sm">Sign In as Admin?</label>
               <input

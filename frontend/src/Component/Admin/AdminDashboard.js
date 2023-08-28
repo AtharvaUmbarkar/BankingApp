@@ -5,7 +5,8 @@ const pathMap = {
   "stats": "Dashboard",
   "viewCustomers": "Customers",
   "openAccount": "Open Account",
-  "addCustomer": "Add Customer"
+  "addCustomer": "Add Customer",
+  "registerCustomerForOnlineBanking": "Register Customer For Online Banking"
 }
 
 export default function AdminDashboard() {
