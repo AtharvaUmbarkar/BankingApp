@@ -36,7 +36,6 @@ import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.service.CustService;
-import com.bankingapp.service.EmailService;
 import com.bankingapp.types.ForgotPasswordModel;
 import com.bankingapp.types.ChangePasswordModel;
 import com.bankingapp.types.ChangeUserNameModel;
@@ -57,8 +56,6 @@ public class CustController {
 	JwtTokenUtil jwtTokenUtil;
 	@Autowired
 	CustomerRepo custRepo;
-	@Autowired
-	EmailService emailService;
 	
 	//no longer needed
 	@PostMapping("/saveCustomer")
