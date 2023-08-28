@@ -27,7 +27,7 @@ export default withAuthorization(condition, LOGIN)(() => {
 
   const [transactions, setTransactions] = useState([])
   const [from, setFrom] = useState("")
-  const [to, setTo] = useState("")
+  const [to, setTo] = useState(new Date())
   const { accountNumber } = useParams()
   const [page, setPage] = useState(1)
 
