@@ -135,11 +135,11 @@ public class Customer {
 	private String userName;
 	
 	@Column(name="login_password")
-//	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
+	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String loginPassword;
 	
 	@Column(name="transaction_password")
-//	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
+	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String transactionPassword;
 	
 	@Value("${some.key:0}")
@@ -149,12 +149,6 @@ public class Customer {
 	private boolean unLocked=true;
 	private boolean enabled=true;
 
-	public boolean isEnabled() {
-		return enabled;
-	}
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
 	@JsonManagedReference
 	@JsonIgnore
 	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
@@ -171,7 +165,12 @@ public class Customer {
 	@JoinColumn(name="customer_id")
 	private List<Transaction> transactions;
 	
-	
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 	public int getNoFailedAttemps() {
 		return noFailedAttemps;
 	}
