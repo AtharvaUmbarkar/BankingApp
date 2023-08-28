@@ -54,6 +54,9 @@ const ForgotUserName = () => {
             <label className="my-1 text-sm w-full">Aadhaar Number:
               <input
                 type="text"
+                required
+                minLength={12}
+                maxLength={12}
                 pattern='^[0-9]{12}$'
                 name="aadhaarNumber"
                 value={inputs.aadhaarNumber || ""}
@@ -64,6 +67,9 @@ const ForgotUserName = () => {
 
             <label className="my-1 text-sm w-full">Set New User Name:
               <input
+                required
+                minLength={8}
+                maxLength={30}
                 type="text"
                 name="newUsername"
                 value={inputs.newUsername || ""}
@@ -73,6 +79,9 @@ const ForgotUserName = () => {
             </label>
             <label className="my-1 text-sm w-full">Confirm New User Name:
               <input
+                required
+                minLength={8}
+                maxLength={30}
                 type="text"
                 name="confirmNewUsername"
                 value={inputs.confirmNewUsername || ""}
