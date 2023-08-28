@@ -57,6 +57,9 @@ const ForgotPassword = () => {
             <label className="my-1 text-sm w-full">User Name:
               <input
                 type="text"
+                required
+                minLength={8}
+                maxLength={30}
                 name="userName"
                 value={inputs.userName || ""}
                 onChange={handleChange}
@@ -66,6 +69,7 @@ const ForgotPassword = () => {
 
             <label className="my-1 text-sm w-full">Password Type:
               <select
+                required
                 name="passwordType"
                 onChange={handleChange}
                 className="border border-slate-500 focus-within:border-indigo-700 p-1 mt-1 mb-1 w-full"
@@ -79,6 +83,9 @@ const ForgotPassword = () => {
 
             <label className="my-1 text-sm w-full">Set New Password:
               <input
+                required
+                minLength={8}
+                maxLength={16}
                 type="password"
                 name="newPassword"
                 value={inputs.newPassword || ""}
@@ -88,6 +95,9 @@ const ForgotPassword = () => {
             </label>
             <label className="my-1 text-sm w-full">Confirm New Password:
               <input
+                required
+                minLength={8}
+                maxLength={16}
                 type="password"
                 name="confirmNewPassword"
                 value={inputs.confirmNewPassword || ""}

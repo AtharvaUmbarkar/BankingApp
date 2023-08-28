@@ -193,6 +193,8 @@ const SavingsAccountRegistration = () => {
         <label className="text-sm my-1">Aadhaar Number:
           <input
             required
+            minLength={12}
+            maxLength={12}
             pattern='^[0-9]{12}$'
             type="text"
             name="aadhaarNumber"
