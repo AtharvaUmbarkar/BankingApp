@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -35,14 +36,18 @@ public class Account {
 			initialValue=1000000000,
 			allocationSize=1)
 	private long accountNumber;
+	@Column(nullable = false)
 	@Length(max = 10)
 	@Pattern(regexp="^[A-Za-z]+$", message="Account Type can only contain Characters") 
 	@Value("${some.key:Savings}")
 	private String accountType;
+	@Column(nullable = false)
 	@Value("${some.key:1000}")
 	private double accountBalance;
 	@CreatedDate
+	@Column(nullable = false)
 	private Date accountCreationDate =  new Date();
+	@Column(nullable = false)
 	private boolean active = false; //change later
 	private boolean debitCardAvailed;
 	private Date lastTransaction;

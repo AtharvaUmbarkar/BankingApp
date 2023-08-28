@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Outlet, useMatch, useNavigate } from 'react-router-dom'
+import { Outlet, useMatch, useNavigate, useParams } from 'react-router-dom'
 import { Listbox } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
 import axios from 'axios'
@@ -18,6 +18,7 @@ const AccountTransaction = () => {
   const [type, setType] = useState(match ? match.params.transactionType : transactionTypes[0]);
   const [beneficiaries, setBeneficiaries] = useState([])
   const userName = JSON.parse(sessionStorage.getItem("user"));
+  const { accountNumber } = useParams()
 
   const handleChange = (t) => {
     navigate(t)
@@ -27,7 +28,9 @@ const AccountTransaction = () => {
   useEffect(() => {
     axios.get("http://localhost:8090/getAllBeneficiaries", { params: { userName: userName.userName }, headers: { "Authorization": `Bearer ${sessionStorage.getItem("token")}` } }).then(
       (response) => {
-        setBeneficiaries(response.data)
+        setBeneficiaries((response.data).filter((b) => {
+          return b.accountNumber != accountNumber;
+        }))
       }
     ).catch(
       (errors) => {

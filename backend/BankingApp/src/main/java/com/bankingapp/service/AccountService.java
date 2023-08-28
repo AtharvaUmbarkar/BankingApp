@@ -1,10 +1,6 @@
 package com.bankingapp.service;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,8 +13,10 @@ import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
 import com.bankingapp.interfaces.AccountServiceInterface;
 import com.bankingapp.models.Account;
+import com.bankingapp.models.Beneficiary;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AccountRepo;
+import com.bankingapp.repository.BeneficiaryRepo;
 import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.types.CustomerAndAccountModel;
 import com.bankingapp.types.UserRole;
@@ -29,9 +27,10 @@ import jakarta.transaction.Transactional;
 public class AccountService implements AccountServiceInterface {
 	@Autowired 
 	private CustomerRepo custRepo;
-	
 	@Autowired
 	private AccountRepo accountRepo;
+	@Autowired
+	private BeneficiaryRepo benRepo;
 	
 	public String createAccount(Account account, String userName) throws ResourceNotFoundException
 	{
@@ -44,16 +43,15 @@ public class AccountService implements AccountServiceInterface {
 		}
 		else {
 			customer = obj.get();
-			customer = obj.get();
-			long years = ChronoUnit.YEARS.between( LocalDate.now(), customer.getDateOfBirth());
-			if(years>18) {
-				result = "Age not sufficient";
-			}
-			else {
-				account.setCustomer(customer);
-				Account acnt = accountRepo.save(account);
-				result = "Account successfully created wth Account No: " + acnt.getAccountNumber();
-			}
+			account.setCustomer(customer);
+			Account acnt = accountRepo.save(account);
+			Beneficiary ben = new Beneficiary();
+			ben.setName(customer.getFirstName()+" "+customer.getLastName()+"(self)");
+			ben.setNickname(customer.getFirstName()+" "+customer.getLastName());
+			ben.setCustomer(customer);
+			ben.setAccount(account);
+			benRepo.save(ben);
+			result = "Account successfully created wth Account No: " + acnt.getAccountNumber();
 		}
 		return result;
 	}
@@ -70,6 +68,12 @@ public class AccountService implements AccountServiceInterface {
 			customer = obj.get();
 			account.setCustomer(customer);
 			Account acnt = accountRepo.save(account);
+			Beneficiary ben = new Beneficiary();
+			ben.setName(customer.getFirstName()+" "+customer.getLastName()+"(self)");
+			ben.setNickname(customer.getFirstName()+" "+customer.getLastName());
+			ben.setCustomer(customer);
+			ben.setAccount(account);
+			benRepo.save(ben);
 			result = "Account successfully created wth Account No: " + acnt.getAccountNumber();
 			
 		}
@@ -86,8 +90,15 @@ public class AccountService implements AccountServiceInterface {
 			Account account = obj.getAccount();
 			account.setCustomer(customer);
 			customer.setAccounts(Arrays.asList(account));
-			Customer new_cust = custRepo.save(customer);
-			result= String.format("successfully created customer with id: %d and account number: %d" , new_cust.getCustomerId(), new_cust.getAccounts().get(0).getAccountNumber());
+			Customer newCust = custRepo.save(customer);
+			Account newAccount = newCust.getAccounts().get(0);
+			Beneficiary ben = new Beneficiary();
+			ben.setName(newCust.getFirstName()+" "+newCust.getLastName()+"(self)");
+			ben.setNickname(newCust.getFirstName()+" "+newCust.getLastName());
+			ben.setCustomer(newCust);
+			ben.setAccount(newAccount);
+			benRepo.save(ben);
+			result= String.format("successfully created customer with id: %d and account number: %d" , newCust.getCustomerId(), newAccount.getAccountNumber());
 		}
 		else{
 			Customer existingCust = optObj.get();
@@ -95,14 +106,18 @@ public class AccountService implements AccountServiceInterface {
 				throw new AlreadyExistsException("Please login to create a new account");
 			}
 			else {
-//				customer.setCustomerId(existingCust.getCustomerId());
-//				customer.set
 				Account account = obj.getAccount();
 				account.setCustomer(existingCust);
 				existingCust.getAccounts().add(account);
-//				customer.setAccounts(existingCust.getAccounts());
-				Customer new_cust = custRepo.save(existingCust);
-				result= String.format("successfully created account with account number: %d for customer id: %d" ,  new_cust.getAccounts().get(new_cust.getAccounts().size()-1).getAccountNumber(), new_cust.getCustomerId()); 
+				Customer newCust = custRepo.save(existingCust);
+				Account newAccount = newCust.getAccounts().get(newCust.getAccounts().size()-1);
+				Beneficiary ben = new Beneficiary();
+				ben.setName(newCust.getFirstName()+" "+newCust.getLastName()+"(self)");
+				ben.setNickname(newCust.getFirstName()+" "+newCust.getLastName());
+				ben.setCustomer(newCust);
+				ben.setAccount(newAccount);
+				benRepo.save(ben);
+				result= String.format("successfully created account with account number: %d for customer id: %d" ,  newAccount.getAccountNumber(), newCust.getCustomerId()); 
 			
 			}
 		}

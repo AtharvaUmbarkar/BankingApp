@@ -58,7 +58,7 @@ public class Customer {
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String fatherName;
 	
-	@Column(name="email_id", unique=true)
+	@Column(name="email_id", unique=true, nullable=false)
 	@Pattern(regexp="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
 	private String emailId;
 	
@@ -82,7 +82,7 @@ public class Customer {
 	@Column(name="temp_line2", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempAddressLine2;
-	@Column(name="temp_landmark")
+	@Column(name="temp_landmark", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempLandmark;
 	@Column(name="temp_state", nullable=false)
@@ -101,7 +101,7 @@ public class Customer {
 	@Column(name="perm_line2", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permAddressLine2;
-	@Column(name="perm_landmark")
+	@Column(name="perm_landmark", nullable=false)
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permLandmark;
 	@Column(name="perm_state", nullable=false)

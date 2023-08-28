@@ -7,14 +7,11 @@ import com.bankingapp.models.Customer;
 
 public class AccountDTO {
 	private long accountNumber;
-	private String accountType;
-	private double accountBalance;
-	private Date accountCreationDate;
-	private boolean active; 
+	private String accountType = "Savings";
+	private double accountBalance = 1000d;
+	private Date accountCreationDate = new Date();
+	private boolean active = false; 
 	private boolean debitCardAvailed;
-//	private Customer customer;
-//	private List<Transaction> debitTransactions;
-//	private List<Transaction> creditTransactions;
 	
 	public long getAccountNumber() {
 		return accountNumber;

@@ -23,7 +23,7 @@ public class Admin {
 	@Pattern(regexp="^[A-Za-z0-9]{8,}$", message="must contain only digits and alphabets and should be of length 8")
 	private String userName;
 	
-	@Column(name="login_password")
+	@Column(name="login_password", nullable = false)
 //	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String loginPassword;	
 	
