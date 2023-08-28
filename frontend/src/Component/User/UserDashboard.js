@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import UserNavbar from './UserNavbar'
 import { Outlet, useNavigate } from 'react-router-dom'
+import { UserContext } from '../../Utilities/context/userContext';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const user = sessionStorage.getItem('user');
+  const {user} = useContext(UserContext);
   useEffect(() => {
-    if (!user) navigate('/');
+    if (!user || user.isAdmin) navigate('/');
   }, [user])
 
 
