@@ -56,9 +56,11 @@ export default withAuthorization(condition, LOGIN)(() => {
         transactionPassword: transactionDetails.transactionPassword
       })
       if (response) {
+        console.log(response);
         toast.success(response.data)
         setTransactionDetails({
           senderAccount: accountNumber,
+          transactionPassword: "",
           receiverAccount: "",
           txnAmount: 0,
           // txnDate: new Date(),
