@@ -68,21 +68,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 					}
 				}
 				if(bcryptEncoder.matches(authentication.getCredentials().toString(), cust.getLoginPassword())) {
-//						custRepo.changeLastLogin(new Date(),0,true,userName); //also set 0 failed attempts
 					return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), authentication.getCredentials());
 				}
 				else {
-					int noAttempts = cust.getNoFailedAttemps()+1;
-					if(noAttempts>2) {
-						//update time, attempts, unLocked
-//							custRepo.changeLastLogin(new Date(),0,false,userName);
-						throw new LockedException("3 attempts failed, your account have be locked for 1 day");
-					}
-					else {
-						//update time and attempts, unlocked
-//							custRepo.changeLastLogin(new Date(),noAttempts,true,userName);
-						throw new BadCredentialsException(String.format("Wrong Password, %d more attempts remaining", 3-noAttempts));
-	 				}
+					throw new BadCredentialsException("Wrong Password");
 				}
 			}
 			else {

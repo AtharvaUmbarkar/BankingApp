@@ -7,8 +7,33 @@ import { toast } from 'react-hot-toast';
 
 const UserAccounts = () => {
   const BASE_URL = "http://localhost:8090/fetchAccounts";
-  const { user, token } = useContext(UserContext)
-  const [accountsList, setAccounts] = useState(undefined);
+  const CREATE_ACCOUNT_URL = "http://localhost:8090/createAccount";
+  // const { user, token } = useContext(UserContext)
+  const token = sessionStorage.getItem("token");
+  const user = sessionStorage.getItem("user");
+  const [accountsList, setAccounts] = useState([])
+
+  const handleOnClick = async (e) => {
+    e.preventDefault();
+    try {
+      const authHeader = "Bearer " + token;
+      const response = await axios.post(
+        CREATE_ACCOUNT_URL,
+        {},
+        {
+          params: { username: user.userName },
+          headers: { "Authorization": authHeader }
+        }
+      )
+      if (response) {
+        toast.success("Acount Created Successfully", { duration: 3000 })
+        window.location.reload()
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message, { duration: 3000 })
+    }
+  }
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -22,7 +47,6 @@ const UserAccounts = () => {
               headers: { "Authorization": authHeader }
             },
           )
-          // console.log(response.data);
           setAccounts(response.data);
         } catch (error) {
           toast.error(error.message)
@@ -36,7 +60,7 @@ const UserAccounts = () => {
     <div className='w-full flex flex-col items-center'>
       <div className='w-1/3 my-8'>
         <h1 className='font-semibold text-2xl mb-4 border-b border-indigo-700 w-full text-center pb-4'>Your Accounts</h1>
-        <Link to="/user/createAccount" className='block bg-indigo-700 text-center w-full p-1 text-white mb-4 rounded'>+ Create Account</Link>
+        <button type='button' onClick={handleOnClick} className='block bg-indigo-700 text-center w-full p-1 text-white mb-4 rounded'>+ Create Account</button>
         {accountsList && accountsList.map((account, i) => {
           return (
             <div key={i} className='w-full p-4 my-2 bg-slate-100 shadow-md flex flex-col rounded'>

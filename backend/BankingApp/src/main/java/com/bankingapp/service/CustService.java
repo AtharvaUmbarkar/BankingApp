@@ -101,7 +101,25 @@ public class CustService implements UserDetailsService, CustomerServiceInterface
 		throw new ResourceNotFoundException("Customer not Present");
 	}
 	
-//	public void handleLockedCustomer(String userName)
+	@Transactional
+	public void increaseAttempts(String userName) throws UnauthorizedAccessException {
+		int noAttempts = custRepo.findByUserName(userName).get().getNoFailedAttemps()+1;
+		if(noAttempts>2) {
+			//update time, attempts, unLocked
+			custRepo.changeLastLogin(new Date(),0,false,userName);
+			throw new UnauthorizedAccessException("Invalid Credentials, your account have be locked for 1 day");
+		}
+		else {
+			//update time and attempts, unlocked
+			custRepo.changeLastLogin(new Date(),noAttempts,true,userName);
+			throw new UnauthorizedAccessException(String.format("Invalid Credentials, %d more attempts remaining", 3-noAttempts));
+			}
+	}
+	
+	@Transactional
+	public void changeLastLogin(String userName) throws UnauthorizedAccessException {
+		custRepo.changeLastLogin(new Date(),0,true,userName);
+	}
 	
 	public List<Account> fetchAccounts(String username) throws ResourceNotFoundException
 	{

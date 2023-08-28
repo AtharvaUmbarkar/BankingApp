@@ -59,7 +59,7 @@ public class Customer {
 	private String fatherName;
 	
 	@Column(name="email_id", unique=true)
-	@Pattern(regexp="^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$")
+	@Pattern(regexp="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
 	private String emailId;
 	
 	
