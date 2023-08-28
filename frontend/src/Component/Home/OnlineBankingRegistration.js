@@ -19,7 +19,7 @@ const OnlineBankingRegistration = () => {
   }
 
   const handleSubmit = async (event) => {
-    
+
     event.preventDefault();
     const valid = (inputs.loginPassword === inputs.confirmLoginPassword) &&
       (inputs.transactionPassword === inputs.confirmTransactionPassword) &&
@@ -74,7 +74,7 @@ const OnlineBankingRegistration = () => {
             <label className="text-sm my-1 w-full">User Name:
               <input
                 required
-                minLength={3}
+                minLength={8}
                 maxLength={30}
                 type="text"
                 name="userName"

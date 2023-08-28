@@ -39,7 +39,7 @@ const NEFT = () => {
       }, {
         headers: {
           "Content-Type": "application/json",
-          // "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+          "Authorization": `Bearer ${sessionStorage.getItem("token")}`
         }
       });
       toast.success(response.data, { duration: 3000 })
