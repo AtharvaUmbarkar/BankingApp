@@ -169,7 +169,7 @@ const OpenAccount = () => {
             required
             minLength={10}
             maxLength={10}
-            pattern='^\\d{10}$'
+            pattern='^\d{10}$'
             type="text"
             name="mobileNumber"
             value={personalDetails.mobileNumber}
