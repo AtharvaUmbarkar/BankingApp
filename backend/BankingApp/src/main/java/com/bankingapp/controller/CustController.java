@@ -43,6 +43,8 @@ import com.bankingapp.types.LoginModel;
 import com.bankingapp.types.NetBankingModel;
 import com.bankingapp.types.UserRole;
 
+import jakarta.validation.Valid;
+
 @RestController
 @CrossOrigin("*")
 public class CustController {
@@ -108,16 +110,18 @@ public class CustController {
 	
 	//not implementing frontend fn
 	@PutMapping("/forgotUserName")
-	public String changeUserName(@RequestBody ChangeUserNameModel obj) throws ResourceNotFoundException, InvalidTypeException {
+	public String changeUserName(@RequestBody ChangeUserNameModel obj) throws ResourceNotFoundException, InvalidTypeException 
+	{
 		return custService.changeUserName(obj);
 	}
 	
 	//for admin
 	@GetMapping("/fetchUser")
-	public Customer fetchUser(@RequestParam("customerId") int custId) throws ResourceNotFoundException{
+	public Customer fetchUser(@RequestParam("customerId") int custId) throws ResourceNotFoundException
+	{
 		return custService.fetchUser(custId);
 	}
-	//fpr admin
+	//for admin
 	@GetMapping("/getCustomerAndAccountDetails/{id}")
 	public List<Object> getCustomerAndAccountDetails(@PathVariable("id") int id)
 	{
@@ -125,7 +129,8 @@ public class CustController {
 	}
 	
 	@Transactional
-	public void authenticate(String userName, String password) throws UnauthorizedAccessException {
+	public void authenticate(String userName, String password) throws UnauthorizedAccessException
+	{
 		try {
 			List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(UserRole.ROLE_USER.toString()));
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password, authorities));

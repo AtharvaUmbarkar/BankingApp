@@ -2,6 +2,8 @@ package com.bankingapp.service;
 
 import java.util.Arrays;
 import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +33,8 @@ public class AccountService implements AccountServiceInterface {
 	private AccountRepo accountRepo;
 	@Autowired
 	private BeneficiaryRepo benRepo;
+	@Autowired
+	ModelMapper modelMapper;
 	
 	public String createAccount(Account account, String userName) throws ResourceNotFoundException
 	{
@@ -81,13 +85,11 @@ public class AccountService implements AccountServiceInterface {
 	}
 	
 	@Transactional
-	public String firstAccount(CustomerAndAccountModel obj) throws AlreadyExistsException
+	public String firstAccount(Account account, Customer customer) throws AlreadyExistsException
 	{
 		String result="";
-		Customer customer = obj.getCustomer();
 		Optional<Customer> optObj = custRepo.findByAadhaarNumber(customer.getAadhaarNumber());
 		if(!optObj.isPresent()) {
-			Account account = obj.getAccount();
 			account.setCustomer(customer);
 			customer.setAccounts(Arrays.asList(account));
 			Customer newCust = custRepo.save(customer);
@@ -102,11 +104,6 @@ public class AccountService implements AccountServiceInterface {
 		}
 		else{
 			Customer existingCust = optObj.get();
-//			if(existingCust.isNetBankingEnabled()) {
-//				throw new AlreadyExistsException("Please login to create a new account");
-//			}
-//			else {
-			Account account = obj.getAccount();
 			account.setCustomer(existingCust);
 			existingCust.getAccounts().add(account);
 			Customer newCust = custRepo.save(existingCust);
@@ -118,7 +115,6 @@ public class AccountService implements AccountServiceInterface {
 			ben.setAccount(newAccount);
 			benRepo.save(ben);
 			result= String.format("successfully created account with account number: %d for customer id: %d" ,  newAccount.getAccountNumber(), newCust.getCustomerId());
-//			}
 		}
 		return result;
 	}
@@ -171,5 +167,6 @@ public class AccountService implements AccountServiceInterface {
 			throw new ResourceNotFoundException("Invalid Account Number");
 		}
 	}
+
 	
 }

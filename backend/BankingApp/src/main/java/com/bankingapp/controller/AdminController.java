@@ -24,11 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankingapp.config.JwtTokenUtil;
+import com.bankingapp.dto.AccountDTO;
 import com.bankingapp.dto.AdminDTO;
 import com.bankingapp.dto.CustomerDTO;
 import com.bankingapp.exception.NoDataFoundException;
 import com.bankingapp.exception.ResourceNotFoundException;
 import com.bankingapp.exception.UnauthorizedAccessException;
+import com.bankingapp.models.Account;
 import com.bankingapp.models.Admin;
 import com.bankingapp.models.Customer;
 import com.bankingapp.repository.AdminRepo;
@@ -49,8 +51,7 @@ public class AdminController {
 	@Autowired
 	CustService custService;
 	@Autowired
-	ModelMapper modelMapper;
-	
+	ModelMapper modelMapper;	
 	@Autowired
 	AuthenticationManager adminAuthenticationManager;
 	@Autowired
@@ -72,7 +73,7 @@ public class AdminController {
 		adminRepo.save(admin);		
 		final UserDetails userDetails = adminService.loadUserByUsername(u.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
-		AdminDTO adminDTO =  modelMapper.map(adminRepo.findByUserName(u.getUsername()),AdminDTO.class);
+		AdminDTO adminDTO =  modelMapper.map(adminService.findById(u.getUsername()),AdminDTO.class);
 		adminDTO.setToken(token);
 		return adminDTO;
 	}
@@ -86,7 +87,7 @@ public class AdminController {
 		final UserDetails userDetails = adminService.loadUserByUsername(u.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		System.out.println(token);
-		 AdminDTO adminDTO =  modelMapper.map(adminRepo.findByUserName(u.getUsername()),AdminDTO.class);
+		 AdminDTO adminDTO =  modelMapper.map(adminService.findById(u.getUsername()),AdminDTO.class);
 		 adminDTO.setToken(token);
 		 return adminDTO;
 	}
@@ -107,8 +108,8 @@ public class AdminController {
 	}
 
 	@GetMapping("searchCustomerByUsername")
-	public List<Customer> searchCustomersByUsername(@RequestParam("query") String query) throws NoDataFoundException{
-		return adminService.searchCustomersByUsername(query);
+	public List<CustomerDTO> searchCustomersByUsername(@RequestParam("query") String query) throws NoDataFoundException{
+		return adminService.searchCustomersByUsername(query).stream().map(cust -> modelMapper.map(cust, CustomerDTO.class)).collect(Collectors.toList());
 	}
 	
 	@GetMapping("getTransactionStats")
@@ -116,7 +117,8 @@ public class AdminController {
 		return adminService.getTransactionStats();
 	}
 	
-	public void authenticate(String userName, String password) throws Exception {
+	public void authenticate(String userName, String password) throws Exception 
+	{
 		try {
 			System.out.println("admin auth cp1");
 			List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(UserRole.ROLE_ADMIN.toString()));
@@ -134,5 +136,5 @@ public class AdminController {
 			throw new Exception("Authentication failed!");
 		}
 	}
-	
+
 }

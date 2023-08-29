@@ -106,7 +106,7 @@ public class WebSecurityConfig {
 						"/admin/LoginAdmin",
 						"admin/SignupAdmin"
 						).permitAll()
-				.requestMatchers("/admin/**", "/fetchUser", "/getCustomerAndAccountDetails/{id}").hasAnyRole("ADMIN")
+				.requestMatchers("/admin/**", "/fetchUser", "/getCustomerAndAccountDetails/{id}", "/createACcountUsingId").hasAnyRole("ADMIN")
 		// all other requests need to be authenticated
 				.anyRequest().authenticated())
 		// make sure we use stateless session; session won't be used to

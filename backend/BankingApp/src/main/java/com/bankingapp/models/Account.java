@@ -1,10 +1,8 @@
 package com.bankingapp.models;
 
 import java.util.Date;
-//import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,6 +22,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
@@ -37,36 +37,37 @@ public class Account {
 			allocationSize=1)
 	private long accountNumber;
 	@Column(nullable = false)
+	@NotNull(message = "Account type can not be null")
+	@NotBlank(message = "ACcount type can not be balnk")
 	@Length(max = 10)
 	@Pattern(regexp="^[A-Za-z]+$", message="Account Type can only contain Characters") 
 	@Value("${some.key:Savings}")
 	private String accountType;
 	@Column(nullable = false)
+	@NotNull(message = "Balance can not be null")
 	@Value("${some.key:1000}")
 	private double accountBalance;
 	@CreatedDate
 	@Column(nullable = false)
+	@NotNull(message="Creation Date can not be null")
 	private Date accountCreationDate =  new Date();
 	@Column(nullable = false)
+	@NotNull(message = "Account active field acn not be null")
 	private boolean active = false; //change later
 	private boolean debitCardAvailed;
-	private Date lastTransaction;
-	
+	private Date lastTransaction;	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="customerId")
 	private Customer customer;
-	
 	@JsonManagedReference(value="acnt-txns1")
 	@JsonIgnore
 	@OneToMany(mappedBy="senderAccount", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Transaction> debitTransactions;
-	
 	@JsonManagedReference(value="acnt-txns2")
 	@JsonIgnore
 	@OneToMany(mappedBy="receiverAccount", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Transaction> creditTransactions;
-	
 	@JsonManagedReference
 	@JsonIgnore
 	@OneToMany(mappedBy="account", fetch=FetchType.LAZY, cascade=CascadeType.ALL)

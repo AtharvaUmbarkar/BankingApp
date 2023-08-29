@@ -96,4 +96,11 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
 		}
 	}
 		
+	public Admin findById(String userName) throws UnauthorizedAccessException {
+		Admin admin = adminRepo.findById(userName).get();
+		if(admin == null)
+			throw new UnauthorizedAccessException("Admin not found");
+		else
+			return admin;
+	}
 }

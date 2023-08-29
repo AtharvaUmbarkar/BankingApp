@@ -24,6 +24,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
@@ -38,127 +39,135 @@ public class Customer {
 	private int customerId;
 	
 	@Column(nullable=false)
+	@NotNull(message = "Title can not be null")
 	@NotBlank(message="cannot be blank")
 	private String title;
-	
 	@Column(name="first_name", nullable=false)
+	@NotNull(message = "First name can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 //	@Pattern(regexp="^[A-Z][a-z]+$")
 	private String firstName;
-	
 	@Column(name="middle_name")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String middleName;
-	
 	@Column(name="last_name", nullable=false)
+	@NotNull(message = "Last name can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String lastName;
-	
 	@Column(name="father_name", nullable=false)
+	@NotNull(message = "Father name can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String fatherName;
-	
 	@Column(name="email_id", unique=true, nullable=false)
+	@NotNull(message = "EmailID can not be null")
 	@Pattern(regexp="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
 	private String emailId;
-	
-	
 	@Column(name="dob", nullable=false)
+	@NotNull(message = "DOB can not be null")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate dateOfBirth;
-	 
 	@Column(name="mobile", nullable=false, unique=true)
+	@NotNull(message = "Mobile number can not be null")
 	@Pattern(regexp ="^\\d{10}$")
 //	@Length(min=10, max=10, message="mobile number must be of 10 digits")
 	private String mobileNumber;
-	
 	@Column(name="aadhaar", nullable=false, unique=true)
+	@NotNull(message = "Aadhaar number can not be null")
 	@Pattern(regexp="^[0-9]{12}$")
 	private String aadhaarNumber;
 	
 	@Column(name="temp_line1", nullable=false)
+	@NotNull(message = "Temporary Line 1 can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempAddressLine1;
 	@Column(name="temp_line2", nullable=false)
+	@NotNull(message = "Temporary Line 2 can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempAddressLine2;
 	@Column(name="temp_landmark", nullable=false)
+	@NotNull(message = "Temporary Landmark can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempLandmark;
 	@Column(name="temp_state", nullable=false)
+	@NotNull(message = "Temporary State can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempState;
 	@Column(name="temp_city", nullable=false)
+	@NotNull(message = "Temporary City can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String tempCity;
 	@Column(name="temp_pincode", nullable=false)
+	@NotNull(message = "Temporary Pincode can not be null")
 	@Pattern(regexp="^[0-9]{6}$", message="must be of 6 digits")
 	private String tempPincode;
 	
 	@Column(name="perm_line1", nullable=false)
+	@NotNull(message = "Permanent Line1 can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permAddressLine1;
 	@Column(name="perm_line2", nullable=false)
+	@NotNull(message = "Permanent Line2 can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permAddressLine2;
 	@Column(name="perm_landmark", nullable=false)
+	@NotNull(message = "Permanent Landmark can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permLandmark;
 	@Column(name="perm_state", nullable=false)
+	@NotNull(message = "Permanent State can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permState;
 	@Column(name="perm_city", nullable=false)
+	@NotNull(message = "Permanent City can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String permCity;
 	@Column(name="perm_pincode", nullable=false)
+	@NotNull(message = "Permanent Pincode can not be null")
 	@Pattern(regexp="^[0-9]{6}$", message="must be of 6 digits")
 	private String permPincode;
 	
 	@Column(nullable=false)
+	@NotNull(message = "Occupation can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String occupation;
 	@Column(name="source_of_income", nullable=false)
+	@NotNull(message = "Source of Income can not be null")
 	@Length(min=3, max=30, message="must be between 3-30 characters")
 	private String sourceOfIncome;
 	@Column(name="gross_annual_income", nullable=false)
+	@NotNull(message = "Annual Income can not be null")
 	@Range(min=0, message="must be non negative")
 	private int grossAnnualIncome;
 	
 	@Column(name="net_banking", nullable=false)
+	@NotNull(message = "netBankingEnabled can not be null")
 	private boolean netBankingEnabled=false;
-	
 	@Column(name="last_login") //last login attempt
 	private Date lastLogin;
-
 	@Column(name="user_name", unique=true)
 	@Pattern(regexp="^[A-Za-z0-9]{8,}$", message="must contain only digits and alphabets and should be of length 8")
 	private String userName;
-	
 	@Column(name="login_password")
 	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String loginPassword;
-	
 	@Column(name="transaction_password")
 	@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
 	private String transactionPassword;
-	
 	@Value("${some.key:0}")
 	private int noFailedAttemps;
-	
-//	@Value("${some.key:1}")
 	private boolean unLocked=true;
+	@Column(nullable = false)
+	@NotNull(message = "Enabledcan not be null")
 	private boolean enabled=true;
 
 	@JsonManagedReference
 	@JsonIgnore
 	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Account> accounts;
-	
 	@JsonManagedReference
 	@JsonIgnore
 	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Beneficiary> beneficiaries;
-	
 	@JsonManagedReference
 	@JsonIgnore
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)

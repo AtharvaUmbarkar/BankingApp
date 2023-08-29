@@ -35,7 +35,6 @@ public class TransactionController
 	@Autowired
 	JwtTokenUtil jwtTokenUtil;
 	
-	//do we need to check the acnt number and userName match?
 	@PostMapping("/save/withdraw")
 	public String withdraw(@RequestBody TransactionModel transactionModel, @RequestHeader(value="Authorization", required=true) String bearerToken) throws InsufficientBalanceException, ResourceNotFoundException, InvalidTypeException, UnauthorizedAccessException
 	{
@@ -49,7 +48,7 @@ public class TransactionController
 		String userName = jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));
 		return tService.deposit(transactionModel, userName);
 	}
-	// To be tested
+	
 	@PostMapping("/save/fundTransfer")
 	public String fundTransfer(@RequestBody TransactionModel transactionModel, @RequestHeader(value="Authorization", required=true) String bearerToken) throws ResourceNotFoundException, InsufficientBalanceException, InvalidTypeException, UnauthorizedAccessException
 	{
@@ -68,17 +67,5 @@ public class TransactionController
 	{
 		return tService.getAccountStatement(accountNumber, from, to);
 	}
-//	
-//	
-//	@GetMapping("/getAllTransactions")
-//	public List<Transaction> getAllTransactions(@RequestParam long accountNo) throws NoDataFoundException, ResourceNotFoundException
-//	{
-//		return tService.getAllTransactions(accountNo);
-//	}
-//	// To be tested
-//	@GetMapping("/getStatementTransactions") // What is the difference between this method and get account statement method?
-//	public List<Transaction> getStatementTransactions(@RequestParam long accountNo, @RequestParam String fromDt, @RequestParam String toDt) throws NoDataFoundException, ResourceNotFoundException
-//	{
-//		return tService.getStatementTransactions(accountNo,fromDt,toDt);
-//	}
+
 }

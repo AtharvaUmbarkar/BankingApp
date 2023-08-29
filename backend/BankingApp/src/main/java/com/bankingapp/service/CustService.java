@@ -153,7 +153,7 @@ public class CustService implements UserDetailsService, CustomerServiceInterface
 			}
 			else
 			{
-				custRepo.setUserName(nb.getUserName(), bcryptEncoder.encode(nb.getLoginPassword()), nb.getTransactionPassword(), cust.getCustomerId());
+				custRepo.setUserName(nb.getUserName(), bcryptEncoder.encode(nb.getLoginPassword()), bcryptEncoder.encode(nb.getTransactionPassword()), cust.getCustomerId());
 				result = "successfully registered for net banking";
 			}
 		}
@@ -175,7 +175,7 @@ public class CustService implements UserDetailsService, CustomerServiceInterface
 				custRepo.changeLoginPassword(bcryptEncoder.encode(obj.getNewPassword()), userName);
 			}
 			else if(obj.getPasswordType().equals("Transactional")){
-				custRepo.changeTransactionPassword(obj.getNewPassword(), userName);
+				custRepo.changeTransactionPassword(bcryptEncoder.encode(obj.getNewPassword()), userName);
 			}
 			else {
 //				return result = "Not a valid password type";

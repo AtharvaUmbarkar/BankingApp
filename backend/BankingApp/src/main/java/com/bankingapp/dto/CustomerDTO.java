@@ -12,7 +12,6 @@ public class CustomerDTO {
 
 	private int customerId;
 	private String title;
-	
 	private String firstName;
 	private String middleName;
 	private String lastName;
@@ -38,21 +37,24 @@ public class CustomerDTO {
 	private String sourceOfIncome;
 	private int grossAnnualIncome;
 	
-	private boolean netBankingEnabled;
+	private boolean netBankingEnabled=false;
+	private boolean enabled=true;
 	private Date lastLogin;
 	private String userName;
 	private String token;
-public String getToken() {
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	public String getToken() {
 		return token;
 	}
 	public void setToken(String token) {
 		this.token = token;
 	}
-	//	private String loginPassword;
-//	private String transactionPassword;
-//	private List<Account> accounts;
-//	private List<Beneficiary> beneficiaries;
-//	private List<Transaction> transactions;
 	public int getCustomerId() {
 		return customerId;
 	}

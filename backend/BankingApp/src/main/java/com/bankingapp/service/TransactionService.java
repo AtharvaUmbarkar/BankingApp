@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bankingapp.exception.InsufficientBalanceException;
@@ -30,6 +31,8 @@ public class TransactionService {
 	TransactionRepo transRepo;
 	@Autowired
 	AccountRepo accountRepo;
+	@Autowired
+	PasswordEncoder bcryptEncoder;
 	
 	
 	@Transactional
@@ -40,24 +43,22 @@ public class TransactionService {
 		
 			Account acnt = accountRepo.findById(accountNumber).get();
 			if(acnt == null) {
-//				result="Sender account does not exist";
 				throw new ResourceNotFoundException("Account does not exist");
 			}
 			else if(!acnt.getCustomer().getUserName().equals(userName)) {
 				throw new UnauthorizedAccessException("Account doesn't belong to the user");
 			}
 			else {
-					if(!acnt.isActive()) {
+				if(!acnt.isActive()) {
 					throw new UnauthorizedAccessException("Account is Deactivated");
 				}
+				if (!bcryptEncoder.matches(transactionModel.getTransactionPassword(),acnt.getCustomer().getTransactionPassword())) {
+					throw new UnauthorizedAccessException("Invalid Transaction Password");
+				}
 				Transaction transaction = transactionModel.getTransaction();
-				//acnt.setAccountBalance(100000);
 				double new_balance = acnt.getAccountBalance() - transaction.getTxnAmount();
 				if(new_balance <= 0.00d) {
 					throw new InsufficientBalanceException("Insufficient Balance");
-				}
-				else if (!acnt.getCustomer().getTransactionPassword().equals(transactionModel.getTransactionPassword())) {
-					throw new InvalidTypeException("Invalid Transaction Password");
 				}
 				else {
 					int rowsAffected = accountRepo.updateBalance(new_balance, accountNumber);
@@ -67,7 +68,6 @@ public class TransactionService {
 						transaction.setTxnStatus("Successful");
 						transaction = transRepo.save(transaction);
 						accountRepo.changeLastTxn(transaction.getTxnDate(), acnt.getAccountNumber());
-	//					acnt.setAccountBalance(new_balance);
 						result = "Transaction is successful with transaction id: " + transaction.getTxnId();
 					}
 					else {
@@ -75,8 +75,6 @@ public class TransactionService {
 					}
 				}
 			}
-		
-		
 		return result;
 	}
 	
@@ -88,7 +86,6 @@ public class TransactionService {
 	
 		Account acnt = accountRepo.findById(accountNumber).get();
 		if(acnt == null) {
-//			result="Sender account does not exist";
 			throw new ResourceNotFoundException("Account does not exist");
 		}
 		else if(!acnt.getCustomer().getUserName().equals(userName)) {
@@ -98,8 +95,10 @@ public class TransactionService {
 			if(!acnt.isActive()) {
 				throw new UnauthorizedAccessException("Account is Deactivated");
 			}
+			if (!bcryptEncoder.matches(transactionModel.getTransactionPassword(),acnt.getCustomer().getTransactionPassword())) {
+				throw new UnauthorizedAccessException("Invalid Transaction Password");
+			}
 			Transaction transaction = transactionModel.getTransaction();
-			//acnt.setAccountBalance(100000);
 			double new_balance = acnt.getAccountBalance() + transaction.getTxnAmount();
 			
 			int rowsAffected = accountRepo.updateBalance(new_balance, accountNumber);
@@ -109,7 +108,6 @@ public class TransactionService {
 				transaction.setTxnStatus("Successful");
 				transaction = transRepo.save(transaction);
 				accountRepo.changeLastTxn(transaction.getTxnDate(), acnt.getAccountNumber());
-//					acnt.setAccountBalance(new_balance);
 				result = "Transaction is successful with transaction id: " + transaction.getTxnId();
 			}
 			else {
@@ -117,8 +115,6 @@ public class TransactionService {
 				
 			}
 		}
-		
-		
 		return result;
 	}
 	
@@ -132,16 +128,14 @@ public class TransactionService {
 					throw new UnauthorizedAccessException("Account doesn't belong to customer");
 				}
 				if(senderAccount.isActive() && receiverAccount.isActive()) {
+					if (!bcryptEncoder.matches(transactionModel.getTransactionPassword(),senderAccount.getCustomer().getTransactionPassword())) {
+						throw new UnauthorizedAccessException("Invalid Transaction Password");
+					}
 					Transaction transaction = transactionModel.getTransaction();
-					//acnt.setAccountBalance(100000);
 					double senderNewBalance = senderAccount.getAccountBalance() - transaction.getTxnAmount();
 					double receiverNewBalance = receiverAccount.getAccountBalance() + transaction.getTxnAmount();
 					if(senderNewBalance <= 0.00d) {
-	//					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance");
 						throw new InsufficientBalanceException("Insufficient Balance");
-					}
-					else if (!transactionModel.getTransactionPassword().equals(senderAccount.getCustomer().getTransactionPassword())) {
-						throw new InvalidTypeException("Invalid Transaction Password");
 					}
 					else {
 						int rowsAffected1 = accountRepo.updateBalance(senderNewBalance, senderAccount.getAccountNumber());

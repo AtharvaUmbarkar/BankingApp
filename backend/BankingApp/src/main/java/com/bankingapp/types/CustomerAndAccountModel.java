@@ -1,22 +1,22 @@
 package com.bankingapp.types;
 
-import com.bankingapp.models.Account;
-import com.bankingapp.models.Customer;
+import com.bankingapp.dto.AccountDTO;
+import com.bankingapp.dto.CustomerDTO;
 
 public class CustomerAndAccountModel {
 	
-	private Customer customer;
-	private Account account;
-	public Customer getCustomer() {
+	private CustomerDTO customer;
+	private AccountDTO account;
+	public CustomerDTO getCustomer() {
 		return customer;
 	}
-	public void setCustomer(Customer customer) {
+	public void setCustomer(CustomerDTO customer) {
 		this.customer = customer;
 	}
-	public Account getAccount() {
+	public AccountDTO getAccount() {
 		return account;
 	}
-	public void setAccount(Account account) {
+	public void setAccount(AccountDTO account) {
 		this.account = account;
 	}
 	

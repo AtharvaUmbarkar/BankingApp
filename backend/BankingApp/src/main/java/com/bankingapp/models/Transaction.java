@@ -17,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
@@ -32,31 +33,35 @@ public class Transaction {
 			allocationSize=1)
 	private int txnId;
 	@Column(nullable=false)
+	@NotNull(message = "Transaction type can not be null")
 	@Pattern(regexp="^Withdraw|Deposit|NEFT|RTGS|IMPS$")
 	private String txnType; // withdraw, deposit, NEFT, etc
 	@CreatedDate
 	@Column(nullable = false)
+	@NotNull(message = "Transaction Date can not be null")
 	private Date txnDate = new Date();
 	@Column(nullable=false)
+	@NotNull(message = "Amount can not be null")
 	@Range(min = 1, message = "Amount should be greater than 0")
 	private double txnAmount;
 	@Column(nullable=false)
+	@NotNull(message = "Sender balance can not be null")
 	@Value("${some.key:0}")
 	private double senderBalance;
 	@Column(nullable=false)
+	@NotNull(message = "Receiver balance can not be null")
 	@Value("${some.key:0}")
 	private double receiverBalance;
 	@Column(nullable=false)
+	@NotNull(message = "Status can not be null")
 	@Value("${some.key:Pending}")
 	@Pattern(regexp="^Pending|Successful|failed$")
 	private String txnStatus;
 	private String userRemarks;
-
 	@JsonBackReference(value="acnt-trans1")
 	@ManyToOne
 	@JoinColumn(name="sender_accountNumber", referencedColumnName="accountNumber")
 	private Account senderAccount;
-
 	@JsonBackReference(value="acnt-trans2")
 	@ManyToOne
 	@JoinColumn(name="receiver_accountNumber", referencedColumnName="accountNumber")
