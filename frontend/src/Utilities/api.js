@@ -145,3 +145,12 @@ export const createAccountUsingId = async (customerId) => {
     })
     return response
 }
+export const removeBeneficiary = async (id) => {
+    console.log("HERE")
+    const response = await axios.delete(`${API_URL}/delete/beneficiary?Id=${id}`,{
+        headers: {
+            "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+        }
+    })
+    return response
+}

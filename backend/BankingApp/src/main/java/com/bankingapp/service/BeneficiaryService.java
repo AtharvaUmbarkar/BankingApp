@@ -18,6 +18,8 @@ import com.bankingapp.repository.BeneficiaryRepo;
 import com.bankingapp.repository.CustomerRepo;
 import com.bankingapp.types.AddBeneficiaryModel;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class BeneficiaryService implements BeneficiaryServiceInterface{
 	@Autowired
@@ -59,6 +61,7 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 		
 	}
 	
+	@Transactional
 	public String deleteBeneficiary(int Id, String userName) throws ResourceNotFoundException, UnauthorizedAccessException {
 		
 		Beneficiary ben = benRepo.findById(Id).get();
