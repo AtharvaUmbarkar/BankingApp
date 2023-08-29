@@ -83,51 +83,6 @@ class TestCustomerController {
 	ObjectMapper mapper = new ObjectMapper()
 			.findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 	
-
-	@Test
-	public void testCustomerLogin() throws Exception
-	{
-		//Test login with valid credentials
-		LoginModel login = new LoginModel();
-		login.setUsername("sumit");
-		login.setPassword("sumit@123");
-		
-		CustomerDTO custDTO = new CustomerDTO();
-		Customer cust = new Customer();
-		cust.setFirstName("Sumit");
-		cust.setMiddleName("Manoj");
-		cust.setLastName("Kumavat");
-		cust.setEmailId("sumit@gmail.com");
-		cust.setCustomerId(0);
-		
-		Mockito.when(customerService.validateCustomer(login)
-				).thenReturn(cust);
-		
-		Customer resCustomer = customerService.validateCustomer(login);
-		assertThat(resCustomer).isNotNull();
-		assertEquals(resCustomer, cust);
-		
-		Mockito.when(mockModelMapper.map(cust, CustomerDTO.class)).thenReturn(custDTO);
-		System.out.println("Testing login unit....");
-		
-		CustomerDTO resCustDTO = mockModelMapper.map(cust, CustomerDTO.class);
-		
-		assertThat(resCustDTO).isNotNull();
-		assertEquals(custDTO, resCustDTO);
-		
-		//String json = mapper.writeValueAsString(login);
-		//String custStr = mapper.writeValueAsString(custDTO);
-		//System.out.println("String Customer : "+custStr);
-		/*MvcResult mvcRes =
-				mvc.perform(post("/Login").
-				contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8").
-				content(json).andExpect(MockMvcResultMatchers.status().isCreated());*/
-				//accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
-		//String res = mvcRes.getResponse().getContentAsString();
-		//System.out.println("******Returned object : "+res);
-		//assertEquals(res,custStr);
-		
-	}
 	
 	@Test
 	public void testSaveCustomer() throws Exception
@@ -219,5 +174,50 @@ class TestCustomerController {
 		String res = mvcRes.getResponse().getContentAsString();
 		System.out.println("Returned value : "+res);
 		assertEquals(res,"successfully registered for net banking");
+	}
+	
+	@Test
+	public void testCustomerLogin() throws Exception
+	{
+		//Test login with valid credentials
+		LoginModel login = new LoginModel();
+		login.setUsername("sumit");
+		login.setPassword("sumit@123");
+		
+		CustomerDTO custDTO = new CustomerDTO();
+		Customer cust = new Customer();
+		cust.setFirstName("Sumit");
+		cust.setMiddleName("Manoj");
+		cust.setLastName("Kumavat");
+		cust.setEmailId("sumit@gmail.com");
+		cust.setCustomerId(0);
+		
+		Mockito.when(customerService.validateCustomer(login)
+				).thenReturn(cust);
+		
+		Customer resCustomer = customerService.validateCustomer(login);
+		assertThat(resCustomer).isNotNull();
+		assertEquals(resCustomer, cust);
+		
+		Mockito.when(mockModelMapper.map(cust, CustomerDTO.class)).thenReturn(custDTO);
+		System.out.println("Testing login unit....");
+		
+		CustomerDTO resCustDTO = mockModelMapper.map(cust, CustomerDTO.class);
+		
+		assertThat(resCustDTO).isNotNull();
+		assertEquals(custDTO, resCustDTO);
+		
+		//String json = mapper.writeValueAsString(login);
+		//String custStr = mapper.writeValueAsString(custDTO);
+		//System.out.println("String Customer : "+custStr);
+		/*MvcResult mvcRes =
+				mvc.perform(post("/Login").
+				contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8").
+				content(json).andExpect(MockMvcResultMatchers.status().isCreated());*/
+				//accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
+		//String res = mvcRes.getResponse().getContentAsString();
+		//System.out.println("******Returned object : "+res);
+		//assertEquals(res,custStr);
+		
 	}
 }
