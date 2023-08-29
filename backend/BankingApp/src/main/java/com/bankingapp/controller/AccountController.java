@@ -43,7 +43,7 @@ public class AccountController {
 		return accountService.createAccount(account, userName);
 	}
 	
-	@PostMapping("/createAccoutUsingId")
+	@PostMapping("/createAccountUsingId")
 	public String createAccountUsingId(@RequestBody AccountDTO accountDto, @RequestParam int custId) throws ResourceNotFoundException
 	{
 		Account account = modelMapper.map(accountDto, Account.class);

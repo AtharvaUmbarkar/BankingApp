@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import AdminNavbar from './AdminNavbar'
-import { createAccount, getAllCustomers, getCustomerAccounts, getCustomerAndAccountDetails, getCustomerDetails, toggleActivation, toggleUser } from '../../Utilities/api'
+import { createAccountUsingId, getAllCustomers, getCustomerAccounts, getCustomerAndAccountDetails, getCustomerDetails, toggleActivation, toggleUser } from '../../Utilities/api'
 import { PaperClipIcon, PhoneIcon, UserIcon } from '@heroicons/react/20/solid'
 import { ArrowTopRightOnSquareIcon, CalendarDaysIcon } from '@heroicons/react/24/outline'
 import { Link, useParams } from 'react-router-dom'
@@ -56,7 +56,7 @@ function CustomerDetails() {
 
     const handleAddNewAccount = async (e) => {
       try {
-        const response = await createAccount(customer.userName);
+        const response = await createAccountUsingId(customer.customerId);
         if (response) {
           toast.success("Acount Created Successfully", { duration: 3000 })
           setToggled((prev) => !prev)

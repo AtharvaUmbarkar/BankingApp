@@ -4,18 +4,13 @@ import Navbar from './Navbar'
 import Main from './Main'
 import { toast } from 'react-hot-toast'
 import { UserContext } from '../../Utilities/context/userContext'
+import withAuthorization from '../../Utilities/context/withAuthorization'
+import { ADMIN_HOME } from '../../Utilities/routes'
 
-const Home = () => {
 
-    const { user } = useContext(UserContext)
+const condition = (authUser) => authUser && authUser.isAdmin
 
-    // useEffect(() => {
-    //     if(user) {
-    //         setTimeout(() => {
-    //             toast.success(`Welcome ${user.userName}`)
-    //         }, 1000)
-    //     }
-    // })
+export default withAuthorization (condition, ADMIN_HOME)(() => {
 
     return (
         <div className='bg-white'>
@@ -24,6 +19,4 @@ const Home = () => {
         </div>
 
     )
-}
-
-export default Home
+})
