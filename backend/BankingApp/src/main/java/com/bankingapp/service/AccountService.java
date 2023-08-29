@@ -42,7 +42,6 @@ public class AccountService implements AccountServiceInterface {
 		Customer customer;
 		Optional<Customer> obj = custRepo.findByUserName(userName);
 		if(!obj.isPresent()) {
-//			result = "Customer not found";
 			throw new ResourceNotFoundException("Customer not found");
 		}
 		else {

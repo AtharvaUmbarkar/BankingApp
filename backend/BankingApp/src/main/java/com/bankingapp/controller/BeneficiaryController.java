@@ -49,7 +49,6 @@ public class BeneficiaryController {
 		return benService.getAllBeneficiaries(userName).stream().map(ben -> modelMapper.map(ben, BeneficiaryDTO.class)).collect(Collectors.toList());
 	}
 	
-	//might need to verify if id belongs to the user
 	@DeleteMapping("/delete/beneficiary")
 	public String deleteBeneficiary(@RequestParam int Id,  @RequestHeader(value="Authorization", required=true) String bearerToken) throws ResourceNotFoundException, UnauthorizedAccessException {
 		String userName = jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));

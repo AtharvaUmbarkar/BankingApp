@@ -53,64 +53,15 @@ public class CustService implements UserDetailsService, CustomerServiceInterface
 			throw new UsernameNotFoundException("User name not found");
 		}
 	}
-	
-	//no longer needed
-	public Customer saveCustomer(Customer cust)
-	{
-		Customer obj=custRepo.save(cust);
-		return obj;
-	}
-	
-	//no longer needed
-	@Transactional
-	public Customer validateCustomer(LoginModel loginUser) throws UnauthorizedAccessException, ResourceNotFoundException
-	{
-		Customer cust = null;
-		String userName = loginUser.getUsername();
-		Optional<Customer> objt = custRepo.findByUserName(userName);
-		if (objt.isPresent())
-		{
-			cust = objt.get();
-			if(!cust.isUnLocked()) {
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(cust.getLastLogin());
-				cal.add(Calendar.DATE, 1);
-				Date current = new Date();
-				if(cal.getTime().after(current)) {
-					throw new UnauthorizedAccessException("Exceeded 3 login attemps, please change your password to login");
-				}
-			}
-			if (loginUser.getPassword().equals(cust.getLoginPassword())) {
-				custRepo.changeLastLogin(new Date(),0,true,userName); //also set 0 failed attempts
-				return cust;
-			}
-			else {
-				int noAttempts = cust.getNoFailedAttemps()+1;
-				if(noAttempts>2) {
-					//update time, attempts, unLocked
-					custRepo.changeLastLogin(new Date(),0,false,userName);
-					throw new UnauthorizedAccessException("Invalid Credentials, your account have be locked for 1 day");
-				}
-				else {
-					//update time and attempts, unlocked
-					custRepo.changeLastLogin(new Date(),noAttempts,true,userName);
-					throw new UnauthorizedAccessException(String.format("Invalid Credentials, %d more attempts remaining", 3-noAttempts));
- 				}
-			}
-		}
-		throw new ResourceNotFoundException("Customer not Present");
-	}
-	
+		
 	@Transactional
 	public void increaseAttempts(String userName) throws UnauthorizedAccessException {
 		int noAttempts = custRepo.findByUserName(userName).get().getNoFailedAttemps()+1;
 		if(noAttempts>2) {
-			//update time, attempts, unLocked
 			custRepo.changeLastLogin(new Date(),0,false,userName);
 			throw new UnauthorizedAccessException("Invalid Credentials, your account have be locked for 1 day");
 		}
 		else {
-			//update time and attempts, unlocked
 			custRepo.changeLastLogin(new Date(),noAttempts,true,userName);
 			throw new UnauthorizedAccessException(String.format("Invalid Credentials, %d more attempts remaining", 3-noAttempts));
 			}
@@ -133,11 +84,10 @@ public class CustService implements UserDetailsService, CustomerServiceInterface
 	}
 	
 	@Transactional
-	public String netbankingreg(NetBankingModel nb) throws AlreadyExistsException, ResourceNotFoundException
+	public String netBankingReg(NetBankingModel nb) throws AlreadyExistsException, ResourceNotFoundException
 	{
-		String result = "";
 		if(nb.getLoginPassword().equals(nb.getTransactionPassword())) {
-			return result = "Login and Transaction password cannot be same";
+			return "Login and Transaction password cannot be same";
 		}
 		Optional<Account> obj = accRepo.findById(nb.getAccountNumber());
 		if (obj.isPresent())
@@ -148,21 +98,18 @@ public class CustService implements UserDetailsService, CustomerServiceInterface
 			}
 			if (cust.isNetBankingEnabled())
 			{
-//				result = "User already exists";
 				throw new AlreadyExistsException("User Already Exists");
 			}
 			else
 			{
 				custRepo.setUserName(nb.getUserName(), bcryptEncoder.encode(nb.getLoginPassword()), bcryptEncoder.encode(nb.getTransactionPassword()), cust.getCustomerId());
-				result = "successfully registered for net banking";
+				return "successfully registered for net banking";
 			}
 		}
 		else
 		{
-//			result = "Account does not exist, Open an account first";
 			throw new ResourceNotFoundException("Account does not exist, Open an account first");
 		}
-		return result;
 	}
 	
 	@Transactional
@@ -178,19 +125,11 @@ public class CustService implements UserDetailsService, CustomerServiceInterface
 				custRepo.changeTransactionPassword(bcryptEncoder.encode(obj.getNewPassword()), userName);
 			}
 			else {
-//				return result = "Not a valid password type";
 				throw new InvalidTypeException("Invalid Password type");
 			}
-//			if(rowsAffected > 0) {
-//				result = "Successfully changed the Password";
-//			}
-//			else {
-//				result = "Failed to change the password";
-//			}
 		}
 		else {
 			throw new ResourceNotFoundException("Customer does not exist");
-//			result = "Customer does not exist";
 		}
 		return "Success";
 	}
@@ -210,38 +149,28 @@ public class CustService implements UserDetailsService, CustomerServiceInterface
 				custRepo.changeTransactionPassword(obj.getNewPassword(), userName);
 			}
 			else {
-//				return result = "Not a valid password type";
 				throw new InvalidTypeException("Invalid Passwrd Type or passwords doesn't match");
 			}
-//			if(rowsAffected > 0) {
-//				result = "Successfully changed the Password";
-//			}
-//			else {
-//				result = "Failed to change the password";
-//			}
 		}
 		else {
 			throw new ResourceNotFoundException("Customer does not exist");
-//			result = "Customer does not exist";
 		}
 		return "Success";
 	}
 	
 	@Transactional
-	public String changeUserName(ChangeUserNameModel obj) throws ResourceNotFoundException, InvalidTypeException {
+	public String changeUserName(ChangeUserNameModel obj) throws ResourceNotFoundException, UnauthorizedAccessException {
 		Optional<Customer> optCust = custRepo.findByAadhaarNumber(obj.getAadhaarNumber());
 		if(optCust.isPresent()) {
 			Optional<Customer> checkCust = custRepo.findByUserName(obj.getUserName());
 			if(checkCust.isPresent())
-//				return "username is already taken";
-				throw new InvalidTypeException("Username is already Taken");
+				throw new UnauthorizedAccessException("Username is already Taken");
 			custRepo.changeUserName(obj.getUserName(), obj.getAadhaarNumber());
 			return "successful";
 		}
 		else {
 			throw new ResourceNotFoundException("Customer does not exist");
 		}
-//		return "User with given aadhaaar number doesn't exist";
 	}
 	
 	public Customer fetchUser(int custId) throws ResourceNotFoundException {
@@ -279,5 +208,7 @@ public class CustService implements UserDetailsService, CustomerServiceInterface
 		
 		return custRepo.findByUserName(username);
 	}
+
+
 
 }

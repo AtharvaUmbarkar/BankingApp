@@ -11,8 +11,6 @@ import com.bankingapp.types.TransactionModel;
 
 
 public interface TransactionServiceInterface {
-	public List<Transaction> getAllTransactions(long accountNo) throws ResourceNotFoundException;
-	public List<Transaction> getStatementTransactions(long accountNo, String fromDt, String toDt) throws ResourceNotFoundException;
 	public String withdraw(TransactionModel transactionModel) throws InsufficientBalanceException, UnauthorizedAccessException;
 	public String deposit(TransactionModel transactionModel) throws UnauthorizedAccessException;
 	public String fundTransfer(TransactionModel transactionModel) throws ResourceNotFoundException, InsufficientBalanceException, UnauthorizedAccessException;	

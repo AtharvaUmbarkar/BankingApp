@@ -32,7 +32,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	PasswordEncoder bcryptEncoder;
 	
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-//		System.out.println("start of auth");
 		String userName = authentication.getName();
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		
@@ -43,7 +42,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 			if(optAdmin.isPresent()) {
 				Admin admin = optAdmin.get();
 				if(bcryptEncoder.matches(authentication.getCredentials().toString(), admin.getLoginPassword())) {
-//					custRepo.changeLastLogin(new Date(),0,true,userName); //also set 0 failed attempts
 					return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), authentication.getCredentials());
 				} else {
 					throw new BadCredentialsException("Invalid Credentials");
@@ -85,7 +83,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 
 	@Override
 	public boolean supports(Class<?> authentication) {
-		// TODO Auto-generated method stub
 		return authentication.equals(UsernamePasswordAuthenticationToken.class);
 	}
 

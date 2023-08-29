@@ -62,7 +62,6 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 	public String deleteBeneficiary(int Id, String userName) throws ResourceNotFoundException, UnauthorizedAccessException {
 		
 		Beneficiary ben = benRepo.findById(Id).get();
-		String result = "";
 		if (ben == null) {
 			throw new ResourceNotFoundException("Beneficiary not Present");
 		}

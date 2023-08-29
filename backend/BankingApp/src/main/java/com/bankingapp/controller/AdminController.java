@@ -78,7 +78,6 @@ public class AdminController {
 		return adminDTO;
 	}
 	
-	
 	@PostMapping("LoginAdmin")
 	public AdminDTO validateAdmin(@RequestBody LoginModel u) throws Exception
 	{

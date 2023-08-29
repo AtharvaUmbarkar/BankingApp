@@ -58,14 +58,7 @@ public class CustController {
 	JwtTokenUtil jwtTokenUtil;
 	@Autowired
 	CustomerRepo custRepo;
-	
-	//no longer needed
-	@PostMapping("/saveCustomer")
-	public Customer saveCustomer(@RequestBody Customer cust)
-	{
-		Customer c=custService.saveCustomer(cust);
-		return c;
-	}
+
 	
 	@PostMapping("/Login")
 //	@ResponseBody
@@ -89,11 +82,11 @@ public class CustController {
 		String userName = jwtTokenUtil.getUsernameFromToken(bearerToken.substring(7));
 		return custService.fetchAccounts(userName).stream().map(acnt -> modelMapper.map(acnt, AccountDTO.class)).collect(Collectors.toList());
 	}
-	// To be tested for exception
+	
 	@PutMapping("/netBankingRegistration")
-	public String netbankingreg(@RequestBody NetBankingModel nb) throws AlreadyExistsException, ResourceNotFoundException
+	public String netBankinRreg(@RequestBody NetBankingModel nb) throws AlreadyExistsException, ResourceNotFoundException
 	{
-		return custService.netbankingreg(nb);
+		return custService.netBankingReg(nb);
 	}
 	
 	@PutMapping("/forgotPassword")
@@ -108,20 +101,18 @@ public class CustController {
 		return custService.changePassword(obj);
 	}
 	
-	//not implementing frontend fn
 	@PutMapping("/forgotUserName")
-	public String changeUserName(@RequestBody ChangeUserNameModel obj) throws ResourceNotFoundException, InvalidTypeException 
+	public String changeUserName(@RequestBody ChangeUserNameModel obj) throws ResourceNotFoundException, UnauthorizedAccessException 
 	{
 		return custService.changeUserName(obj);
 	}
-	
-	//for admin
+		
 	@GetMapping("/fetchUser")
 	public Customer fetchUser(@RequestParam("customerId") int custId) throws ResourceNotFoundException
 	{
 		return custService.fetchUser(custId);
 	}
-	//for admin
+	
 	@GetMapping("/getCustomerAndAccountDetails/{id}")
 	public List<Object> getCustomerAndAccountDetails(@PathVariable("id") int id)
 	{

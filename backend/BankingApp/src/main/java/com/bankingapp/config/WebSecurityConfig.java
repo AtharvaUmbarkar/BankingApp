@@ -1,15 +1,9 @@
 package com.bankingapp.config;
 
-import java.util.Collections;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,9 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
-import com.bankingapp.service.AdminService;
-import com.bankingapp.service.CustService;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -33,8 +24,6 @@ public class WebSecurityConfig {
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
-//	@Autowired
-//	private FilterChainExceptionHandler filterChainExceptionHandler;
 	
 	
 	@Bean
@@ -57,39 +46,6 @@ public class WebSecurityConfig {
 	public static PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
-//	@Bean
-//	@Qualifier("adminAuthenticationManager")
-//	public AuthenticationManager adminAuthenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
-//		return new ProviderManager(Collections.singletonList(adminAuthenticationProvider()));
-//	}
-//	
-//	@Bean
-//	@Qualifier("customerAuthenticationManager")
-//	public AuthenticationManager customerAuthenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
-//		return new ProviderManager(Collections.singletonList(customerAuthenticationProvider()));
-//	}
-//	
-//	@Bean
-//	public DaoAuthenticationProvider adminAuthenticationProvider() {
-//		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//		provider.setUserDetailsService(adminService);
-//		provider.setPasswordEncoder(passwordEncoder());
-//		return provider;
-//	}
-//	
-//	@Bean
-//	public DaoAuthenticationProvider customerAuthenticationProvider() {
-//		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//		provider.setUserDetailsService(customerService);
-//		provider.setPasswordEncoder(passwordEncoder());
-//		return provider;
-//	}
-
-//	@Bean
-//	public AuthenticationManager authenticationManagerBean() throws Exception {
-//		return super.authenticationManagerBean();
-//	}
 
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
